@@ -11,7 +11,7 @@ export default function page() {
 
       <Link
         href="/"
-        className="absolute sm:top-5 sm:left-5 top-2 left-2 flex items-center"
+        className="absolute sm:top-5 sm:left-5 top-0 left-2 flex items-center"
       >
         <Image
           src="/svg/logo-navalRift.svg"
@@ -24,7 +24,7 @@ export default function page() {
         </p>
       </Link>
       <div className="h-full w-full flex justify-center items-center">
-        <div className="relative w-full max-w-md space-y-5 sm:bg-background sm:rounded-[25px] sm:p-5 z-20">
+        <div className="relative w-full max-w-md space-y-5 sm:bg-background sm:rounded-[25px] sm:p-5 z-20 overflow-y-auto">
           <div className="space-y-2">
             <h1 className="text-2xl">Créer un compte</h1>
             <h4 className="text-gray-400">
