@@ -1,16 +1,9 @@
 import { Button } from "@nextui-org/react";
-import Image from "next/image";
 
 export const CallToAction = () => {
   return (
     <div className="relative mt-20">
-      <Image
-        src="/svg/test.svg"
-        alt="tes"
-        width={1024}
-        height={600}
-        className="absolute -rotate-12 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-      ></Image>{" "}
+      <div className="absolute -rotate-12 w-full max-sm:max-w-[200px] max-w-[400px] h-96 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-800 to-blue-800 z-10 blur-[300px] max-sm:blur-[200px]"></div>
       <div className="relative space-y-10 z-20">
         <div>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-center max-w-6xl m-auto">
