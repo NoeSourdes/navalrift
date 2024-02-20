@@ -50,34 +50,36 @@ export const InputsComponentsSignUp = () => {
         placeholder="Confirmer votre mot de passe"
         type={isVisible ? "text" : "password"}
       />
-      <Checkbox>
-        J&apos;accepte les{" "}
-        <Link
-          href="#"
-          className="text-primary hover:text-blue-700 transition-colors"
-        >
-          Termes
-        </Link>{" "}
-        et la{" "}
-        <Link
-          href="#"
-          className="text-primary hover:text-blue-700 transition-colors"
-        >
-          Politique de confidentialité
-        </Link>
-      </Checkbox>
-      <Button color="primary" size="lg" className="w-full">
-        S&apos;inscrire
-      </Button>
-      <p className="text-center">
-        Vous avez déjà un compte?{" "}
-        <Link
-          href="/sign-in"
-          className="text-primary hover:text-blue-700 transition-colors"
-        >
-          Connectez-vous
-        </Link>
-      </p>
+      <div className="space-y-5">
+        <Checkbox className="">
+          J&apos;accepte les{" "}
+          <Link
+            href="#"
+            className="text-primary hover:text-blue-700 transition-colors"
+          >
+            Termes
+          </Link>{" "}
+          et la{" "}
+          <Link
+            href="#"
+            className="text-primary hover:text-blue-700 transition-colors"
+          >
+            Politique de confidentialité
+          </Link>
+        </Checkbox>
+        <Button color="primary" size="lg" className="w-full">
+          S&apos;inscrire
+        </Button>
+        <p className="text-center">
+          Vous avez déjà un compte?{" "}
+          <Link
+            href="/sign-in"
+            className="text-primary hover:text-blue-700 transition-colors"
+          >
+            Connectez-vous
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

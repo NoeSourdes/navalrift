@@ -40,24 +40,26 @@ export const InputsComponentsSignIn = () => {
         }
         type={isVisible ? "text" : "password"}
       />
-      <div className="flex items-center justify-between">
-        <Checkbox>Se souvenir de moi</Checkbox>
-        <Link href="#" className="text-gray-400">
-          Mot de passe oublié ?
-        </Link>
+      <div className="space-y-5">
+        <div className="flex items-center justify-between pt-2">
+          <Checkbox>Se souvenir de moi</Checkbox>
+          <Link href="#" className="text-gray-400">
+            Mot de passe oublié ?
+          </Link>
+        </div>
+        <Button color="primary" size="lg" className="w-full">
+          Se connecter
+        </Button>
+        <p className="text-center">
+          Besoin de créer un compte?{" "}
+          <Link
+            href="/sign-up"
+            className="text-primary hover:text-blue-700 transition-colors"
+          >
+            S&apos;inscrire
+          </Link>
+        </p>
       </div>
-      <Button color="primary" size="lg" className="w-full">
-        Se connecter
-      </Button>
-      <p className="text-center">
-        Besoin de créer un compte?{" "}
-        <Link
-          href="/sign-up"
-          className="text-primary hover:text-blue-700 transition-colors"
-        >
-          S&apos;inscrire
-        </Link>
-      </p>
     </div>
   );
 };

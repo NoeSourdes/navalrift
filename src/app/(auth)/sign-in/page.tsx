@@ -51,7 +51,7 @@ export default function page() {
             <span className="text-[#3F3F46]">OU</span>
             <span className="w-full border-t border-[#3F3F46]"></span>
           </div>
-          <div className=" overflow-hidden">
+          <div className="overflow-hidden">
             <InputsComponentsSignIn />
           </div>
         </div>
