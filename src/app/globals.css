@@ -31,3 +31,65 @@ body {
     text-wrap: balance;
   }
 }
+
+@keyframes vibrate {
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(2px, 2px);
+  }
+  50% {
+    transform: translate(-2px, -2px);
+  }
+  75% {
+    transform: translate(-2px, 2px);
+  }
+  100% {
+    transform: translate(2px, -2px);
+  }
+}
+
+.vibrate {
+  animation: vibrate 0.1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.ambilight-image {
+  max-width: 500px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.imgcon {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.imgcon img {
+  width: 100%;
+}
+
+.light {
+  width: 105%;
+  height: 105%;
+  position: absolute;
+  top: -10px;
+  bottom: 0;
+  transform: scale(1.08);
+  left: 0;
+  z-index: -1;
+}
