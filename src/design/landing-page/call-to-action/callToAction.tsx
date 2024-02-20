@@ -26,7 +26,7 @@ export const CallToAction = () => {
             size="lg"
             className="bg-gradient-to-tr from-blue-500 to-blue-800 text-white shadow-lg"
           >
-            Commencer gratuitement
+            Commencer maintenant
           </Button>
         </div>
       </div>

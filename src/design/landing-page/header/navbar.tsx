@@ -14,7 +14,23 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 
-export const NavbarComponent = () => {
+interface NavbarComponentProps {
+  isCallToActionVisible: boolean;
+  isFeaturesVisible: boolean;
+  isPriceVisible: boolean;
+  scrollToFeatures: () => void;
+  scrollToPrice: () => void;
+  scrollToTop: () => void;
+}
+
+export const NavbarComponent = ({
+  isCallToActionVisible,
+  isFeaturesVisible,
+  isPriceVisible,
+  scrollToFeatures,
+  scrollToPrice,
+  scrollToTop,
+}: NavbarComponentProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const elementsMenu = [
@@ -23,11 +39,10 @@ export const NavbarComponent = () => {
     "Jeux",
     "Connexion",
     "Inscription",
-    "À propos de nous",
-    "Contactez-nous",
-    "Conditions d'utilisation",
-    "Politique de confidentialité",
-    "Politique des cookies",
+    "Termes",
+    "Confidentialité",
+    "Cookies",
+    "Mentions légales",
   ];
 
   return (
@@ -55,19 +70,31 @@ export const NavbarComponent = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem isActive>
-          <Link color="primary" href="#">
+        <NavbarItem isActive={isCallToActionVisible}>
+          <Link
+            color={isCallToActionVisible ? "primary" : "foreground"}
+            onClick={scrollToTop}
+            className={"cursor-pointer"}
+          >
             Accueil
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link href="#" color="foreground">
+        <NavbarItem isActive={isFeaturesVisible}>
+          <Link
+            onClick={scrollToFeatures}
+            color={isFeaturesVisible ? "primary" : "foreground"}
+            className="cursor-pointer"
+          >
             Fonctionnalités
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Jeux
+        <NavbarItem isActive={isPriceVisible}>
+          <Link
+            onClick={scrollToPrice}
+            color={isPriceVisible ? "primary" : "foreground"}
+            className="cursor-pointer"
+          >
+            Tarifs
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -84,18 +111,7 @@ export const NavbarComponent = () => {
       <NavbarMenu>
         {elementsMenu.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === elementsMenu.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              className="w-full"
-              href="#"
-              size="lg"
-            >
+            <Link color="foreground" className="w-full" href="#" size="lg">
               {item}
             </Link>
           </NavbarMenuItem>
