@@ -96,5 +96,5 @@ body {
 
 .blurComponent {
   background: #2f6ee7;
-  filter: blur(73px);
+  filter: blur(300px);
 }
