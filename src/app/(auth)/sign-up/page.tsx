@@ -6,7 +6,7 @@ import { InputsComponentsSignUp } from "./components/inputs";
 
 export default function page() {
   return (
-    <div className="relative px-5 py-5">
+    <div className="relative px-5 py-5 overflow-x-hidden">
       <div className="hidden sm:block absolute -rotate-12 w-full max-sm:max-w-[200px] max-w-[400px] h-96 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-500 to-blue-800 z-10 blur-[300px] max-sm:blur-[200px]"></div>
 
       <Link
