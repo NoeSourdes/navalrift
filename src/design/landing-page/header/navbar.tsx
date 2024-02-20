@@ -100,10 +100,10 @@ export const NavbarComponent = ({
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Connexion</Link>
+          <Link href="/sign-in">Connexion</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
+          <Button as={Link} color="primary" href="/sign-up" variant="flat">
             Inscription
           </Button>
         </NavbarItem>
