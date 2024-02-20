@@ -5,10 +5,10 @@ export const CallToAction = () => {
   return (
     <div className="relative mt-20">
       <Image
-        src="/img/rectangle.png"
+        src="/svg/test.svg"
         alt="tes"
         width={1024}
-        height={1024}
+        height={600}
         className="absolute -rotate-12 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
       ></Image>{" "}
       <div className="relative space-y-10 z-20">

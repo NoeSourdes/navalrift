@@ -66,7 +66,13 @@ export const Features = () => {
 
   return (
     <div className="relative mt-20">
-      <div className="absolute -rotate-12 w-full max-sm:max-w-[200px] max-w-[400px] h-96 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-500 to-blue-800 z-10 blur-[300px] max-sm:blur-[200px]"></div>
+      <Image
+        src="/svg/test.svg"
+        alt="tes"
+        width={1024}
+        height={600}
+        className="absolute -rotate-12 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+      ></Image>{" "}
       <div className="relative z-20 flex flex-col items-center">
         <Chip color="primary" variant="dot" className="mb-3">
           Fonctionnalités
