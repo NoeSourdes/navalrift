@@ -16,9 +16,8 @@ export const CallToAction = () => {
         <div>
           <h5 className="text-center text-xl m-auto max-w-2xl text-gray-500">
             Perfectionnez votre tactique navale avec notre plateforme tout-en-un
-            dédiée aux passionnés de bataille navale. Essayez-la gratuitement,
-            sans engagement ni carte de crédit. Plongez dans l&apos;action dès
-            maintenant!
+            dédiée aux passionnés de bataille navale. Plongez dans l&apos;action
+            dès maintenant!
           </h5>
         </div>
         <div className="w-full flex justify-center items-center">
