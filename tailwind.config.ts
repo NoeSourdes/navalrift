@@ -20,6 +20,9 @@ const config: Config = {
       colors: {
         border: "#3F3F46",
       },
+      blur: {
+        "10xl": "300px",
+      },
     },
   },
   darkMode: "class",
