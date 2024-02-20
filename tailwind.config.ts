@@ -17,6 +17,9 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        border: "#3F3F46",
+      },
       animation: {
         "text-slide-2":
           "text-slide-2 5s cubic-bezier(0.83, 0, 0.17, 1) infinite",
