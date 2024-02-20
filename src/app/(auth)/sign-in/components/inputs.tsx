@@ -6,7 +6,7 @@ import { useState } from "react";
 import { IoEyeSharp } from "react-icons/io5";
 import { RiEyeCloseLine } from "react-icons/ri";
 
-export const InputsComponentsSignUp = () => {
+export const InputsComponentsSignIn = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -14,7 +14,6 @@ export const InputsComponentsSignUp = () => {
   return (
     <div className="space-y-3">
       <Input
-        isRequired
         size="lg"
         type="email"
         variant="underlined"
@@ -22,7 +21,6 @@ export const InputsComponentsSignUp = () => {
         placeholder="Entrer votre email"
       />
       <Input
-        isRequired
         size="lg"
         label="Password"
         variant="underlined"
@@ -42,40 +40,22 @@ export const InputsComponentsSignUp = () => {
         }
         type={isVisible ? "text" : "password"}
       />
-      <Input
-        isRequired
-        size="lg"
-        label="Confirmer le mot de passe"
-        variant="underlined"
-        placeholder="Confirmer votre mot de passe"
-        type={isVisible ? "text" : "password"}
-      />
-      <Checkbox>
-        J&apos;accepte les{" "}
-        <Link
-          href="#"
-          className="text-primary hover:text-blue-700 transition-colors"
-        >
-          Termes
-        </Link>{" "}
-        et la{" "}
-        <Link
-          href="#"
-          className="text-primary hover:text-blue-700 transition-colors"
-        >
-          Politique de confidentialité
+      <div className="flex items-center justify-between">
+        <Checkbox>Se souvenir de moi</Checkbox>
+        <Link href="#" className="text-gray-400">
+          Mot de passe oublié ?
         </Link>
-      </Checkbox>
+      </div>
       <Button color="primary" size="lg" className="w-full">
-        S&apos;inscrire
+        Se connecter
       </Button>
       <p className="text-center">
-        Vous avez déjà un compte?{" "}
+        Besoin de créer un compte?{" "}
         <Link
-          href="/sign-in"
+          href="/sign-up"
           className="text-primary hover:text-blue-700 transition-colors"
         >
-          Connectez-vous
+          S&apos;inscrire
         </Link>
       </p>
     </div>
