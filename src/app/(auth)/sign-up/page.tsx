@@ -24,7 +24,7 @@ export default function page() {
         </p>
       </Link>
       <div className="h-full w-full flex justify-center items-center">
-        <div className="relative w-full max-w-md space-y-5 sm:bg-background sm:rounded-[25px] sm:p-5 z-20 overflow-y-auto mt-24">
+        <div className="relative w-full max-w-md space-y-5 sm:bg-background sm:rounded-[25px] sm:p-5 z-20 overflow-y-auto sm:mt-24 mt-16">
           <div className="space-y-2">
             <h1 className="text-2xl">Créer un compte</h1>
             <h4 className="text-gray-400">
