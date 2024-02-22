@@ -8,6 +8,7 @@ import { Footer } from "@/design/landing-page/footer/footer";
 import { NavbarComponent } from "@/design/landing-page/header/navbar";
 import { Price } from "@/design/landing-page/price/price";
 import { useEffect, useRef, useState } from "react";
+import { SparklesCore } from "./components/ui/sparkles";
 
 export default function Home() {
   const callToActionRef = useRef<HTMLDivElement | null>(null);
@@ -113,27 +114,40 @@ export default function Home() {
 
   return (
     <div className="">
-      <NavbarComponent
-        isCallToActionVisible={isCallToActionVisible}
-        isFeaturesVisible={isFeaturesVisible}
-        isPriceVisible={isPriceVisible}
-        scrollToFeatures={scrollToFeatures}
-        scrollToPrice={scrollToPrice}
-        scrollToTop={scrollToTop}
-      />
-      <div className="max-w-7xl px-5 m-auto space-y-20">
-        <div ref={callToActionRef}>
-          <CallToAction />
+      <div className="h-full relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+        <div className="w-full absolute inset-0 h-full">
+          <SparklesCore
+            id="tsparticlesfullpage"
+            background="transparent"
+            minSize={0.6}
+            maxSize={1.4}
+            particleDensity={100}
+            className="w-full h-full"
+            particleColor="#FFFFFF"
+          />
         </div>
-        <Dashboard />
-        <div ref={FeaturesRef}>
-          <Features />
+        <NavbarComponent
+          isCallToActionVisible={isCallToActionVisible}
+          isFeaturesVisible={isFeaturesVisible}
+          isPriceVisible={isPriceVisible}
+          scrollToFeatures={scrollToFeatures}
+          scrollToPrice={scrollToPrice}
+          scrollToTop={scrollToTop}
+        />
+        <div className="max-w-7xl px-5 m-auto space-y-20">
+          <div ref={callToActionRef}>
+            <CallToAction />
+          </div>
+          <Dashboard />
+          <div ref={FeaturesRef}>
+            <Features />
+          </div>
+          <div ref={PriceRef}>
+            <Price />
+          </div>
+          <Creator />
+          <Footer />
         </div>
-        <div ref={PriceRef}>
-          <Price />
-        </div>
-        <Creator />
-        <Footer />
       </div>
     </div>
   );
