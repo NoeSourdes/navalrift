@@ -49,6 +49,9 @@ export const SingInPage = () => {
       case "SessionRequired":
         setSentanceError("Session requise");
         break;
+      case "AdapterError":
+        setSentanceError("Erreur d'adaptateur");
+        break;
     }
   }, []);
   return (
