@@ -1,6 +1,7 @@
 "use client";
 
 import { resetPassword } from "@/app/actions/users/resetPassword";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Input,
@@ -11,21 +12,30 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 export const FormResetPassowrd = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const FormSchema = z.object({
+    email: z
+      .string()
+      .email("L'email est invalide")
+      .min(1, "L'email est requis"),
+  });
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+  const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
     setLoading(true);
-    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    if (!emailValid) {
-      toast.error("Email invalide");
-      return;
-    }
-    const message = await resetPassword(email);
+    const message = await resetPassword(values.email);
     toast.success(message);
     setLoading(false);
   };
@@ -71,17 +81,35 @@ export const FormResetPassowrd = () => {
               </p>
             </ModalHeader>
             <ModalBody>
-              <form className="space-y-5">
-                <Input
-                  size="lg"
-                  label="Email"
-                  placeholder="Entrer votre email"
-                  onChange={(e) => setEmail(e.target.value)}
+              <form
+                className="space-y-5"
+                onSubmit={form.handleSubmit(handleSubmit)}
+              >
+                <Controller
+                  name="email"
+                  control={form.control}
+                  render={({ field }) => (
+                    <>
+                      <Input
+                        {...field}
+                        label="Email"
+                        placeholder="
+                        Entrez votre adresse email
+                      "
+                        size="lg"
+                      />
+                      {form.formState.errors.email && (
+                        <p className="text-red-500 text-sm">
+                          {form.formState.errors.email.message}
+                        </p>
+                      )}
+                    </>
+                  )}
                 />
                 <Button
                   isLoading={loading}
                   disabled={loading}
-                  onClick={handleSubmit}
+                  type="submit"
                   size="lg"
                   color="primary"
                   className="w-full"
