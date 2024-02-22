@@ -15,9 +15,11 @@ import { toast } from "sonner";
 
 export const FormResetPassowrd = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState<string>("");
 
   const handleSubmit = async () => {
+    setLoading(true);
     const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
     if (!emailValid) {
       toast.error("Email invalide");
@@ -25,6 +27,7 @@ export const FormResetPassowrd = () => {
     }
     const message = await resetPassword(email);
     toast.success(message);
+    setLoading(false);
   };
 
   return (
@@ -76,6 +79,8 @@ export const FormResetPassowrd = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <Button
+                  isLoading={loading}
+                  disabled={loading}
                   onClick={handleSubmit}
                   size="lg"
                   color="primary"
