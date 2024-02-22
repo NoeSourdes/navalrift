@@ -1,5 +1,6 @@
 "use client";
 
+import { ChangePassword } from "@/app/actions/users/changePasswordForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Input } from "@nextui-org/react";
 import Link from "next/link";
@@ -11,17 +12,19 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export const InputsComponentsSignUp = () => {
+interface InputsComponentsResetPasswordProps {
+  resetPasswordToken: string;
+}
+
+export const InputsComponentsResetPassword = ({
+  resetPasswordToken,
+}: InputsComponentsResetPasswordProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const toggleVisibility = () => setIsVisible(!isVisible);
   const FormSchema = z
     .object({
-      name: z
-        .string()
-        .min(1, "Le nom est requis")
-        .max(50, "Le nom est trop long"),
       email: z
         .string()
         .email("L'email est invalide")
@@ -48,7 +51,6 @@ export const InputsComponentsSignUp = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -58,25 +60,13 @@ export const InputsComponentsSignUp = () => {
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     setLoading(true);
-    const shareData = {
-      email: values.email,
-      password: values.password,
-      name: values.name,
-    };
-    const res = await fetch("/api/user/create-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(shareData),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (res.ok) {
-      toast.success(data.message);
+    const password = values.password;
+    const message = await ChangePassword(password, resetPasswordToken);
+    if (message) {
+      toast.success(message);
       router.push("/sign-in");
     } else {
-      toast.error(data.message);
+      toast.error("Erreur inconnue");
     }
     setLoading(false);
   };
@@ -84,27 +74,6 @@ export const InputsComponentsSignUp = () => {
   return (
     <div>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <Controller
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <>
-              <Input
-                {...field}
-                isRequired
-                size="lg"
-                label="Nom"
-                variant="underlined"
-                placeholder="Entrer votre nom"
-              />
-              {form.formState.errors.name && (
-                <p className="text-error text-sm">
-                  {form.formState.errors.name.message}
-                </p>
-              )}
-            </>
-          )}
-        />
         <Controller
           control={form.control}
           name="email"
@@ -137,7 +106,7 @@ export const InputsComponentsSignUp = () => {
                 size="lg"
                 label="Mot de passe"
                 variant="underlined"
-                placeholder="Entrer votre mot de passe"
+                placeholder="Entrer votre nouveau mot de passe"
                 endContent={
                   <button
                     className="focus:outline-none"
@@ -227,17 +196,8 @@ export const InputsComponentsSignUp = () => {
             size="lg"
             className="w-full"
           >
-            S&apos;inscrire
+            Rénitialiser le mot de passe
           </Button>
-          <p className="text-center">
-            Vous avez déjà un compte?{" "}
-            <Link
-              href="/sign-in"
-              className="text-primary hover:text-blue-700 transition-colors"
-            >
-              Connectez-vous
-            </Link>
-          </p>
         </div>
       </form>
     </div>

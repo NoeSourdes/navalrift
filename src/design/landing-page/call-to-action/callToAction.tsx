@@ -1,4 +1,5 @@
 import { Button } from "@nextui-org/react";
+import Link from "next/link";
 
 export const CallToAction = () => {
   return (
@@ -21,12 +22,14 @@ export const CallToAction = () => {
           </h5>
         </div>
         <div className="w-full flex justify-center items-center">
-          <Button
-            size="lg"
-            className="bg-gradient-to-tr from-blue-500 to-blue-800 text-white shadow-lg"
-          >
-            Commencer maintenant
-          </Button>
+          <Link href="/sign-up">
+            <Button
+              size="lg"
+              className="bg-gradient-to-tr from-blue-500 to-blue-800 text-white shadow-lg"
+            >
+              Commencer maintenant
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

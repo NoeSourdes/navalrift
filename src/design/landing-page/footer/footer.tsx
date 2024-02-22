@@ -14,9 +14,11 @@ export const Footer = () => {
             <span className="text-primary">aventure épique</span> dans le monde
             de la <span className="text-primary">bataille navale</span> ?
           </h3>
-          <Button color="primary" size="lg">
-            Commencer maintenant
-          </Button>
+          <Link href="/sign-up">
+            <Button color="primary" size="lg">
+              Commencer maintenant
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="flex flex-col items-center justify-center pt-7 pb-10">

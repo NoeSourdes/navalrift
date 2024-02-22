@@ -1,5 +1,6 @@
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { Providers } from "./providers/providers";
 
@@ -17,7 +18,10 @@ export default function RootLayout({
     <html className="dark" lang="fr">
       <body className={GeistSans.className}>
         <main className="text-foreground bg-background">
-          <Providers>{children}</Providers>
+          <Providers>
+            <Toaster richColors />
+            {children}
+          </Providers>
         </main>
       </body>
     </html>
