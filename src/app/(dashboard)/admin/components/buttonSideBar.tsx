@@ -15,7 +15,7 @@ import { MdAnimation, MdVibration } from "react-icons/md";
 
 interface ButtonSideBarProps {
   logo: React.ComponentType;
-  title: string;
+  title?: string;
   modal?: boolean;
 }
 
@@ -47,14 +47,11 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
     <div>
       {modal ? (
         <Dropdown placement="bottom-start" closeOnSelect={false}>
-          <DropdownTrigger
-            className="flex items-center gap-3"
-            onClick={handleButtonClick}
-          >
+          <DropdownTrigger className="flex items-center gap-3">
             <div
               onMouseOver={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
-              onClick={handleButtonClick}
+              onClick={() => handleButtonClick()}
               onMouseEnter={() => playHover()}
               className="w-full flex items-center justify-start cursor-pointer hover:bg-[#1A1F37] rounded-xl transition-all"
             >
