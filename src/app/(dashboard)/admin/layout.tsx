@@ -1,8 +1,9 @@
 "use client";
 
+import { useButtonSounds } from "@/app/actions/sound/sound";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SideBar } from "./components/sideBar";
 
 interface LayoutAdminProps {
@@ -14,9 +15,14 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [isOpenClicked, setIsOpenClicked] = useState(false);
   const [hover, setHover] = useState(false);
+  const { playMusic } = useButtonSounds();
+
+  useEffect(() => {
+    playMusic();
+  }, [playMusic]);
   return (
     <div className="relative">
-      <div className="fixed inset-0 bg-gradient-to-t to-black from-blue-800">
+      <div className="fixed inset-0 bg-[#001328]">
         <div
           onMouseOver={() => isOpenClicked && setIsOpen(true)}
           onMouseLeave={() => isOpenClicked && setIsOpen(false)}

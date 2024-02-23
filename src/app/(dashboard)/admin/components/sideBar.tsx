@@ -40,7 +40,7 @@ export const SideBar = ({ session, isOpenSidebar }: SideBarProps) => {
   };
 
   return (
-    <div className="h-full w-full rounded-xl bg-[#001731] flex flex-col justify-between px-5 py-7 overflow-hidden">
+    <div className="h-full w-full rounded-xl bg-blue-800/75 flex flex-col justify-between px-5 py-7 overflow-hidden">
       <div className="">
         <div className="flex items-center gap-3">
           <Image

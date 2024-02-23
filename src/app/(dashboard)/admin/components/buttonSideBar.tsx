@@ -64,7 +64,7 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
               onClick={handleButtonClick}
               className={`w-full flex items-center justify-start cursor-pointer ${
                 (pathName === pathNameUrl || hover) && isOpenSideBar
-                  ? "bg-[#1A1F37]"
+                  ? "bg-blue-900"
                   : ""
               } rounded-xl transition-all`}
             >
@@ -78,7 +78,7 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
                   className={`p-2 rounded-xl transition-all  ${
                     pathName === pathNameUrl || hover
                       ? "text-base bg-primary"
-                      : "text-primary bg-[#1A1F37]"
+                      : "text-primary bg-blue-900"
                   }`}
                 >
                   <Logo />
@@ -137,7 +137,7 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
           onClick={handleButtonClick}
           className={`w-full flex items-center justify-start cursor-pointer ${
             (pathName === pathNameUrl || hover) && isOpenSideBar
-              ? "bg-[#1A1F37]"
+              ? "bg-blue-900"
               : ""
           } rounded-xl transition-all`}
         >
@@ -151,7 +151,7 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
               className={`p-2 rounded-xl transition-all  ${
                 pathName === pathNameUrl || hover
                   ? "text-base bg-primary"
-                  : "text-primary bg-[#1A1F37]"
+                  : "text-primary bg-blue-900"
               }`}
             >
               <Logo />
