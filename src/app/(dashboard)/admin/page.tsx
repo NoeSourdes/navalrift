@@ -1,9 +1,7 @@
-import { PageView } from "./pageView";
-
 export default function page() {
   return (
-    <div>
-      <PageView />
+    <div className="h-full w-full">
+      <div className="w-20"> Lorem</div>
     </div>
   );
 }

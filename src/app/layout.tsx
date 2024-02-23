@@ -1,3 +1,4 @@
+import { AppWrapper } from "@/context";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html className="dark" lang="fr">
       <body className={GeistSans.className}>
-        <main className="text-foreground bg-background">
-          <Providers>
-            <Toaster richColors />
-            {children}
-          </Providers>
-        </main>
+        <AppWrapper>
+          <main className="text-foreground bg-background">
+            <Providers>
+              <Toaster richColors />
+              {children}
+            </Providers>
+          </main>
+        </AppWrapper>
       </body>
     </html>
   );

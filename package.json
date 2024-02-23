@@ -25,7 +25,7 @@
     "cobe": "^0.6.3",
     "crypt": "^0.0.2",
     "crypto": "^1.0.1",
-    "framer-motion": "^11.0.5",
+    "framer-motion": "^11.0.6",
     "geist": "^1.2.2",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.336.0",
