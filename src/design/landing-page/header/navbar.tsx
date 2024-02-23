@@ -69,7 +69,7 @@ export const NavbarComponent = ({
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      <NavbarContent className="flex max-sm:hidden gap-4" justify="center">
         <NavbarItem isActive={isCallToActionVisible}>
           <Link
             color={isCallToActionVisible ? "primary" : "foreground"}

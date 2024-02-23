@@ -113,29 +113,27 @@ export default function Home() {
 
   return (
     <div className="">
-      <div className="h-full relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
-        <NavbarComponent
-          isCallToActionVisible={isCallToActionVisible}
-          isFeaturesVisible={isFeaturesVisible}
-          isPriceVisible={isPriceVisible}
-          scrollToFeatures={scrollToFeatures}
-          scrollToPrice={scrollToPrice}
-          scrollToTop={scrollToTop}
-        />
-        <div className="max-w-7xl px-5 m-auto space-y-20">
-          <div ref={callToActionRef}>
-            <CallToAction />
-          </div>
-          <Dashboard />
-          <div ref={FeaturesRef}>
-            <Features />
-          </div>
-          <div ref={PriceRef}>
-            <Price />
-          </div>
-          <Creator />
-          <Footer />
+      <NavbarComponent
+        isCallToActionVisible={isCallToActionVisible}
+        isFeaturesVisible={isFeaturesVisible}
+        isPriceVisible={isPriceVisible}
+        scrollToFeatures={scrollToFeatures}
+        scrollToPrice={scrollToPrice}
+        scrollToTop={scrollToTop}
+      />
+      <div className="max-w-7xl px-5 m-auto space-y-20">
+        <div ref={callToActionRef}>
+          <CallToAction />
         </div>
+        <Dashboard />
+        <div ref={FeaturesRef}>
+          <Features />
+        </div>
+        <div ref={PriceRef}>
+          <Price />
+        </div>
+        <Creator />
+        <Footer />
       </div>
     </div>
   );
