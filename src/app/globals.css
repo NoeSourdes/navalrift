@@ -99,6 +99,19 @@ body {
   filter: blur(300px);
 }
 
-.longFrom {
-  background-image: linear-gradient(to bottom, #0a0913 70%, #2f6ee7 30%);
+.hidden {
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+
+.fadeOut {
+  transition: opacity 0.5s ease, visibility 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.fadeIn {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+  visibility: visible;
 }

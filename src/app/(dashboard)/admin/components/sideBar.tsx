@@ -25,9 +25,10 @@ import ButtonSideBar from "./buttonSideBar";
 
 interface SideBarProps {
   session: any;
+  isOpenSidebar: boolean;
 }
 
-export const SideBar = ({ session }: SideBarProps) => {
+export const SideBar = ({ session, isOpenSidebar }: SideBarProps) => {
   const { play, playHover } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
@@ -39,29 +40,58 @@ export const SideBar = ({ session }: SideBarProps) => {
   };
 
   return (
-    <div className="h-full w-full rounded-xl bg-[#001731] flex flex-col justify-between px-5 py-7">
+    <div className="h-full w-full rounded-xl bg-[#001731] flex flex-col justify-between px-5 py-7 overflow-hidden">
       <div className="">
         <div className="flex items-center gap-3">
           <Image
             src="/img/logo-navalRift.png"
             alt="logo"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
           />
-          <h1 className="text-2xl font-bold">
+          <h1
+            className={`text-2xl font-bold ${
+              isOpenSidebar ? "fadeIn" : "fadeOut"
+            }`}
+          >
             Naval<span className="text-primary">Rift</span>
           </h1>
         </div>
         <div className="mt-5 flex flex-col gap-2">
-          <ButtonSideBar logo={Home} title="Acceuil" />
-          <ButtonSideBar logo={MessageSquareMore} title="Messagerie" />
-          <ButtonSideBar logo={AreaChart} title="Statistiques" />
+          <ButtonSideBar
+            logo={Home}
+            title="Acceuil"
+            pathName="/admin"
+            isOpenSideBar={isOpenSidebar}
+          />
+          <ButtonSideBar
+            logo={MessageSquareMore}
+            title="Messagerie"
+            pathName="/admin/messagerie"
+            isOpenSideBar={isOpenSidebar}
+          />
+          <ButtonSideBar
+            logo={AreaChart}
+            title="Statistiques"
+            pathName="/admin/statistiques"
+            isOpenSideBar={isOpenSidebar}
+          />
         </div>
       </div>
       <div>
-        <ButtonSideBar logo={Settings} title="Paramètres" modal={true} />
+        <ButtonSideBar
+          logo={Settings}
+          title="Paramètres"
+          modal={true}
+          isOpenSideBar={isOpenSidebar}
+        />
         <Divider className="mt-4" />
-        <div className="pl-1 pt-5">
+        <div
+          className="pt-5 transition-all"
+          style={{
+            paddingLeft: isOpenSidebar ? "4px" : "0",
+          }}
+        >
           <Dropdown placement="bottom-start">
             <DropdownTrigger
               className="flex items-center gap-3"
@@ -76,8 +106,8 @@ export const SideBar = ({ session }: SideBarProps) => {
                     : "/img/avatar.png",
                 }}
                 className="transition-transform"
-                description={session?.user?.email}
-                name={session?.user?.name}
+                description={isOpenSidebar ? session?.user?.email : ""}
+                name={isOpenSidebar ? session?.user?.name : ""}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="User Actions" variant="flat">

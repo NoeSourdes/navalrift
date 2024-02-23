@@ -9,23 +9,30 @@ import {
   DropdownTrigger,
   Switch,
 } from "@nextui-org/react";
+import { usePathname, useRouter } from "next/navigation";
 import React, { FC, useState } from "react";
 import { AiFillSound } from "react-icons/ai";
 import { MdAnimation, MdVibration } from "react-icons/md";
 
 interface ButtonSideBarProps {
   logo: React.ComponentType;
+  pathName?: string;
   title?: string;
   modal?: boolean;
+  isOpenSideBar?: boolean;
 }
 
 const ButtonSideBar: FC<ButtonSideBarProps> = ({
   logo: Logo,
   title,
   modal = false,
+  pathName,
+  isOpenSideBar,
 }) => {
   const [hover, setHover] = useState(false);
   const { play, playHover, playSwitch } = useButtonSounds();
+  const pathNameUrl = usePathname();
+  const router = useRouter();
 
   const {
     isSelectedSound,
@@ -41,6 +48,9 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
 
   const handleButtonClick = () => {
     play();
+    if (pathName) {
+      router.push(pathName);
+    }
   };
 
   return (
@@ -51,19 +61,29 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
             <div
               onMouseOver={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
-              onClick={() => handleButtonClick()}
-              onMouseEnter={() => playHover()}
-              className="w-full flex items-center justify-start cursor-pointer hover:bg-[#1A1F37] rounded-xl transition-all"
+              onClick={handleButtonClick}
+              className={`w-full flex items-center justify-start cursor-pointer ${
+                (pathName === pathNameUrl || hover) && isOpenSideBar
+                  ? "bg-[#1A1F37]"
+                  : ""
+              } rounded-xl transition-all`}
             >
-              <div className="pl-3 py-2 flex items-center gap-3">
+              <div
+                className="pl-3 py-2 flex items-center gap-3 transition-all"
+                style={{
+                  paddingLeft: isOpenSideBar ? "" : "0",
+                }}
+              >
                 <div
-                  className={`p-2 rounded-xl transition-colors ${
-                    hover ? "text-base bg-primary" : "text-primary bg-[#1A1F37]"
+                  className={`p-2 rounded-xl transition-all  ${
+                    pathName === pathNameUrl || hover
+                      ? "text-base bg-primary"
+                      : "text-primary bg-[#1A1F37]"
                   }`}
                 >
                   <Logo />
                 </div>
-                <div>
+                <div className={`${isOpenSideBar ? "fadeIn" : "fadeOut"}`}>
                   <h3 className="text-base">{title}</h3>
                 </div>
               </div>
@@ -115,18 +135,28 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
           onMouseOver={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           onClick={handleButtonClick}
-          onMouseEnter={() => playHover()}
-          className="w-full flex items-center justify-start cursor-pointer hover:bg-[#1A1F37] rounded-xl transition-all"
+          className={`w-full flex items-center justify-start cursor-pointer ${
+            (pathName === pathNameUrl || hover) && isOpenSideBar
+              ? "bg-[#1A1F37]"
+              : ""
+          } rounded-xl transition-all`}
         >
-          <div className="pl-3 py-2 flex items-center gap-3">
+          <div
+            className="pl-3 py-2 flex items-center gap-3 transition-all"
+            style={{
+              paddingLeft: isOpenSideBar ? "" : "0",
+            }}
+          >
             <div
-              className={`p-2 rounded-xl transition-colors ${
-                hover ? "text-base bg-primary" : "text-primary bg-[#1A1F37]"
+              className={`p-2 rounded-xl transition-all  ${
+                pathName === pathNameUrl || hover
+                  ? "text-base bg-primary"
+                  : "text-primary bg-[#1A1F37]"
               }`}
             >
               <Logo />
             </div>
-            <div>
+            <div className={`${isOpenSideBar ? "fadeIn" : "fadeOut"}`}>
               <h3 className="text-base">{title}</h3>
             </div>
           </div>
