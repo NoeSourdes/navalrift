@@ -19,7 +19,9 @@ const config: Config = {
       },
       colors: {
         border: "#3F3F46",
-        error: "#D22D1F",
+        error: "#F21160",
+        "blue-900": "#001731",
+        "blue-800": "#002E62",
       },
       blur: {
         "10xl": "300px",

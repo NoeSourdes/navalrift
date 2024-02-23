@@ -1,7 +1,9 @@
-import { auth } from "@/lib/auth";
-import { Test } from "./components/test";
+import { PageView } from "./pageView";
 
-export default async function page() {
-  const session = await auth();
-  return <Test />;
+export default function page() {
+  return (
+    <div>
+      <PageView />
+    </div>
+  );
 }
