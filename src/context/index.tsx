@@ -8,6 +8,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   let [isSelectedSound, setIsSelectedSound] = useState(false);
   let [isSelectedVibration, setIsSelectedVibration] = useState(true);
   let [isSelectedAnimation, setIsSelectedAnimation] = useState(true);
+  let [isPlayingMusic, setIsPlayingMusic] = useState(true);
   return (
     <AppContext.Provider
       value={{
@@ -17,6 +18,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         setIsSelectedVibration,
         isSelectedAnimation,
         setIsSelectedAnimation,
+        isPlayingMusic,
+        setIsPlayingMusic,
       }}
     >
       {children}

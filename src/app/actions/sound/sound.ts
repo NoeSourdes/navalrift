@@ -2,7 +2,7 @@ import { useAppContext } from "@/context";
 import useSound from "use-sound";
 
 export function useButtonSounds() {
-  const { isSelectedSound } = useAppContext();
+  const { isSelectedSound, isPlayingMusic } = useAppContext();
   const [play, { stop }] = useSound("/sound/pop-down.mp3", { volume: 0.4 });
   const [playHover, { stop: stopHover }] = useSound("/sound/pop-down.mp3", {
     volume: 0.2,
@@ -14,18 +14,29 @@ export function useButtonSounds() {
     loop: true,
     volume: 0.1,
   });
+
+  let sounds = {
+    play: () => {},
+    playHover: () => {},
+    playSwitch: () => {},
+    playMusic: () => {},
+  };
+
   if (isSelectedSound) {
-    return { play, playHover, playSwitch, playMusic };
+    sounds.play = play;
+    sounds.playHover = playHover;
+    sounds.playSwitch = playSwitch;
   } else {
     stop();
     stopHover();
     stopSwitch();
-    stopMusic();
-    return {
-      play: () => {},
-      playHover: () => {},
-      playSwitch: () => {},
-      playMusic: () => {},
-    };
   }
+
+  if (isPlayingMusic) {
+    sounds.playMusic = playMusic;
+  } else {
+    stopMusic();
+  }
+
+  return sounds;
 }

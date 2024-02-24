@@ -9,9 +9,9 @@ import {
   DropdownTrigger,
   Switch,
 } from "@nextui-org/react";
+import { Music, Volume2 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { FC, useState } from "react";
-import { AiFillSound } from "react-icons/ai";
 import { MdAnimation, MdVibration } from "react-icons/md";
 
 interface ButtonSideBarProps {
@@ -36,6 +36,8 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
 
   const {
     isSelectedSound,
+    isPlayingMusic,
+    setIsPlayingMusic,
     setIsSelectedSound,
     isSelectedVibration,
     setIsSelectedVibration,
@@ -90,44 +92,51 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
             </div>
           </DropdownTrigger>
           <DropdownMenu variant="faded">
-            {["Son", "Vibrations", "Animations"].map((item, index) => (
-              <DropdownItem key={index}>
-                <div
-                  onMouseEnter={() => playHover()}
-                  className="flex items-center justify-between h-7 overflow-y-auto relative"
-                >
-                  <div className="flex items-center gap-2">
-                    {index === 0 && <AiFillSound className={iconClasses} />}
-                    {index === 1 && <MdVibration className={iconClasses} />}
-                    {index === 2 && <MdAnimation className={iconClasses} />}
-                    <span>{item}</span>
-                  </div>
-                  <Switch
-                    onClick={() => {
-                      playSwitch();
-                    }}
-                    className="absolute -right-2"
-                    size="sm"
-                    isSelected={
-                      index === 0
-                        ? isSelectedSound
-                        : index === 1
-                        ? isSelectedVibration
-                        : isSelectedAnimation
-                    }
-                    onValueChange={(value) => {
-                      if (index === 0) {
-                        setIsSelectedSound(value);
-                      } else if (index === 1) {
-                        setIsSelectedVibration(value);
-                      } else {
-                        setIsSelectedAnimation(value);
+            {["Musique", "Son", "Vibrations", "Animations"].map(
+              (item, index) => (
+                <DropdownItem key={index}>
+                  <div
+                    onMouseEnter={() => playHover()}
+                    className="flex items-center justify-between h-7 overflow-y-auto relative"
+                  >
+                    <div className="flex items-center gap-2">
+                      {index === 0 && <Music className={iconClasses} />}
+                      {index === 1 && <Volume2 className={iconClasses} />}
+                      {index === 2 && <MdVibration className={iconClasses} />}
+                      {index === 3 && <MdAnimation className={iconClasses} />}
+                      <span>{item}</span>
+                    </div>
+                    <Switch
+                      onClick={() => {
+                        playSwitch();
+                      }}
+                      className="absolute -right-2"
+                      size="sm"
+                      isSelected={
+                        index === 0
+                          ? isPlayingMusic
+                          : index === 1
+                          ? isSelectedSound
+                          : index === 2
+                          ? isSelectedVibration
+                          : isSelectedAnimation
                       }
-                    }}
-                  ></Switch>
-                </div>
-              </DropdownItem>
-            ))}
+                      onValueChange={(value) => {
+                        if (index === 0) {
+                          setIsPlayingMusic(value);
+                        } else if (index === 1) {
+                          setIsSelectedSound(value);
+                        } else if (index === 2) {
+                          setIsSelectedVibration(value);
+                        } else {
+                          setIsSelectedAnimation(value);
+                        }
+                      }}
+                    ></Switch>
+                  </div>
+                </DropdownItem>
+              )
+            )}
           </DropdownMenu>
         </Dropdown>
       ) : (
