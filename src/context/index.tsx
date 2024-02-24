@@ -5,10 +5,10 @@ import { createContext, useContext, useState } from "react";
 const AppContext = createContext<any>(undefined);
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  let [isSelectedSound, setIsSelectedSound] = useState(false);
+  let [isSelectedSound, setIsSelectedSound] = useState(true);
   let [isSelectedVibration, setIsSelectedVibration] = useState(true);
   let [isSelectedAnimation, setIsSelectedAnimation] = useState(true);
-  let [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  let [isPlayingMusic, setIsPlayingMusic] = useState(true);
   return (
     <AppContext.Provider
       value={{
