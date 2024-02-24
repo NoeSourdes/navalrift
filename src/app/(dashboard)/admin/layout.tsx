@@ -4,6 +4,8 @@ import { useButtonSounds } from "@/app/actions/sound/sound";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { NavBar } from "./components/NavBar";
+import { SideBarResponsive } from "./components/SidBarResponsive";
 import { SideBar } from "./components/sideBar";
 
 interface LayoutAdminProps {
@@ -13,9 +15,24 @@ interface LayoutAdminProps {
 export default function LayoutAdmin({ children }: LayoutAdminProps) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(true);
+  const [isOpenSideBar, setIsOpenSideBar] = useState(false);
   const [isOpenClicked, setIsOpenClicked] = useState(false);
   const [hover, setHover] = useState(false);
   const { playMusic } = useButtonSounds();
+  const [maxWidth, setMaxWidth] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1280) {
+        setMaxWidth(true);
+      } else {
+        setMaxWidth(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     playMusic();
@@ -26,7 +43,7 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
         <div
           onMouseOver={() => isOpenClicked && setIsOpen(true)}
           onMouseLeave={() => isOpenClicked && setIsOpen(false)}
-          className="fixed top-6 left-6 bottom-6 rounded-xl transition-all"
+          className="fixed top-6 left-6 bottom-6 rounded-xl transition-all bg-blue-800/75 max-xl:hidden"
           style={{
             width: isOpen ? "270px" : "80px",
           }}
@@ -34,7 +51,31 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
           <SideBar session={session} isOpenSidebar={isOpen} />
         </div>
         <div
-          className="w-[24px] cursor-pointer h-24 fixed top-1/2 -translate-y-1/2 flex flex-col justify-center items-center transition-all"
+          onMouseOver={() => isOpenClicked && setIsOpen(true)}
+          onMouseLeave={() => isOpenClicked && setIsOpen(false)}
+          className="absolute w-72 top-3 left-3 bottom-3 rounded-xl transition-all bg-blue-800/75 backdrop-blur-xl z-40"
+          style={{
+            transform: isOpenSideBar ? "translateX(0)" : "translateX(-110%)",
+          }}
+        >
+          <SideBarResponsive
+            session={session}
+            isOpenSidebar={isOpen}
+            setIsOpenSidBarResponsive={setIsOpenSideBar}
+          />
+        </div>
+        <div
+          className="fixed inset-0 bg-black/25 backdrop-blur-xl z-30 transition-all"
+          onClick={() => setIsOpenSideBar(false)}
+          style={{
+            display: isOpenSideBar ? "block" : "none",
+          }}
+        ></div>
+        <div className="h-16 fixed inset-3 xl:hidden z-20">
+          <NavBar setIsOpenSidBarResponsive={setIsOpenSideBar} />
+        </div>
+        <div
+          className="w-[24px] cursor-pointer h-24 fixed top-1/2 -translate-y-1/2 flex flex-col justify-center items-center transition-all max-xl:hidden z-20"
           style={{
             left: isOpen ? "294px" : "104px",
           }}
@@ -87,9 +128,15 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
           </Popover>
         </div>
         <div
-          className="fixed top-0 right-6 bottom-0 py-6 rounded-xl overflow-y-auto transition-all"
+          className="fixed xl:top-0 top-[76px] xl:right-6 right-3 bottom-0 xl:py-6 py-3 rounded-xl overflow-y-auto transition-all z-20"
           style={{
-            left: isOpen ? "318px" : "128px",
+            left: isOpen
+              ? maxWidth
+                ? "12px"
+                : "318px"
+              : maxWidth
+              ? "12px"
+              : "128px",
           }}
         >
           {children}

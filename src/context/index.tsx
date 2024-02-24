@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react";
 const AppContext = createContext<any>(undefined);
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  let [isSelectedSound, setIsSelectedSound] = useState(true);
+  let [isSelectedSound, setIsSelectedSound] = useState(false);
   let [isSelectedVibration, setIsSelectedVibration] = useState(true);
   let [isSelectedAnimation, setIsSelectedAnimation] = useState(true);
   return (
