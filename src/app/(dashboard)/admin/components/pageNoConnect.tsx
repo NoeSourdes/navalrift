@@ -19,9 +19,10 @@ import SignUpComponentDisconnecte from "./signUpComponentDisconnecte";
 
 interface LayoutAdminProps {
   children: React.ReactNode;
+  lien: string;
 }
 
-export default function PageNoConnect({ children }: LayoutAdminProps) {
+export default function PageNoConnect({ children, lien }: LayoutAdminProps) {
   const { data: session } = useSession();
   const [isReduce, setIsReduce] = useState(true);
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
@@ -169,9 +170,9 @@ export default function PageNoConnect({ children }: LayoutAdminProps) {
       >
         <ModalContent>
           {signIn ? (
-            <SingInComponentDisconnecte setSignIn={setSignIn} />
+            <SingInComponentDisconnecte lien={lien} setSignIn={setSignIn} />
           ) : (
-            <SignUpComponentDisconnecte setSignIn={setSignIn} />
+            <SignUpComponentDisconnecte lien={lien} setSignIn={setSignIn} />
           )}
         </ModalContent>
       </Modal>

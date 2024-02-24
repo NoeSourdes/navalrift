@@ -13,10 +13,12 @@ import { z } from "zod";
 
 interface InputsComponentsSignUpProps {
   setSignIn?: (value: boolean) => void;
+  lien?: string;
 }
 
 export const InputsComponentsSignUp = ({
   setSignIn,
+  lien,
 }: InputsComponentsSignUpProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -80,7 +82,12 @@ export const InputsComponentsSignUp = ({
     setLoading(false);
     if (res.ok) {
       toast.success(data.message);
-      router.push("/sign-in");
+      if (setSignIn) {
+        toast.success("Puis veuillez vous connecter");
+        setSignIn(true);
+      } else {
+        router.push("/sign-in");
+      }
     } else {
       toast.error(data.message);
     }
@@ -245,12 +252,12 @@ export const InputsComponentsSignUp = ({
                 Connectez-vous
               </Link>
             ) : (
-              <div
+              <p
                 onClick={() => setSignIn(true)}
                 className="text-primary hover:text-blue-700 transition-colors cursor-pointer"
               >
                 Connectez-vous
-              </div>
+              </p>
             )}
           </p>
         </div>

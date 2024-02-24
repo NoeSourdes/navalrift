@@ -11,12 +11,14 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const { status } = useSession();
+  const lien = window.location.href;
+  console.log(lien);
   return (
     <>
       {status === "authenticated" ? (
         <PageConnect>{children}</PageConnect>
       ) : (
-        <PageNoConnect>{children}</PageNoConnect>
+        <PageNoConnect lien={lien}>{children}</PageNoConnect>
       )}
     </>
   );

@@ -9,10 +9,12 @@ import { FaGithub } from "react-icons/fa6";
 
 interface SingInComponentDisconnecteProps {
   setSignIn: (value: boolean) => void;
+  lien: string;
 }
 
 export const SingInComponentDisconnecte = ({
   setSignIn,
+  lien,
 }: SingInComponentDisconnecteProps) => {
   const [errorLogin, setErrorLogin] = useState(false);
   const [sentanceError, setSentanceError] = useState("");
@@ -83,7 +85,7 @@ export const SingInComponentDisconnecte = ({
           <div className="space-y-2">
             <Button
               onClick={() => {
-                signIn("google", { callbackUrl: "/admin" });
+                signIn("google", { callbackUrl: lien });
               }}
               variant="bordered"
               size="lg"
@@ -99,7 +101,7 @@ export const SingInComponentDisconnecte = ({
             </Button>
             <Button
               onClick={() => {
-                signIn("github", { callbackUrl: "/admin" });
+                signIn("github", { callbackUrl: lien });
               }}
               variant="bordered"
               size="lg"
@@ -115,7 +117,7 @@ export const SingInComponentDisconnecte = ({
             <span className="w-full border-t border-[#3F3F46]"></span>
           </div>
           <div className="overflow-hidden">
-            <InputsComponentsSignIn setSignIn={setSignIn} />
+            <InputsComponentsSignIn lien={lien} setSignIn={setSignIn} />
           </div>
           {errorLogin && (
             <div className="flex justify-center items-center border border-error rounded-xl p-5">

@@ -1,12 +1,7 @@
 "use client";
 
 import { useButtonSounds } from "@/app/actions/sound/sound";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { NavBar } from "./NavBar";
@@ -25,7 +20,6 @@ export default function PageConnect({ children }: LayoutAdminProps) {
   const [hover, setHover] = useState(false);
   const { playMusic } = useButtonSounds();
   const [maxWidth, setMaxWidth] = useState(false);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     const handleResize = () => {

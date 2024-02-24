@@ -9,9 +9,13 @@ import { FaGithub } from "react-icons/fa6";
 
 interface SingUpComponentDisconnecteProps {
   setSignIn: (value: boolean) => void;
+  lien: string;
 }
 
-export default function page({ setSignIn }: SingUpComponentDisconnecteProps) {
+export default function page({
+  setSignIn,
+  lien,
+}: SingUpComponentDisconnecteProps) {
   return (
     <div className="relative py-5">
       <Link href="/" className="absolute top-2 left-2 flex items-center">
@@ -36,7 +40,7 @@ export default function page({ setSignIn }: SingUpComponentDisconnecteProps) {
           <div className="space-y-2">
             <Button
               onClick={() => {
-                signIn("google", { callbackUrl: "/admin" });
+                signIn("google", { callbackUrl: lien });
               }}
               variant="bordered"
               size="lg"
@@ -52,7 +56,7 @@ export default function page({ setSignIn }: SingUpComponentDisconnecteProps) {
             </Button>
             <Button
               onClick={() => {
-                signIn("github", { callbackUrl: "/admin" });
+                signIn("github", { callbackUrl: lien });
               }}
               variant="bordered"
               size="lg"

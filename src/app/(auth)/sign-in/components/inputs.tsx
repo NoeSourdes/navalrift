@@ -17,10 +17,12 @@ import { FormResetPassowrd } from "./formResetPassowrd";
 
 interface InputsComponentsSignInProps {
   setSignIn?: (value: boolean) => void;
+  lien?: string;
 }
 
 export const InputsComponentsSignIn = ({
   setSignIn,
+  lien,
 }: InputsComponentsSignInProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,7 +77,7 @@ export const InputsComponentsSignIn = ({
         Cookies.set("email", values.email);
         Cookies.set("password", values.password);
       }
-      router.push("/admin");
+      router.push(lien || "/admin");
     }
   };
 
@@ -160,12 +162,12 @@ export const InputsComponentsSignIn = ({
           <p className="text-center flex justify-center items-center gap-1">
             Besoin de créer un compte?{" "}
             {setSignIn ? (
-              <div
+              <span
                 onClick={() => setSignIn(false)}
                 className="text-primary hover:text-blue-700 transition-colors cursor-pointer"
               >
                 S&apos;inscrire
-              </div>
+              </span>
             ) : (
               <Link
                 href="/sign-up"
