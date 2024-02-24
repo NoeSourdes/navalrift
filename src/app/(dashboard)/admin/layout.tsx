@@ -25,7 +25,9 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
     const handleResize = () => {
       if (window.innerWidth < 1280) {
         setMaxWidth(true);
+        setIsOpenSideBar(false);
       } else {
+        setIsOpenSideBar(false);
         setMaxWidth(false);
       }
     };
@@ -50,27 +52,33 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
         >
           <SideBar session={session} isOpenSidebar={isOpen} />
         </div>
-        <div
-          onMouseOver={() => isOpenClicked && setIsOpen(true)}
-          onMouseLeave={() => isOpenClicked && setIsOpen(false)}
-          className="absolute w-72 top-3 left-3 bottom-3 rounded-xl transition-all bg-blue-800/75 backdrop-blur-xl z-40"
-          style={{
-            transform: isOpenSideBar ? "translateX(0)" : "translateX(-110%)",
-          }}
-        >
-          <SideBarResponsive
-            session={session}
-            isOpenSidebar={isOpen}
-            setIsOpenSidBarResponsive={setIsOpenSideBar}
-          />
-        </div>
-        <div
-          className="fixed inset-0 bg-black/25 backdrop-blur-xl z-30 transition-all"
-          onClick={() => setIsOpenSideBar(false)}
-          style={{
-            display: isOpenSideBar ? "block" : "none",
-          }}
-        ></div>
+        {maxWidth && (
+          <>
+            <div
+              onMouseOver={() => isOpenClicked && setIsOpen(true)}
+              onMouseLeave={() => isOpenClicked && setIsOpen(false)}
+              className="absolute w-72 top-3 left-3 bottom-3 rounded-xl transition-all bg-blue-800/75 backdrop-blur-xl z-40"
+              style={{
+                transform: isOpenSideBar
+                  ? "translateX(0)"
+                  : "translateX(-110%)",
+              }}
+            >
+              <SideBarResponsive
+                session={session}
+                isOpenSidebar={isOpen}
+                setIsOpenSidBarResponsive={setIsOpenSideBar}
+              />
+            </div>
+            <div
+              className="fixed inset-0 bg-black/25 backdrop-blur-xl z-30 transition-all"
+              onClick={() => setIsOpenSideBar(false)}
+              style={{
+                display: isOpenSideBar ? "block" : "none",
+              }}
+            ></div>
+          </>
+        )}
         <div className="h-16 fixed inset-3 xl:hidden z-20">
           <NavBar setIsOpenSidBarResponsive={setIsOpenSideBar} />
         </div>
