@@ -10,12 +10,15 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Page() {
   const { playHover, play } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [sentance, setSentance] = useState("");
+
+  const router = useRouter();
 
   return (
     <div className="h-full w-full flex flex-col gap-6">
@@ -113,7 +116,17 @@ export default function Page() {
                 >
                   Annuler
                 </Button>
-                <Button color="primary" onMouseEnter={() => playHover()}>
+                <Button
+                  onPress={() => {
+                    onClose();
+                    play();
+                    if (sentance === "Jouer contre une IA")
+                      router.push("/admin/bataille-ia");
+                    else router.push("/admin/bataille-ami");
+                  }}
+                  color="primary"
+                  onMouseEnter={() => playHover()}
+                >
                   Commencer
                 </Button>
               </ModalFooter>

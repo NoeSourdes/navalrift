@@ -11,7 +11,13 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export const InputsComponentsSignUp = () => {
+interface InputsComponentsSignUpProps {
+  setSignIn?: (value: boolean) => void;
+}
+
+export const InputsComponentsSignUp = ({
+  setSignIn,
+}: InputsComponentsSignUpProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -229,14 +235,23 @@ export const InputsComponentsSignUp = () => {
           >
             S&apos;inscrire
           </Button>
-          <p className="text-center">
+          <p className="text-center flex gap-1 justify-center">
             Vous avez déjà un compte?{" "}
-            <Link
-              href="/sign-in"
-              className="text-primary hover:text-blue-700 transition-colors"
-            >
-              Connectez-vous
-            </Link>
+            {!setSignIn ? (
+              <Link
+                href="/sign-in"
+                className="text-primary hover:text-blue-700 transition-colors"
+              >
+                Connectez-vous
+              </Link>
+            ) : (
+              <div
+                onClick={() => setSignIn(true)}
+                className="text-primary hover:text-blue-700 transition-colors cursor-pointer"
+              >
+                Connectez-vous
+              </div>
+            )}
           </p>
         </div>
       </form>

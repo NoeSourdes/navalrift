@@ -12,7 +12,7 @@ export function useButtonSounds() {
   });
   const [playMusic, { stop: stopMusic }] = useSound("/sound/music2.mp3", {
     loop: true,
-    volume: 0.1,
+    volume: 0.07,
   });
 
   let sounds = {

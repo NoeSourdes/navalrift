@@ -15,7 +15,13 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { FormResetPassowrd } from "./formResetPassowrd";
 
-export const InputsComponentsSignIn = () => {
+interface InputsComponentsSignInProps {
+  setSignIn?: (value: boolean) => void;
+}
+
+export const InputsComponentsSignIn = ({
+  setSignIn,
+}: InputsComponentsSignInProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -151,14 +157,23 @@ export const InputsComponentsSignIn = () => {
           >
             Se connecter
           </Button>
-          <p className="text-center">
+          <p className="text-center flex justify-center items-center gap-1">
             Besoin de créer un compte?{" "}
-            <Link
-              href="/sign-up"
-              className="text-primary hover:text-blue-700 transition-colors"
-            >
-              S&apos;inscrire
-            </Link>
+            {setSignIn ? (
+              <div
+                onClick={() => setSignIn(false)}
+                className="text-primary hover:text-blue-700 transition-colors cursor-pointer"
+              >
+                S&apos;inscrire
+              </div>
+            ) : (
+              <Link
+                href="/sign-up"
+                className="text-primary hover:text-blue-700 transition-colors"
+              >
+                S&apos;inscrire
+              </Link>
+            )}
           </p>
         </div>
       </form>
