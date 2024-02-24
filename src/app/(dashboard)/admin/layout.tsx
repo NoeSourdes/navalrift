@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageConnect from "./components/pageConnect";
 import PageNoConnect from "./components/pageNoConnect";
 
@@ -11,8 +11,13 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const { status } = useSession();
-  const lien = window.location.href;
-  console.log(lien);
+  const [lien, setLien] = useState<string>("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setLien(window.location.href);
+    }
+  }, []);
+
   return (
     <>
       {status === "authenticated" ? (

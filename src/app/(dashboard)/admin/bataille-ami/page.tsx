@@ -3,15 +3,17 @@
 import { Button, Tooltip } from "@nextui-org/react";
 import { Copy } from "lucide-react";
 import QRCode from "qrcode.react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function BatailleAmi() {
   const [hover, setHover] = useState(false);
   const [lien, setLien] = useState("");
-  setTimeout(() => {
-    setLien(window.location.href);
-  }, 1);
+  useEffect(() => {
+    setTimeout(() => {
+      setLien(window.location.href);
+    }, 100);
+  }, []);
   return (
     <div className="relative w-full h-full bg-blue-800/75 rounded-xl p-6">
       <Button
