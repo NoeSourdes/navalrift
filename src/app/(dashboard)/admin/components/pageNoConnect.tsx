@@ -49,10 +49,6 @@ export default function PageNoConnect({ children, lien }: LayoutAdminProps) {
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  useEffect(() => {
-    playMusic();
-  }, [playMusic]);
   return (
     <div className="relative">
       <div className="fixed inset-0 bg-[#001328]">
@@ -182,7 +178,7 @@ export default function PageNoConnect({ children, lien }: LayoutAdminProps) {
           </ModalContent>
         </Modal>
       </div>
-      <div className="fixed inset-0 sm:hidden w-full h-full bg-[#18181B] z-50">
+      <div className="fixed inset-0 sm:hidden w-full h-full bg-[#18181B] z-50 overflow-y-auto">
         {signIn ? (
           <SingInComponentDisconnecte lien={lien} setSignIn={setSignIn} />
         ) : (
