@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { NavBar } from "./NavBar";
 import { SideBarResponsive } from "./SidBarResponsive";
 import { SideBar } from "./sideBar";
@@ -32,6 +33,7 @@ export default function PageNoConnect({ children, lien }: LayoutAdminProps) {
   const [maxWidth, setMaxWidth] = useState(false);
   const { onOpenChange } = useDisclosure();
   const [signIn, setSignIn] = useState(true);
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
 
   useEffect(() => {
     const handleResize = () => {
@@ -167,6 +169,8 @@ export default function PageNoConnect({ children, lien }: LayoutAdminProps) {
         backdrop="blur"
         onOpenChange={onOpenChange}
         hideCloseButton={true}
+        size={isSmallScreen ? "full" : "md"}
+        placement="top"
       >
         <ModalContent>
           {signIn ? (

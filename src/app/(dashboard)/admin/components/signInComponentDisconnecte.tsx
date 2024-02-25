@@ -75,7 +75,7 @@ export const SingInComponentDisconnecte = ({
         </p>
       </div>
       <div className="h-full w-full flex justify-center items-center">
-        <div className="relative w-full sm:max-w-md max-w-sm space-y-5 z-20 overflow-y-auto mt-16">
+        <div className="relative w-full space-y-5 z-20 overflow-y-auto mt-16">
           <div className="space-y-2">
             <h1 className="text-2xl">Content de te revoir</h1>
             <h4 className="text-gray-400">
