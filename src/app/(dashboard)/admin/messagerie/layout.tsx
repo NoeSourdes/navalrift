@@ -15,6 +15,8 @@ export default function Layout({ children }: Props) {
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 1024px)");
+    const matches = media.matches;
+    setMaxLg(matches);
     media.addEventListener("change", (e) => {
       setMaxLg(e.matches);
     });
