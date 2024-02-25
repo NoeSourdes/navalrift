@@ -23,7 +23,9 @@ export default function Layout({ children }: LayoutProps) {
       {status === "authenticated" ? (
         <PageConnect>{children}</PageConnect>
       ) : (
-        <PageNoConnect lien={lien}>{children}</PageNoConnect>
+        <div className=" overflow-y-auto">
+          <PageNoConnect lien={lien}>{children}</PageNoConnect>
+        </div>
       )}
     </>
   );

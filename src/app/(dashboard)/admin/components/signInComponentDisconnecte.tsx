@@ -116,7 +116,7 @@ export const SingInComponentDisconnecte = ({
             <span className="text-[#3F3F46]">OU</span>
             <span className="w-full border-t border-[#3F3F46]"></span>
           </div>
-          <div className="overflow-hidden">
+          <div className="overflow-y-auto">
             <InputsComponentsSignIn lien={lien} setSignIn={setSignIn} />
           </div>
           {errorLogin && (

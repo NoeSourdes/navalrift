@@ -164,22 +164,31 @@ export default function PageNoConnect({ children, lien }: LayoutAdminProps) {
           {children}
         </div>
       </div>
-      <Modal
-        isOpen={true}
-        backdrop="blur"
-        onOpenChange={onOpenChange}
-        hideCloseButton={true}
-        size={isSmallScreen ? "full" : "md"}
-        placement="top"
-      >
-        <ModalContent>
-          {signIn ? (
-            <SingInComponentDisconnecte lien={lien} setSignIn={setSignIn} />
-          ) : (
-            <SignUpComponentDisconnecte lien={lien} setSignIn={setSignIn} />
-          )}
-        </ModalContent>
-      </Modal>
+      <div>
+        <Modal
+          isOpen={isSmallScreen ? false : true}
+          backdrop="blur"
+          onOpenChange={onOpenChange}
+          hideCloseButton={true}
+          placement="top"
+          className="overflow-y-auto"
+        >
+          <ModalContent>
+            {signIn ? (
+              <SingInComponentDisconnecte lien={lien} setSignIn={setSignIn} />
+            ) : (
+              <SignUpComponentDisconnecte lien={lien} setSignIn={setSignIn} />
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
+      <div className="fixed inset-0 sm:hidden w-full h-full bg-[#18181B] z-50">
+        {signIn ? (
+          <SingInComponentDisconnecte lien={lien} setSignIn={setSignIn} />
+        ) : (
+          <SignUpComponentDisconnecte lien={lien} setSignIn={setSignIn} />
+        )}
+      </div>
     </div>
   );
 }
