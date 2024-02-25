@@ -26,9 +26,9 @@ export default function BatailleAmi() {
       >
         Retour
       </Button>
-      <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-hidden cursor-pointer p-2 ">
+      <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-hidden p-2 ">
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-        <div className="max-w-2xl mx-auto p-4 flex flex-col justify-center items-center gap-3">
+        <div className="max-w-2xl mx-auto p-4 flex flex-col justify-center items-center gap-3 cursor-pointer">
           <h1 className="relative z-10 text-3xl md:text-6xl  bg-clip-text text-transparent bg-foreground  text-center font-sans font-bold mx-2">
             Partagez ce lien avec <br />{" "}
             <span className="text-primary">un ami</span>

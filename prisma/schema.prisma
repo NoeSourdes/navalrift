@@ -48,6 +48,25 @@ model User {
   resetPasswordTokenExpires DateTime?
   accounts      Account[]
   sessions      Session[]
+  groups    Group[]
+  messages  Message[] 
+}
+
+model Group {
+  id        String    @id @default(cuid())
+  name      String
+  users     User[]
+  messages  Message[]
+}
+
+model Message {
+  id        String    @id @default(cuid())
+  content   String
+  createdAt DateTime  @default(now())
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  group     Group     @relation(fields: [groupId], references: [id])
+  groupId   String
 }
 
 model VerificationToken {

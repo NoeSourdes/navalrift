@@ -110,7 +110,7 @@ export const SideBar = ({ session, isOpenSidebar }: SideBarProps) => {
                 name={isOpenSidebar ? session?.user?.name : ""}
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownMenu aria-label="User Actions" variant="faded">
               <DropdownItem
                 onMouseEnter={() => playHover()}
                 onClick={() => play()}
