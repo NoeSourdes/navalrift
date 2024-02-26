@@ -24,6 +24,7 @@ export default function Layout({ children }: Props) {
   return (
     <div className="relative h-full w-full bg-blue-800/75 rounded-xl overflow-hidden">
       <div
+        onClick={() => setOpen(false)}
         className="absolute inset-0 bg-black/25 backdrop-blur-xl z-20 rounded-xl"
         style={{
           backdropFilter: open ? "blur(5px)" : "none",
