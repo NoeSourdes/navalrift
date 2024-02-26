@@ -1,7 +1,12 @@
 "use client";
 
 import { useButtonSounds } from "@/app/actions/sound/sound";
-import { DeleteGroupDB, RenameGroupDB } from "@/app/actions/users/groupe";
+import {
+  DeleteGroupDB,
+  QuitGroupDB,
+  RenameGroupDB,
+} from "@/app/actions/users/groupe";
+import { useAppContext } from "@/context";
 import {
   Divider,
   Dropdown,
@@ -32,6 +37,7 @@ export const SearchGroup = ({
   const { data: session } = useSession();
   const { play, playHover } = useButtonSounds();
   const [renameGroupe, setRenameGroupe] = useState(false);
+  const [quitGroupe, setQuitGroupe] = useState(false);
   const [nameGroup, setNameGroup] = useState("");
   const [idGroup, setIdGroup] = useState("");
   const [isActionGood, setIsActionGood] = useState(false);
@@ -40,8 +46,14 @@ export const SearchGroup = ({
   const onOpenChange = (id: string, open: boolean) => {
     setIsOpen((prev) => ({ ...prev, [id]: open }));
   };
-
   const user_id = session?.user?.id ? session.user.id : "";
+  const {
+    setIsSelectGroupe,
+    setNameGroupeSelected,
+    nameGroupeSelected,
+    setIdGroupeSelected,
+    setCreatorGroupSelected,
+  } = useAppContext();
 
   useEffect(() => {
     if (user_id) {
@@ -49,7 +61,7 @@ export const SearchGroup = ({
     }
   }, [fetchGroups, user_id]);
 
-  const handleGroupAction = (action: string, id_group: string) => {
+  const handleGroupAction = async (action: string, id_group: string) => {
     play();
     switch (action) {
       case "delete":
@@ -60,7 +72,11 @@ export const SearchGroup = ({
 
         break;
       case "quit":
-        console.log("quit");
+        setRenameGroupe(false);
+        setQuitGroupe(true);
+        setIsActionGood(false);
+        setIdGroup(id_group);
+        onOpenChange(id_group, true);
         break;
       case "rename":
         setIsActionGood(false);
@@ -107,6 +123,23 @@ export const SearchGroup = ({
     fetchGroups();
   };
 
+  const handleQuitGroup = async (id_group: string, id_user: string) => {
+    play();
+    setLoading(true);
+    const quitGroupResult = await QuitGroupDB(id_group, id_user);
+    if (quitGroupResult.success) {
+      setIsActionGood(true);
+      toast.success(quitGroupResult.message);
+    } else {
+      setIsActionGood(false);
+      toast.error(quitGroupResult.message);
+    }
+    setRenameGroupe(false);
+    onOpenChange(id_group, false);
+    setLoading(false);
+    fetchGroups();
+  };
+
   return (
     <div>
       {groups.length > 0 ? (
@@ -127,7 +160,27 @@ export const SearchGroup = ({
           <div className="flex flex-col">
             {groups.map((group) => (
               <>
-                <div className="border-l-2 border-primary py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors">
+                <div
+                  key={group.id}
+                  onClick={() => {
+                    setIsSelectGroupe(true);
+                    setNameGroupeSelected(group.name);
+                    setIdGroupeSelected(group.id);
+                    setCreatorGroupSelected(group.isCreator);
+                    play();
+                  }}
+                  className="py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors"
+                  style={{
+                    backgroundColor:
+                      nameGroupeSelected === group.name
+                        ? "rgba(0,0,0,0.25)"
+                        : "",
+                    borderLeft:
+                      nameGroupeSelected === group.name
+                        ? "2px solid #2F6EE7"
+                        : "",
+                  }}
+                >
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="flex items-center text-gray-400 text-sm">
@@ -140,17 +193,20 @@ export const SearchGroup = ({
                         <p>{group.name}</p>
                       </div>
                     </div>
-                    <Dropdown>
-                      <DropdownTrigger>
-                        <div
-                          onClick={() => play()}
-                          className=" cursor-pointer hover:text-primary transition-colors"
+                    {group.isCreator === session?.user?.name ? (
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <div
+                            onClick={() => play()}
+                            className=" cursor-pointer hover:text-primary transition-colors"
+                          >
+                            <MoreHorizontal />
+                          </div>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          variant="faded"
+                          aria-label="Group Actions"
                         >
-                          <MoreHorizontal />
-                        </div>
-                      </DropdownTrigger>
-                      <DropdownMenu variant="faded" aria-label="Group Actions">
-                        {session?.user?.name === group.isCreator ? (
                           <DropdownItem
                             onMouseEnter={() => playHover()}
                             onClick={() =>
@@ -159,10 +215,6 @@ export const SearchGroup = ({
                           >
                             Renommer le groupe
                           </DropdownItem>
-                        ) : (
-                          <></>
-                        )}
-                        {session?.user?.name === group.isCreator ? (
                           <DropdownItem
                             onMouseEnter={() => playHover()}
                             color="danger"
@@ -172,21 +224,32 @@ export const SearchGroup = ({
                           >
                             Supprimer le groupe
                           </DropdownItem>
-                        ) : (
-                          <>
-                            <DropdownItem
-                              onMouseEnter={() => playHover()}
-                              color="danger"
-                              onClick={() =>
-                                handleGroupAction("quit", group.id)
-                              }
-                            >
-                              Quitter le groupe
-                            </DropdownItem>
-                          </>
-                        )}
-                      </DropdownMenu>
-                    </Dropdown>
+                        </DropdownMenu>
+                      </Dropdown>
+                    ) : (
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <div
+                            onClick={() => play()}
+                            className=" cursor-pointer hover:text-primary transition-colors"
+                          >
+                            <MoreHorizontal />
+                          </div>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          variant="faded"
+                          aria-label="Group Actions"
+                        >
+                          <DropdownItem
+                            color="danger"
+                            onMouseEnter={() => playHover()}
+                            onClick={() => handleGroupAction("quit", group.id)}
+                          >
+                            Quitter le groupe
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    )}
                   </div>
                 </div>
                 <Divider />
@@ -194,6 +257,7 @@ export const SearchGroup = ({
                   group={group}
                   fetchGroups={fetchGroups}
                   handleDeleteGroup={handleDeleteGroup}
+                  handleQuitGroup={handleQuitGroup}
                   handleRenameGroup={handleRenameGroup}
                   idGroup={idGroup}
                   isActionGood={isActionGood}
@@ -203,6 +267,8 @@ export const SearchGroup = ({
                   setNameGroup={setNameGroup}
                   loading={loading}
                   nameGroup={nameGroup}
+                  userId={user_id}
+                  quitGroupe={quitGroupe}
                 />
               </>
             ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useButtonSounds } from "@/app/actions/sound/sound";
-import { createGroupMessage } from "@/app/actions/users/groupe";
+import { JoinGroupDB, createGroupMessage } from "@/app/actions/users/groupe";
 import {
   Button,
   Dropdown,
@@ -41,6 +41,10 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
   const name_user = session?.user?.name ? session.user.name : "";
 
   const handleCreateGroupe = async (onClose: () => void) => {
+    if (!nameGroup) {
+      toast.error("Veuillez entrer le nom du groupe");
+      return;
+    }
     setLoading(true);
     const createGroupe = await createGroupMessage(
       nameGroup,
@@ -66,6 +70,19 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
   };
 
   const handleJoinGroupe = async (onClose: () => void) => {
+    if (!codeGroup) {
+      toast.error("Veuillez entrer le code du groupe");
+      return;
+    }
+    setLoading(true);
+    const Join_group = await JoinGroupDB(user_id, codeGroup);
+    if (Join_group.success) {
+      toast.success(Join_group.message);
+      fetchGroups();
+    } else {
+      toast.error(Join_group.message);
+    }
+    setLoading(false);
     onClose();
   };
   return (
@@ -171,7 +188,7 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
                   onPress={() =>
                     createGroupe
                       ? handleCreateGroupe(onClose)
-                      : handleJoinGroupe
+                      : handleJoinGroupe(onClose)
                   }
                   color="primary"
                 >

@@ -13,27 +13,33 @@ interface GroupModalProps {
   fetchGroups: () => void;
   handleRenameGroup: (name: string, id: string) => void;
   handleDeleteGroup: (id: string) => void;
+  handleQuitGroup: (id: string, id_user: string) => void;
   idGroup: string;
   isActionGood: boolean;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   renameGroupe: boolean;
+  quitGroupe: boolean;
   setNameGroup: (name: string) => void;
   loading: boolean;
   nameGroup: string;
+  userId: string;
 }
 
 export const GroupModal = ({
   handleDeleteGroup,
   handleRenameGroup,
+  handleQuitGroup,
   idGroup,
   isActionGood,
   isOpen,
   onOpenChange,
   renameGroupe,
+  quitGroupe,
   setNameGroup,
   loading,
   nameGroup,
+  userId,
 }: GroupModalProps) => {
   return (
     <Modal
@@ -64,10 +70,16 @@ export const GroupModal = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              {renameGroupe ? "Renommer le groupe" : "Supprimer le groupe"}
+              {renameGroupe
+                ? "Renommer le groupe"
+                : quitGroupe
+                ? "Quitter le groupe"
+                : "Supprimer le groupe"}
               <p className="text-sm text-gray-500">
                 {renameGroupe
                   ? "Entrez le nouveau nom du groupe"
+                  : quitGroupe
+                  ? "Etes-vous sûr de vouloir quitter le groupe ?"
                   : "Etes-vous sûr de vouloir supprimer le groupe ?"}
               </p>
             </ModalHeader>
@@ -94,11 +106,17 @@ export const GroupModal = ({
                     ? onClose
                     : renameGroupe
                     ? () => handleRenameGroup(nameGroup, idGroup)
+                    : quitGroupe
+                    ? () => handleQuitGroup(idGroup, userId)
                     : () => handleDeleteGroup(idGroup)
                 }
                 color="primary"
               >
-                {renameGroupe ? "Renommer" : "Supprimer"}
+                {renameGroupe
+                  ? "Renommer"
+                  : quitGroupe
+                  ? "Quitter"
+                  : "Supprimer"}
               </Button>
             </ModalFooter>
           </>
