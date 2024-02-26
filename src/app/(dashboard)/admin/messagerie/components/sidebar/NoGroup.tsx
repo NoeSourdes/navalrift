@@ -23,9 +23,10 @@ import { toast } from "sonner";
 interface NoGroupProps {
   groups: Group[];
   setGroups: (groups: Group[]) => void;
+  fetchGroups: () => void;
 }
 
-export const NoGroup = ({ setGroups, groups }: NoGroupProps) => {
+export const NoGroup = ({ setGroups, groups, fetchGroups }: NoGroupProps) => {
   const { play, playHover } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [createGroupe, setCreateGroupe] = useState(false);
@@ -37,19 +38,25 @@ export const NoGroup = ({ setGroups, groups }: NoGroupProps) => {
 
   const { data: session } = useSession();
   const user_id = session?.user?.id ? session.user.id : "";
+  const name_user = session?.user?.name ? session.user.name : "";
 
   const handleCreateGroupe = async () => {
-    console.log(user_id);
     setLoading(true);
-    const createGroupe = await createGroupMessage(nameGroup, user_id);
+    const createGroupe = await createGroupMessage(
+      nameGroup,
+      user_id,
+      name_user
+    );
     if (createGroupe.success) {
       setGroupCreated(true);
       toast.success(createGroupe.message);
       const newGroup: Group = {
         id: user_id,
+        isCreator: name_user,
         name: nameGroup,
       };
       const newGroups = [...groups, newGroup];
+      fetchGroups();
       setGroups(newGroups);
       setCreateGroupe(false);
     } else {

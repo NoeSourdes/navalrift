@@ -11,7 +11,6 @@ interface Props {
 export default function Layout({ children }: Props) {
   const [open, setOpen] = useState(false);
   const [maxLg, setMaxLg] = useState(false);
-  console.log(maxLg);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 1024px)");

@@ -115,3 +115,12 @@ body {
   opacity: 1;
   visibility: visible;
 }
+
+.my-modal .nextui-modal-backdrop {
+  background-color: rgba(
+    255,
+    0,
+    0,
+    0.5
+  ); /* Remplacez par la couleur que vous voulez */
+}

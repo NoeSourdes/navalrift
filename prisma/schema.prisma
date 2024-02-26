@@ -53,6 +53,8 @@ model User {
 
 model Group {
   id        String    @id @default(cuid())
+  isCreator String
+  date      DateTime  @default(now())
   name      String   @unique
   users     User[]
   messages  Message[]
