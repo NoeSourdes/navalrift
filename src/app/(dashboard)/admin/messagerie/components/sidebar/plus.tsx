@@ -168,10 +168,10 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
                 </Button>
                 <Button
                   isLoading={loading}
-                  onPress={
+                  onPress={() =>
                     createGroupe
                       ? handleCreateGroupe(onClose)
-                      : handleJoinGroupe(onClose)
+                      : handleJoinGroupe
                   }
                   color="primary"
                 >
