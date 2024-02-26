@@ -3,24 +3,18 @@
 import { useButtonSounds } from "@/app/actions/sound/sound";
 import { DeleteGroupDB, RenameGroupDB } from "@/app/actions/users/groupe";
 import {
-  Button,
   Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
 } from "@nextui-org/react";
 import { MoreHorizontal } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { GroupModal } from "../GroupModal";
 import { NoGroup } from "./NoGroup";
 import { AddGroup } from "./plus";
 
@@ -37,12 +31,15 @@ export const SearchGroup = ({
 }: SearchGroupProps) => {
   const { data: session } = useSession();
   const { play, playHover } = useButtonSounds();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [renameGroupe, setRenameGroupe] = useState(false);
   const [nameGroup, setNameGroup] = useState("");
   const [idGroup, setIdGroup] = useState("");
   const [isActionGood, setIsActionGood] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState<Record<string, boolean>>({});
+  const onOpenChange = (id: string, open: boolean) => {
+    setIsOpen((prev) => ({ ...prev, [id]: open }));
+  };
 
   const user_id = session?.user?.id ? session.user.id : "";
 
@@ -59,7 +56,8 @@ export const SearchGroup = ({
         setRenameGroupe(false);
         setIsActionGood(false);
         setIdGroup(id_group);
-        onOpen();
+        onOpenChange(id_group, true);
+
         break;
       case "quit":
         console.log("quit");
@@ -68,7 +66,8 @@ export const SearchGroup = ({
         setIsActionGood(false);
         setRenameGroupe(true);
         setIdGroup(id_group);
-        onOpen();
+        onOpenChange(id_group, true);
+
         break;
       default:
         break;
@@ -87,6 +86,7 @@ export const SearchGroup = ({
       toast.error(renameGroup.message);
     }
     setRenameGroupe(false);
+    onOpenChange(id_group, false);
     setLoading(false);
     fetchGroups();
   };
@@ -102,22 +102,9 @@ export const SearchGroup = ({
       toast.error(deleteGroup.message);
     }
     setRenameGroupe(false);
+    onOpenChange(id_group, false);
     setLoading(false);
     fetchGroups();
-  };
-
-  const handleActionFilter = (action: string) => {
-    play();
-    switch (action) {
-      case "name":
-        console.log("name");
-        break;
-      case "date":
-        console.log("date");
-        break;
-      default:
-        break;
-    }
   };
 
   return (
@@ -203,85 +190,20 @@ export const SearchGroup = ({
                   </div>
                 </div>
                 <Divider />
-                <Modal
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
-                  motionProps={{
-                    variants: {
-                      enter: {
-                        y: 0,
-                        opacity: 1,
-                        transition: {
-                          duration: 0.3,
-                          ease: "easeOut",
-                        },
-                      },
-                      exit: {
-                        y: -20,
-                        opacity: 0,
-                        transition: {
-                          duration: 0.2,
-                          ease: "easeIn",
-                        },
-                      },
-                    },
-                  }}
-                >
-                  <ModalContent>
-                    {(onClose) => (
-                      <>
-                        <ModalHeader className="flex flex-col gap-1">
-                          {renameGroupe
-                            ? "Renommer le groupe"
-                            : "Supprimer le groupe"}
-                          <p className="text-sm text-gray-500">
-                            {renameGroupe
-                              ? "Entrez le nouveau nom du groupe"
-                              : "Etes-vous sûr de vouloir supprimer le groupe ?"}
-                          </p>
-                        </ModalHeader>
-                        <ModalBody>
-                          <div className="flex flex-col gap-3">
-                            {renameGroupe ? (
-                              <Input
-                                placeholder="Entrez le nouveau nom du groupe"
-                                onChange={(e) => setNameGroup(e.target.value)}
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </ModalBody>
-                        <ModalFooter>
-                          <Button
-                            color="danger"
-                            variant="light"
-                            onPress={onClose}
-                          >
-                            Annuler
-                          </Button>
-                          <Button
-                            isLoading={loading}
-                            onPress={
-                              isActionGood
-                                ? onClose
-                                : renameGroupe
-                                ? () => handleRenameGroup(nameGroup, idGroup)
-                                : () => handleDeleteGroup(idGroup)
-                            }
-                            color="primary"
-                          >
-                            {isActionGood
-                              ? "Terminer"
-                              : renameGroupe
-                              ? "Renommer"
-                              : "Supprimer"}
-                          </Button>
-                        </ModalFooter>
-                      </>
-                    )}
-                  </ModalContent>
-                </Modal>
+                <GroupModal
+                  group={group}
+                  fetchGroups={fetchGroups}
+                  handleDeleteGroup={handleDeleteGroup}
+                  handleRenameGroup={handleRenameGroup}
+                  idGroup={idGroup}
+                  isActionGood={isActionGood}
+                  isOpen={isOpen[group.id] || false}
+                  onOpenChange={(open) => onOpenChange(group.id, open)}
+                  renameGroupe={renameGroupe}
+                  setNameGroup={setNameGroup}
+                  loading={loading}
+                  nameGroup={nameGroup}
+                />
               </>
             ))}
           </div>

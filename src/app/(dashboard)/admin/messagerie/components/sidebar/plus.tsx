@@ -31,7 +31,6 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
   const { play, playHover } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [createGroupe, setCreateGroupe] = useState(false);
-  const [isGroupCreated, setGroupCreated] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [nameGroup, setNameGroup] = useState("");
@@ -41,7 +40,7 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
   const user_id = session?.user?.id ? session.user.id : "";
   const name_user = session?.user?.name ? session.user.name : "";
 
-  const handleCreateGroupe = async () => {
+  const handleCreateGroupe = async (onClose: () => void) => {
     setLoading(true);
     const createGroupe = await createGroupMessage(
       nameGroup,
@@ -49,7 +48,6 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
       name_user
     );
     if (createGroupe.success) {
-      setGroupCreated(true);
       toast.success(createGroupe.message);
       const newGroup: Group = {
         id: user_id,
@@ -64,9 +62,12 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
       toast.error(createGroupe.message);
     }
     setLoading(false);
+    onClose();
   };
 
-  const handleJoinGroupe = async () => {};
+  const handleJoinGroupe = async (onClose: () => void) => {
+    onClose();
+  };
   return (
     <div>
       <Dropdown>
@@ -168,15 +169,13 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
                 <Button
                   isLoading={loading}
                   onPress={
-                    isGroupCreated
-                      ? onClose
-                      : createGroupe
-                      ? handleCreateGroupe
-                      : handleJoinGroupe
+                    createGroupe
+                      ? handleCreateGroupe(onClose)
+                      : handleJoinGroupe(onClose)
                   }
                   color="primary"
                 >
-                  {isGroupCreated ? "Terminer" : "Créer"}
+                  {createGroupe ? "Créer" : "Rejoindre"}
                 </Button>
               </ModalFooter>
             </>
