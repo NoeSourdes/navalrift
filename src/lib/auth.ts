@@ -11,6 +11,10 @@ export const { auth, handlers } = NextAuth({
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/sign-in",
+    error: "/sign-in",
+  },
   providers: [
     GithubProvider,
     GoogleProvider,
@@ -52,8 +56,15 @@ export const { auth, handlers } = NextAuth({
       },
     }),
   ],
-  pages: {
-    signIn: "/sign-in",
-    error: "/sign-in",
+  callbacks: {
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.sub,
+        },
+      };
+    },
   },
 });

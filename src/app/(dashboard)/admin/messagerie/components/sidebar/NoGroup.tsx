@@ -1,6 +1,7 @@
 "use client";
 
 import { useButtonSounds } from "@/app/actions/sound/sound";
+import { createGroupMessage } from "@/app/actions/users/groupe";
 import {
   Button,
   Dropdown,
@@ -15,12 +16,50 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { toast } from "sonner";
 
-export const NoGroup = () => {
+interface NoGroupProps {
+  groups: Group[];
+  setGroups: (groups: Group[]) => void;
+}
+
+export const NoGroup = ({ setGroups, groups }: NoGroupProps) => {
   const { play, playHover } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [createGroupe, setCreateGroupe] = useState(false);
+  const [isGroupCreated, setGroupCreated] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [nameGroup, setNameGroup] = useState("");
+  const [codeGroup, setCodeGroup] = useState("");
+
+  const { data: session } = useSession();
+  const user_id = session?.user?.id ? session.user.id : "";
+
+  const handleCreateGroupe = async () => {
+    console.log(user_id);
+    setLoading(true);
+    const createGroupe = await createGroupMessage(nameGroup, user_id);
+    if (createGroupe.success) {
+      setGroupCreated(true);
+      toast.success(createGroupe.message);
+      const newGroup: Group = {
+        id: user_id,
+        name: nameGroup,
+      };
+      const newGroups = [...groups, newGroup];
+      setGroups(newGroups);
+      setCreateGroupe(false);
+    } else {
+      toast.error(createGroupe.message);
+    }
+    setLoading(false);
+  };
+
+  const handleJoinGroupe = async () => {};
+
   return (
     <div className="p-5">
       <p className="text-center text-sm text-gray-400">
@@ -105,9 +144,15 @@ export const NoGroup = () => {
                 <ModalBody>
                   <div className="flex flex-col gap-3">
                     {createGroupe ? (
-                      <Input placeholder="Entrez le nom du groupe" />
+                      <Input
+                        placeholder="Entrez le nom du groupe"
+                        onChange={(e) => setNameGroup(e.target.value)}
+                      />
                     ) : (
-                      <Input placeholder="Entrez le code du groupe" />
+                      <Input
+                        placeholder="Entrez le code du groupe"
+                        onChange={(e) => setCodeGroup(e.target.value)}
+                      />
                     )}
                   </div>
                 </ModalBody>
@@ -115,7 +160,19 @@ export const NoGroup = () => {
                   <Button color="danger" variant="light" onPress={onClose}>
                     Annuler
                   </Button>
-                  <Button color="primary">Créer</Button>
+                  <Button
+                    isLoading={loading}
+                    onPress={
+                      isGroupCreated
+                        ? onClose
+                        : createGroupe
+                        ? handleCreateGroupe
+                        : handleJoinGroupe
+                    }
+                    color="primary"
+                  >
+                    {isGroupCreated ? "Terminer" : "Créer"}
+                  </Button>
                 </ModalFooter>
               </>
             )}

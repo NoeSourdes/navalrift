@@ -1,17 +1,18 @@
 "use client";
 
 import { useButtonSounds } from "@/app/actions/sound/sound";
-import { Button, Divider } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
+import { useState } from "react";
 import { HeaderSideBar } from "./HeaderSideBar";
-import { NoGroup } from "./NoGroup";
-
+import { SearchGroup } from "./sidebar/searchGroup";
 export const SideBar = () => {
   const { play, playHover } = useButtonSounds();
+  const [groups, setGroups] = useState<Group[]>([]);
   return (
     <div className="flex flex-col">
-      <HeaderSideBar />
+      <HeaderSideBar setGroups={setGroups} groups={groups} />
       <Divider />
-      <NoGroup />
+      <SearchGroup setGroups={setGroups} groups={groups} />
     </div>
   );
 };

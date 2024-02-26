@@ -7,8 +7,6 @@ import { resend } from "@/lib/resend";
 import crypto from "crypto";
 
 export const resetPassword = async (email: string) => {
-  console.log(email);
-
   const user = await prisma.user.findUnique({
     where: {
       email,

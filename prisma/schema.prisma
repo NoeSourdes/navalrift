@@ -43,7 +43,6 @@ model User {
   emailVerified Boolean?   @default(false)
   emailVerifiedToken String? @unique
   image         String?
-  test          String?
   resetPasswordToken String? @unique
   resetPasswordTokenExpires DateTime?
   accounts      Account[]
@@ -54,7 +53,7 @@ model User {
 
 model Group {
   id        String    @id @default(cuid())
-  name      String
+  name      String   @unique
   users     User[]
   messages  Message[]
 }
