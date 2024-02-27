@@ -14,7 +14,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   let [nameGroupeSelected, setNameGroupeSelected] = useState<string>("");
   let [idGroupeSelected, setIdGroupeSelected] = useState<string>("");
   let [creatorGroupSelected, setCreatorGroupSelected] = useState<string>("");
-  const url_server = process.env.URL_SERVER || "http://localhost:3001";
+  const url_server =
+    process.env.URL_SERVER || "https://navalrift-server.onrender.com";
   let sockets: any;
   sockets = io(url_server);
   return (

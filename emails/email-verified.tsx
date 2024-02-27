@@ -1,5 +1,4 @@
-import { Img } from "@react-email/components";
-import { Tailwind } from "@react-email/tailwind";
+import { Img, Tailwind } from "@react-email/components";
 
 interface DropboxEmailVerifiedProps {
   userFirstname?: string | null;
