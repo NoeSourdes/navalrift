@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SideBar } from "./components/SideBar";
 
@@ -9,6 +10,14 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (/^\/admin\/messagerie\/.+/i.test(pathname)) {
+      router.push("/admin/messagerie");
+    }
+  }, [pathname]);
   const [open, setOpen] = useState(false);
   const [maxLg, setMaxLg] = useState(false);
 
