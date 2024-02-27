@@ -36,8 +36,7 @@ export const ConversationComponent = ({
   const [chat, setChat] = useState<MsgDataTypes[]>([]);
   console.log("chat", chat);
 
-  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const sendMessage = async () => {
     console.log("send message");
     if (message) {
       const msgData: MsgDataTypes = {
