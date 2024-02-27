@@ -53,6 +53,7 @@ export const SearchGroup = ({
     nameGroupeSelected,
     setIdGroupeSelected,
     setCreatorGroupSelected,
+    sockets,
   } = useAppContext();
 
   useEffect(() => {
@@ -140,6 +141,14 @@ export const SearchGroup = ({
     fetchGroups();
   };
 
+  // partie de la gestion des sockets pour les groupes
+
+  const handleJoinGroup = (id_group: string) => {
+    if (id_group) {
+      sockets.emit("join_conversation", id_group);
+    }
+  };
+
   return (
     <div>
       {groups.length > 0 ? (
@@ -167,6 +176,7 @@ export const SearchGroup = ({
                     setNameGroupeSelected(group.name);
                     setIdGroupeSelected(group.id);
                     setCreatorGroupSelected(group.isCreator);
+                    handleJoinGroup(group.id);
                     play();
                   }}
                   className="py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors"
