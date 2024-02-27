@@ -48,7 +48,7 @@ export default function Layout({ children }: Props) {
           </div>
         </div>
       </div>
-      <div className="absolute top-6 right-6 left-[318px] max-lg:left-6 bottom-6 z-10 transition-all">
+      <div className="absolute lg:top-6 lg:right-6 left-[318px] max-lg:left-3 top-3 bottom-3 right-3 lg:bottom-6 z-10 transition-all">
         {children}
       </div>
     </div>

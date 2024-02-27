@@ -15,9 +15,7 @@ interface MsgDataTypes {
 
 export default function Page({ params }: { params: { groupe: string } }) {
   const { nameGroupeSelected, creatorGroupSelected, sockets } = useAppContext();
-  console.log(sockets);
   const [chat, setChat] = useState<MsgDataTypes[]>([]);
-  console.log("chat", chat);
   useEffect(() => {
     const messageHandler = (data: MsgDataTypes) => {
       setChat((pre) => [...pre, data]);

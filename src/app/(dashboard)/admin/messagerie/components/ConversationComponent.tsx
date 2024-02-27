@@ -1,8 +1,14 @@
 "use client";
 
 import { useAppContext } from "@/context";
-import { Button } from "@nextui-org/react";
-import { SendHorizontal } from "lucide-react";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react";
+import { MoreVertical, SendHorizontal } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
@@ -39,7 +45,6 @@ export const ConversationComponent = ({
   const [message, setMessage] = useState<string>("");
 
   const sendMessage = async () => {
-    console.log("send message");
     if (message) {
       const msgData: MsgDataTypes = {
         img: img_user,
@@ -57,13 +62,13 @@ export const ConversationComponent = ({
     }
   };
   return (
-    <div className="flex flex-col w-full h-full gap-6 p-6">
-      <div className="w-full flex items-center justify-between h-20 rounded-xl bg-blue-800/75 p-2">
-        <div>
+    <div className="flex flex-col w-full h-full gap-6 lg:p-6 p-3">
+      <div className="w-full flex items-center justify-between h-20 rounded-lg bg-blue-800/75 p-2">
+        <div className="max-lg:ml-7">
           <h1 className="text-2xl text-white font-semibold">{name_group}</h1>
           <p className="text-gray-400">{creator_group}</p>
         </div>
-        <div>
+        <div className="max-lg:hidden">
           <Button
             onClick={() => {
               navigator.clipboard.writeText(id_group);
@@ -75,21 +80,41 @@ export const ConversationComponent = ({
             Copier le code du groupe
           </Button>
         </div>
+        <div className="lg:hidden block">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button isIconOnly variant="faded" color="primary">
+                <MoreVertical />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu variant="faded">
+              <DropdownItem
+                onClick={() => {
+                  navigator.clipboard.writeText(id_group);
+                  toast("Code du groupe copié");
+                }}
+                key="copy"
+              >
+                Copier le code du groupe
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
-      <div className="h-full w-full rounded-xl flex flex-col">
+      <div className="h-full w-full rounded-lg flex flex-col">
         <div className="h-full w-full">
           {chat.map((msg, index) => (
             <div
               key={index}
-              className={`flex items-center gap-2 ${
+              className={`flex items-end gap-2 mb-2 ${
                 msg.user_id === user_id ? "justify-end" : "justify-start"
               }`}
             >
               <div
-                className={`p-3 rounded-xl mb-2 ${
+                className={`p-3 rounded-xl ${
                   msg.user_id === user_id
                     ? "bg-blue-800/75 text-white"
-                    : "bg-blue-900/75 text-gray-400"
+                    : "bg-black/75 text-gray-400"
                 }`}
               >
                 <p>{msg.message}</p>
@@ -107,7 +132,7 @@ export const ConversationComponent = ({
             </div>
           ))}
         </div>
-        <div className="w-full bg-blue-800/75 p-5 rounded-xl flex items-end gap-2 shadow-xl">
+        <div className="w-full bg-blue-800/75 lg:p-5 p-3 rounded-lg flex items-end gap-2 shadow-xl">
           <div className="w-full h-full flex justify-center items-center">
             <TextareaAutosize
               maxRows={5}

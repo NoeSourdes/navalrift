@@ -17,7 +17,7 @@ import {
 } from "@nextui-org/react";
 import { MoreHorizontal } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { GroupModal } from "../GroupModal";
@@ -150,6 +150,13 @@ export const SearchGroup = ({
     }
   };
 
+  // gestions des routes pour les groupes
+  const router = useRouter();
+
+  const handlePushGroup = (id_group: string) => {
+    router.push(`/admin/messagerie/${id_group}`);
+  };
+
   return (
     <div>
       {groups.length > 0 ? (
@@ -170,103 +177,100 @@ export const SearchGroup = ({
           <div className="flex flex-col">
             {groups.map((group) => (
               <>
-                <Link href={`/admin/messagerie/${group.id}`}>
-                  <div
-                    key={group.id}
-                    onClick={() => {
-                      setIsSelectGroupe(true);
-                      setNameGroupeSelected(group.name);
-                      setIdGroupeSelected(group.id);
-                      setCreatorGroupSelected(group.isCreator);
-                      handleJoinGroup(group.id);
-                      play();
-                    }}
-                    className="py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors"
-                    style={{
-                      backgroundColor:
-                        nameGroupeSelected === group.name
-                          ? "rgba(0,0,0,0.25)"
-                          : "",
-                      borderLeft:
-                        nameGroupeSelected === group.name
-                          ? "2px solid #2F6EE7"
-                          : "",
-                    }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="flex items-center text-gray-400 text-sm">
-                          <h5>Créateur : {group.isCreator}</h5>
-                        </div>
-                        <div
-                          key={group.id}
-                          className="flex items-center justify-between"
-                        >
-                          <p>{group.name}</p>
-                        </div>
+                <div
+                  key={group.id}
+                  onClick={() => {
+                    setIsSelectGroupe(true);
+                    setNameGroupeSelected(group.name);
+                    setIdGroupeSelected(group.id);
+                    setCreatorGroupSelected(group.isCreator);
+                    handleJoinGroup(group.id);
+                    handlePushGroup(group.id);
+                    play();
+                  }}
+                  className="py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors"
+                  style={{
+                    backgroundColor:
+                      nameGroupeSelected === group.name
+                        ? "rgba(0,0,0,0.25)"
+                        : "",
+                    borderLeft:
+                      nameGroupeSelected === group.name
+                        ? "2px solid #2F6EE7"
+                        : "",
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center text-gray-400 text-sm">
+                        <h5>Créateur : {group.isCreator}</h5>
                       </div>
-                      {group.isCreator === session?.user?.name ? (
-                        <Dropdown>
-                          <DropdownTrigger>
-                            <div
-                              onClick={() => play()}
-                              className=" cursor-pointer hover:text-primary transition-colors"
-                            >
-                              <MoreHorizontal />
-                            </div>
-                          </DropdownTrigger>
-                          <DropdownMenu
-                            variant="faded"
-                            aria-label="Group Actions"
-                          >
-                            <DropdownItem
-                              onMouseEnter={() => playHover()}
-                              onClick={() =>
-                                handleGroupAction("rename", group.id)
-                              }
-                            >
-                              Renommer le groupe
-                            </DropdownItem>
-                            <DropdownItem
-                              onMouseEnter={() => playHover()}
-                              color="danger"
-                              onClick={() =>
-                                handleGroupAction("delete", group.id)
-                              }
-                            >
-                              Supprimer le groupe
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                      ) : (
-                        <Dropdown>
-                          <DropdownTrigger>
-                            <div
-                              onClick={() => play()}
-                              className=" cursor-pointer hover:text-primary transition-colors"
-                            >
-                              <MoreHorizontal />
-                            </div>
-                          </DropdownTrigger>
-                          <DropdownMenu
-                            variant="faded"
-                            aria-label="Group Actions"
-                          >
-                            <DropdownItem
-                              color="danger"
-                              onMouseEnter={() => playHover()}
-                              onClick={() =>
-                                handleGroupAction("quit", group.id)
-                              }
-                            >
-                              Quitter le groupe
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                      )}
+                      <div
+                        key={group.id}
+                        className="flex items-center justify-between"
+                      >
+                        <p>{group.name}</p>
+                      </div>
                     </div>
+                    {group.isCreator === session?.user?.name ? (
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <div
+                            onClick={() => play()}
+                            className=" cursor-pointer hover:text-primary transition-colors"
+                          >
+                            <MoreHorizontal />
+                          </div>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          variant="faded"
+                          aria-label="Group Actions"
+                        >
+                          <DropdownItem
+                            onMouseEnter={() => playHover()}
+                            onClick={() =>
+                              handleGroupAction("rename", group.id)
+                            }
+                          >
+                            Renommer le groupe
+                          </DropdownItem>
+                          <DropdownItem
+                            onMouseEnter={() => playHover()}
+                            color="danger"
+                            onClick={() =>
+                              handleGroupAction("delete", group.id)
+                            }
+                          >
+                            Supprimer le groupe
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    ) : (
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <div
+                            onClick={() => play()}
+                            className=" cursor-pointer hover:text-primary transition-colors"
+                          >
+                            <MoreHorizontal />
+                          </div>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          variant="faded"
+                          aria-label="Group Actions"
+                        >
+                          <DropdownItem
+                            color="danger"
+                            onMouseEnter={() => playHover()}
+                            onClick={() => handleGroupAction("quit", group.id)}
+                          >
+                            Quitter le groupe
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    )}
                   </div>
-                </Link>
+                </div>
                 <Divider />
                 <GroupModal
                   group={group}
