@@ -56,6 +56,7 @@ export const ConversationComponent = ({
 
   useEffect(() => {
     sockets.on("receive_msg", (data: MsgDataTypes) => {
+      console.log("receive_msg", data);
       setChat((prev) => [...prev, data]);
     });
   }, [sockets]);
