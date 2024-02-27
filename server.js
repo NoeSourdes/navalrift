@@ -20,10 +20,13 @@ io.on("connection", (socket) => {
     console.log("Lutilisateur a rejoit le groupe : ", id_group);
   });
 
-  socket.on("send_msg", (data) => {
+  socket.on("send_msg", (data, callback) => {
     console.log("message : ", data);
     socket.to(data.id_group).emit("receive_msg", data);
     console.log("message envoyé au groupe : ", data.id_group);
+
+    // Émettre une confirmation vers le client
+    callback({ id_group: data.id_group });
   });
 
   socket.on("disconnect", () => {

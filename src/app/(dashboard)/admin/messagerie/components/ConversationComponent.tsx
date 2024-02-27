@@ -36,10 +36,11 @@ export const ConversationComponent = ({
   const [chat, setChat] = useState<MsgDataTypes[]>([]);
   console.log("chat", chat);
 
-  const sendMessage = async () => {
+  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     console.log("send message");
     if (message) {
-      const msgData = {
+      const msgData: MsgDataTypes = {
         img: img_user,
         id_group,
         message,
@@ -51,12 +52,15 @@ export const ConversationComponent = ({
       };
       await sockets.emit("send_msg", msgData);
       setMessage("");
+      // await sockets.emit("send_msg", msgData, (confirmation: any) => {
+      //   console.log("message envoyé au groupe : ", confirmation.id_group);
+      //   setMessage("");
+      // });
     }
   };
 
   useEffect(() => {
     sockets.on("receive_msg", (data: MsgDataTypes) => {
-      console.log("receive_msg", data);
       setChat((prev) => [...prev, data]);
     });
   }, [sockets]);
