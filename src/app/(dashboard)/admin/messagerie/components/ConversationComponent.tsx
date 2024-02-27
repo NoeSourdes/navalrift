@@ -110,11 +110,20 @@ export const ConversationComponent = ({
                 msg.user_id === user_id ? "justify-end" : "justify-start"
               }`}
             >
+              {msg.user_id !== user_id && (
+                <Image
+                  src={msg.img}
+                  alt="user"
+                  width={30}
+                  height={30}
+                  className="rounded-full"
+                />
+              )}
               <div
                 className={`p-3 rounded-xl ${
                   msg.user_id === user_id
-                    ? "bg-blue-800/75 text-white"
-                    : "bg-black/75 text-gray-400"
+                    ? "bg-blue-800/75 text-foreground"
+                    : "bg-border/75 text-foreground"
                 }`}
               >
                 <p>{msg.message}</p>
@@ -122,13 +131,15 @@ export const ConversationComponent = ({
                   {msg.time}
                 </p>
               </div>
-              <Image
-                src={msg.img}
-                alt="user"
-                width={30}
-                height={30}
-                className="rounded-full"
-              />
+              {msg.user_id === user_id && (
+                <Image
+                  src={msg.img}
+                  alt="user"
+                  width={30}
+                  height={30}
+                  className="rounded-full"
+                />
+              )}
             </div>
           ))}
         </div>
