@@ -14,10 +14,9 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   let [nameGroupeSelected, setNameGroupeSelected] = useState<string>("");
   let [idGroupeSelected, setIdGroupeSelected] = useState<string>("");
   let [creatorGroupSelected, setCreatorGroupSelected] = useState<string>("");
-  const url_server =
-    process.env.URL_SERVER || "https://navalrift-server.onrender.com";
-  let sockets: any;
-  sockets = io(url_server);
+  const url_server = "https://navalrift-server.onrender.com";
+  // "https://navalrift-server.onrender.com";
+  const [socket] = useState(() => io(url_server));
   return (
     <AppContext.Provider
       value={{
@@ -37,7 +36,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         setIdGroupeSelected,
         creatorGroupSelected,
         setCreatorGroupSelected,
-        sockets,
+        sockets: socket,
       }}
     >
       {children}

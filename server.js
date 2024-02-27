@@ -14,19 +14,20 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-  console.log("utilisateur connecté :", socket.id);
   socket.on("join_conversation", (id_group) => {
     socket.join(id_group);
-    console.log("Lutilisateur a rejoit le groupe : ", id_group);
+    console.log(`L'utilisateur ${socket.id} a rejoint le groupe : ${id_group}`);
   });
 
-  socket.on("send_msg", (data, callback) => {
-    console.log("message : ", data);
+  socket.on("send_msg", (data) => {
+    console.log(data, "DATA");
+    //This will send a message to a specific room ID
     socket.to(data.id_group).emit("receive_msg", data);
-    console.log("message envoyé au groupe : ", data.id_group);
-
-    // Émettre une confirmation vers le client
-    callback({ id_group: data.id_group });
+    console.log(
+      "Voici les utlisateur dans le groupe : ",
+      io.sockets.adapter.rooms.get(data.id_group)
+    );
+    console.log("Message envoyé au groupe : ", data.id_group);
   });
 
   socket.on("disconnect", () => {

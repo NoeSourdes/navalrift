@@ -4,7 +4,7 @@ import { useAppContext } from "@/context";
 import { Button } from "@nextui-org/react";
 import { SendHorizontal } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 
@@ -14,6 +14,8 @@ interface ConversationComponentProps {
   creator_group: string;
   user_id: string;
   img_user: string;
+  chat: MsgDataTypes[];
+  setChat: React.Dispatch<React.SetStateAction<MsgDataTypes[]>>;
 }
 
 interface MsgDataTypes {
@@ -30,11 +32,11 @@ export const ConversationComponent = ({
   creator_group,
   user_id,
   img_user,
+  chat,
+  setChat,
 }: ConversationComponentProps) => {
   const { sockets } = useAppContext();
   const [message, setMessage] = useState<string>("");
-  const [chat, setChat] = useState<MsgDataTypes[]>([]);
-  console.log("chat", chat);
 
   const sendMessage = async () => {
     console.log("send message");
@@ -49,19 +51,11 @@ export const ConversationComponent = ({
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      await sockets.emit("send_msg", msgData, (confirmation: any) => {
-        console.log("message envoyé au groupe : ", confirmation.id_group);
-        setMessage("");
-      });
+      await sockets.emit("send_msg", msgData);
+      setChat((pre) => [...pre, msgData]);
+      setMessage("");
     }
   };
-
-  useEffect(() => {
-    sockets.on("receive_msg", (data: MsgDataTypes) => {
-      setChat((prev) => [...prev, data]);
-    });
-  }, [sockets]);
-
   return (
     <div className="flex flex-col w-full h-full gap-6 p-6">
       <div className="w-full flex items-center justify-between h-20 rounded-xl bg-blue-800/75 p-2">
@@ -91,13 +85,6 @@ export const ConversationComponent = ({
                 msg.user_id === user_id ? "justify-end" : "justify-start"
               }`}
             >
-              <Image
-                src={msg.img}
-                alt="user"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
               <div
                 className={`p-3 rounded-xl mb-2 ${
                   msg.user_id === user_id
@@ -110,6 +97,13 @@ export const ConversationComponent = ({
                   {msg.time}
                 </p>
               </div>
+              <Image
+                src={msg.img}
+                alt="user"
+                width={30}
+                height={30}
+                className="rounded-full"
+              />
             </div>
           ))}
         </div>
@@ -121,6 +115,7 @@ export const ConversationComponent = ({
               className="w-full h-full bg-transparent focus:outline-none px-3 py-2 border-2 border-border rounded-[25px]"
               style={{ resize: "none" }}
               onChange={(e) => setMessage(e.target.value)}
+              value={message}
             />
           </div>
           <Button
