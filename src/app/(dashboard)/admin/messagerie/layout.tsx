@@ -17,7 +17,7 @@ export default function Layout({ children }: Props) {
     if (/^\/admin\/messagerie\/.+/i.test(pathname)) {
       router.push("/admin/messagerie");
     }
-  }, [pathname]);
+  }, []);
   const [open, setOpen] = useState(false);
   const [maxLg, setMaxLg] = useState(false);
 
