@@ -49,12 +49,10 @@ export const ConversationComponent = ({
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      await sockets.emit("send_msg", msgData);
-      setMessage("");
-      // await sockets.emit("send_msg", msgData, (confirmation: any) => {
-      //   console.log("message envoyé au groupe : ", confirmation.id_group);
-      //   setMessage("");
-      // });
+      await sockets.emit("send_msg", msgData, (confirmation: any) => {
+        console.log("message envoyé au groupe : ", confirmation.id_group);
+        setMessage("");
+      });
     }
   };
 
