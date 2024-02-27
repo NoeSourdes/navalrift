@@ -28,12 +28,14 @@ interface SearchGroupProps {
   groups: Group[];
   setGroups: (groups: Group[]) => void;
   fetchGroups: () => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SearchGroup = ({
   groups,
   setGroups,
   fetchGroups,
+  setOpen,
 }: SearchGroupProps) => {
   const { data: session } = useSession();
   const { play, playHover } = useButtonSounds();
@@ -186,6 +188,7 @@ export const SearchGroup = ({
                     setCreatorGroupSelected(group.isCreator);
                     handleJoinGroup(group.id);
                     handlePushGroup(group.id);
+                    setOpen(false);
                     play();
                   }}
                   className="py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors"

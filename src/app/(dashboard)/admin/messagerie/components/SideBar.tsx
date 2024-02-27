@@ -7,7 +7,12 @@ import { useSession } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { HeaderSideBar } from "./HeaderSideBar";
 import { SearchGroup } from "./sidebar/searchGroup";
-export const SideBar = () => {
+
+interface SideBarProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const SideBar = ({ setOpen }: SideBarProps) => {
   const { play, playHover } = useButtonSounds();
   const [groups, setGroups] = useState<Group[]>([]);
   const { data: session } = useSession();
@@ -28,6 +33,7 @@ export const SideBar = () => {
       />
       <Divider />
       <SearchGroup
+      setOpen={setOpen}
         fetchGroups={fetchGroups}
         setGroups={setGroups}
         groups={groups}

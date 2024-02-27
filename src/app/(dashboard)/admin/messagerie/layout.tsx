@@ -38,7 +38,7 @@ export default function Layout({ children }: Props) {
           left: maxLg ? (open ? "0" : "-270px") : "24px",
         }}
       >
-        <SideBar />{" "}
+        <SideBar setOpen={setOpen} />{" "}
         <div
           className="absolute top-8 -right-12 p-3 bg-primary rounded-r-xl z-20 cursor-pointer lg:hidden"
           onClick={() => setOpen(!open)}
