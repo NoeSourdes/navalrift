@@ -58,6 +58,7 @@ export const SearchGroup = ({
     setCreatorGroupSelected,
     sockets,
   } = useAppContext();
+  const router = useRouter();
 
   useEffect(() => {
     if (user_id) {
@@ -124,6 +125,7 @@ export const SearchGroup = ({
     setRenameGroupe(false);
     onOpenChange(id_group, false);
     setLoading(false);
+    router.push("/admin/messagerie");
     fetchGroups();
   };
 
@@ -141,6 +143,7 @@ export const SearchGroup = ({
     setRenameGroupe(false);
     onOpenChange(id_group, false);
     setLoading(false);
+    router.push("/admin/messagerie");
     fetchGroups();
   };
 
@@ -153,7 +156,6 @@ export const SearchGroup = ({
   };
 
   // gestions des routes pour les groupes
-  const router = useRouter();
 
   const handlePushGroup = (id_group: string) => {
     router.push(`/admin/messagerie/${id_group}`);

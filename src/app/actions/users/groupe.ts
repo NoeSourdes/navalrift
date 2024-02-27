@@ -23,7 +23,7 @@ export const createGroupMessage = async (
     if (group) {
       return { success: false, message: "Le groupe existe déjà" };
     }
-    await prisma.group.create({
+    const newGroup = await prisma.group.create({
       data: {
         isCreator: name_user,
         name: name_group,
@@ -34,7 +34,11 @@ export const createGroupMessage = async (
         },
       },
     });
-    return { success: true, message: "Le groupe a bien été créé" };
+    return {
+      success: true,
+      message: "Le groupe a bien été créé",
+      id: newGroup.id,
+    };
   } catch (error) {
     if (error instanceof Error) {
       return { success: false, message: error.message };

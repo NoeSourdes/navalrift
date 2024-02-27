@@ -18,6 +18,7 @@ import {
 } from "@nextui-org/react";
 import { Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -25,9 +26,15 @@ interface AddGroupProps {
   groups: Group[];
   setGroups: (groups: Group[]) => void;
   fetchGroups: () => void;
+  mainButton?: boolean;
 }
 
-export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
+export const AddGroup = ({
+  groups,
+  setGroups,
+  fetchGroups,
+  mainButton,
+}: AddGroupProps) => {
   const { play, playHover } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [createGroupe, setCreateGroupe] = useState(false);
@@ -39,6 +46,7 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
   const { data: session } = useSession();
   const user_id = session?.user?.id ? session.user.id : "";
   const name_user = session?.user?.name ? session.user.name : "";
+  const router = useRouter();
 
   const handleCreateGroupe = async (onClose: () => void) => {
     if (!nameGroup) {
@@ -62,6 +70,7 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
       fetchGroups();
       setGroups(newGroups);
       setCreateGroupe(false);
+      router.push(`/admin/messagerie/${createGroupe.id}`);
     } else {
       toast.error(createGroupe.message);
     }
@@ -79,6 +88,7 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
     if (Join_group.success) {
       toast.success(Join_group.message);
       fetchGroups();
+      router.push(`/admin/messagerie/${codeGroup}`);
     } else {
       toast.error(Join_group.message);
     }
@@ -92,16 +102,28 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
           className="flex items-center gap-3"
           onClick={() => play()}
         >
-          <Button
-            size="sm"
-            onMouseEnter={() => playHover()}
-            isIconOnly
-            radius="full"
-            color="primary"
-            variant="faded"
-          >
-            <Plus />
-          </Button>
+          {mainButton ? (
+            <Button
+              size="sm"
+              onMouseEnter={() => playHover()}
+              radius="full"
+              color="primary"
+              variant="faded"
+            >
+              Ajouter un groupe
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              onMouseEnter={() => playHover()}
+              isIconOnly
+              radius="full"
+              color="primary"
+              variant="faded"
+            >
+              <Plus />
+            </Button>
+          )}
         </DropdownTrigger>
         <DropdownMenu aria-label="User Actions" variant="faded">
           <DropdownItem
@@ -154,7 +176,7 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
         }}
       >
         <ModalContent>
-          {(onClose) => (
+          {(onClose: any) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 {createGroupe ? "Créer un groupe" : "Rejoindre un groupe"}
@@ -169,12 +191,12 @@ export const AddGroup = ({ groups, setGroups, fetchGroups }: AddGroupProps) => {
                   {createGroupe ? (
                     <Input
                       placeholder="Entrez le nom du groupe"
-                      onChange={(e) => setNameGroup(e.target.value)}
+                      onChange={(e: any) => setNameGroup(e.target.value)}
                     />
                   ) : (
                     <Input
                       placeholder="Entrez le code du groupe"
-                      onChange={(e) => setCodeGroup(e.target.value)}
+                      onChange={(e: any) => setCodeGroup(e.target.value)}
                     />
                   )}
                 </div>

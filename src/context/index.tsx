@@ -1,22 +1,64 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const AppContext = createContext<any>(undefined);
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  let [isSelectedSound, setIsSelectedSound] = useState<boolean>(false);
-  let [isSelectedVibration, setIsSelectedVibration] = useState<boolean>(true);
-  let [isSelectedAnimation, setIsSelectedAnimation] = useState<boolean>(true);
-  let [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(false);
-  let [isSelectGroupe, setIsSelectGroupe] = useState<boolean>(false);
-  let [nameGroupeSelected, setNameGroupeSelected] = useState<string>("");
-  let [idGroupeSelected, setIdGroupeSelected] = useState<string>("");
-  let [creatorGroupSelected, setCreatorGroupSelected] = useState<string>("");
+  const [isSelectedSound, setIsSelectedSound] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("isSelectedSound") || "false")
+  );
+  const [isSelectedVibration, setIsSelectedVibration] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("isSelectedVibration") || "true")
+  );
+  const [isSelectedAnimation, setIsSelectedAnimation] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("isSelectedAnimation") || "true")
+  );
+  const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("isPlayingMusic") || "false")
+  );
+  const [isSelectGroupe, setIsSelectGroupe] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("isSelectGroupe") || "false")
+  );
+  const [nameGroupeSelected, setNameGroupeSelected] = useState<string>(
+    () => localStorage.getItem("nameGroupeSelected") || ""
+  );
+  const [idGroupeSelected, setIdGroupeSelected] = useState<string>(
+    () => localStorage.getItem("idGroupeSelected") || ""
+  );
+  const [creatorGroupSelected, setCreatorGroupSelected] = useState<string>(
+    () => localStorage.getItem("creatorGroupSelected") || ""
+  );
   const url_server = "https://navalrift-server.onrender.com";
-  // "https://navalrift-server.onrender.com";
   const [socket] = useState(() => io(url_server));
+
+  useEffect(() => {
+    localStorage.setItem("isSelectedSound", JSON.stringify(isSelectedSound));
+    localStorage.setItem(
+      "isSelectedVibration",
+      JSON.stringify(isSelectedVibration)
+    );
+    localStorage.setItem(
+      "isSelectedAnimation",
+      JSON.stringify(isSelectedAnimation)
+    );
+    localStorage.setItem("isPlayingMusic", JSON.stringify(isPlayingMusic));
+    localStorage.setItem("isSelectGroupe", JSON.stringify(isSelectGroupe));
+    localStorage.setItem("nameGroupeSelected", nameGroupeSelected);
+    localStorage.setItem("idGroupeSelected", idGroupeSelected);
+    localStorage.setItem("creatorGroupSelected", creatorGroupSelected);
+  }, [
+    isSelectedSound,
+    isSelectedVibration,
+    isSelectedAnimation,
+    isPlayingMusic,
+    isSelectGroupe,
+    nameGroupeSelected,
+    idGroupeSelected,
+    creatorGroupSelected,
+  ]);
+
   return (
     <AppContext.Provider
       value={{

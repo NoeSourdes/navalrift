@@ -151,6 +151,12 @@ export const ConversationComponent = ({
               className="w-full h-full bg-transparent focus:outline-none px-3 py-2 border-2 border-border rounded-[25px]"
               style={{ resize: "none" }}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage();
+                }
+              }}
               value={message}
             />
           </div>
