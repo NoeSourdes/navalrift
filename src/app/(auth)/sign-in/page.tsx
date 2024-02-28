@@ -15,11 +15,11 @@ export default function Page() {
     const params = new URLSearchParams(url.search);
   }
   return (
-    <div className="w-full relative">
+    <div className="w-full h-screen flex flex-col justify-between relative">
       <div>
         <NavBar />
       </div>
-      <div className="fixed top-20 left-0 right-0 lg:bottom-28 bottom-96 flex justify-center items-start max-lg:mt-24 max-sm:mt-5  lg:items-center max-w-7xl m-auto px-10">
+      <div className="lg:fixed top-20 left-0 right-0 lg:bottom-28 bottom-96 flex justify-center items-start max-lg:mt-24  lg:items-center max-w-7xl m-auto px-10">
         <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[550px] h-72 bg-primary rounded-full blur-[100px] z-10 max-lg:hidden"></div>
         <div className="relative flex lg:items-center max-lg:flex-col-reverse gap-10 lg:gap-16 z-20">
           <div className="relative overflow-hidden">
@@ -73,7 +73,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="w-full fixed bottom-0">
+      <div className="w-full mt-10">
         <div className="flex flex-col items-center justify-center pb-5">
           <div className="flex items-center">
             <Image
