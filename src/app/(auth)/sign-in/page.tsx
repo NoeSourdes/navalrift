@@ -15,7 +15,7 @@ export default function Page() {
     const params = new URLSearchParams(url.search);
   }
   return (
-    <div className="w-full h-screen flex flex-col justify-between relative ">
+    <div className="w-full h-screen flex flex-col justify-between relative">
       <div>
         <NavBar />
       </div>
