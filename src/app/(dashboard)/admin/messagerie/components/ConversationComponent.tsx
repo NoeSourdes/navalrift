@@ -13,6 +13,7 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { MoreVertical, SendHorizontal } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
@@ -34,6 +35,8 @@ interface MsgDataTypes {
   message: string;
   user_id: string;
   time: string;
+  name_user?: string;
+  name_group?: string;
 }
 
 export const ConversationComponent = ({
@@ -45,7 +48,8 @@ export const ConversationComponent = ({
   chat,
   setChat,
 }: ConversationComponentProps) => {
-  const { sockets } = useAppContext();
+  const { sockets, nameGroupeSelected } = useAppContext();
+  const { data: session } = useSession();
   const [message, setMessage] = useState<string>("");
   useEffect(() => {
     const loadMessages = async () => {
@@ -70,6 +74,8 @@ export const ConversationComponent = ({
         id_group,
         message,
         user_id,
+        name_user: session?.user?.name || "",
+        name_group: nameGroupeSelected,
         time:
           new Date(Date.now()).getHours() +
           ":" +
