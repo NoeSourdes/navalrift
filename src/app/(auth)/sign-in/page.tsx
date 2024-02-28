@@ -19,7 +19,7 @@ export default function Page() {
       <div>
         <NavBar />
       </div>
-      <div className="fixed top-20 left-0 right-0 lg:bottom-28 bottom-96 flex justify-center items-start max-lg:mt-24 lg:items-center max-w-7xl m-auto px-10">
+      <div className="fixed top-20 left-0 right-0 lg:bottom-28 bottom-96 flex justify-center items-start max-lg:mt-24 max-sm:mt-5  lg:items-center max-w-7xl m-auto px-10">
         <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[550px] h-72 bg-primary rounded-full blur-[100px] z-10 max-lg:hidden"></div>
         <div className="relative flex lg:items-center max-lg:flex-col-reverse gap-10 lg:gap-16 z-20">
           <div className="relative overflow-hidden">
@@ -66,7 +66,7 @@ export default function Page() {
                 variant="bordered"
                 size="lg"
               >
-                <FaGithub size={20} className="text-gray-400" />
+                <FaGithub className="text-gray-400 text-xl" />
                 avec GitHub
               </Button>
             </div>
