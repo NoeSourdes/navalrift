@@ -121,6 +121,11 @@ export const RenameGroupDB = async (name: string, id_group: string) => {
 
 export const DeleteGroupDB = async (id_group: string) => {
   try {
+    await prisma.message.deleteMany({
+      where: {
+        groupId: id_group,
+      },
+    });
     await prisma.group.delete({
       where: {
         id: id_group,
