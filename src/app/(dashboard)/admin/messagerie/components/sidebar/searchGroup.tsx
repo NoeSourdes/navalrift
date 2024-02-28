@@ -17,6 +17,7 @@ import {
 } from "@nextui-org/react";
 import { MoreHorizontal } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -161,20 +162,7 @@ export const SearchGroup = ({
     id_group: string,
     group_name: string,
     group_creator: string
-  ) => {
-    await setIsSelectGroupe(true);
-    await setNameGroupeSelected(group_name);
-    await setIdGroupeSelected(id_group);
-    await setCreatorGroupSelected(group_creator);
-    await handleJoinGroup(id_group);
-    await handlePushGroup(id_group);
-    await setOpen(false);
-    play();
-  };
-
-  const handlePushGroup = (id_group: string) => {
-    router.push(`/admin/messagerie/${id_group}`);
-  };
+  ) => {};
 
   return (
     <div>
@@ -198,9 +186,15 @@ export const SearchGroup = ({
               <>
                 <div
                   key={group.id}
-                  onClick={() =>
-                    handleClickGroup(group.id, group.name, group.isCreator)
-                  }
+                  onClick={() => {
+                    setIsSelectGroupe(true);
+                    setNameGroupeSelected(group.name);
+                    setIdGroupeSelected(group.id);
+                    setCreatorGroupSelected(group.isCreator);
+                    handleJoinGroup(group.id);
+                    setOpen(false);
+                    play();
+                  }}
                   className="py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors"
                   style={{
                     backgroundColor:
@@ -214,17 +208,19 @@ export const SearchGroup = ({
                   }}
                 >
                   <div className="flex items-center justify-between">
-                    <div>
-                      <div className="flex items-center text-gray-400 text-sm">
-                        <h5>Créateur : {group.isCreator}</h5>
+                    <Link href={`/admin/messagerie/${group.id}`}>
+                      <div className="">
+                        <div className="flex items-center text-gray-400 text-sm">
+                          <h5>Créateur : {group.isCreator}</h5>
+                        </div>
+                        <div
+                          key={group.id}
+                          className="flex items-center justify-between"
+                        >
+                          <p>{group.name}</p>
+                        </div>
                       </div>
-                      <div
-                        key={group.id}
-                        className="flex items-center justify-between"
-                      >
-                        <p>{group.name}</p>
-                      </div>
-                    </div>
+                    </Link>
                     {group.isCreator === session?.user?.name ? (
                       <Dropdown>
                         <DropdownTrigger>
