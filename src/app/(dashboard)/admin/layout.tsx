@@ -3,6 +3,7 @@
 import { useAppContext } from "@/context";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 import PageConnect from "./components/pageConnect";
 import PageNoConnect from "./components/pageNoConnect";
 
@@ -22,6 +23,7 @@ export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
     sockets.on("notification", (data: any) => {
       console.log(data.message);
+      toast(data.message);
     });
     return () => {
       sockets.off("notification");
