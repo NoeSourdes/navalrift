@@ -174,3 +174,12 @@ export const getUsersGroup = async (id_group: string) => {
   });
   return users;
 };
+
+export const getGroupsUser = async (id_user: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: id_user },
+    include: { groups: true },
+  });
+
+  return user?.groups;
+};

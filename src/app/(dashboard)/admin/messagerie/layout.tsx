@@ -32,15 +32,6 @@ export default function Layout({ children }: Props) {
     });
   }, []);
 
-  useEffect(() => {
-    sockets.on("notification", (data: any) => {
-      console.log(data.message);
-    });
-    return () => {
-      sockets.off("notification");
-    };
-  }, []);
-
   return (
     <div className="relative h-full w-full bg-blue-800/75 rounded-xl overflow-hidden">
       <div
