@@ -63,12 +63,6 @@ export const SearchGroup = ({
     sockets,
   } = useAppContext();
   const router = useRouter();
-  console.log(
-    isSelectGroupe,
-    idGroupeSelected,
-    nameGroupeSelected,
-    creatorGroupSelected
-  );
 
   useEffect(() => {
     if (user_id) {
