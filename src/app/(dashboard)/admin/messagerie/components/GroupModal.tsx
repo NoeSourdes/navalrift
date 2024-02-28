@@ -67,7 +67,7 @@ export const GroupModal = ({
       }}
     >
       <ModalContent>
-        {(onClose) => (
+        {(onClose: any) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
               {renameGroupe
@@ -88,7 +88,7 @@ export const GroupModal = ({
                 {renameGroupe ? (
                   <Input
                     placeholder="Entrez le nouveau nom du groupe"
-                    onChange={(e) => setNameGroup(e.target.value)}
+                    onChange={(e: any) => setNameGroup(e.target.value)}
                   />
                 ) : (
                   ""

@@ -22,7 +22,7 @@ export const CallToAction = () => {
           </h5>
         </div>
         <div className="w-full flex justify-center items-center">
-          <Link href="/sign-up">
+          <Link href="/sign-in">
             <Button
               size="lg"
               className="bg-gradient-to-tr from-blue-500 to-blue-800 text-white shadow-lg"

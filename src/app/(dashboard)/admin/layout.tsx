@@ -14,9 +14,11 @@ export default function Layout({ children }: LayoutProps) {
   const { sockets, setLien } = useAppContext();
   const { status } = useSession();
   const router = useRouter();
-  const url = new URL(window.location.href);
-  const urlModdif = url.pathname + url.search;
-  setLien(urlModdif);
+  if (typeof window !== "undefined") {
+    const url = new URL(window.location.href);
+    const urlModdif = url.pathname + url.search;
+    setLien(urlModdif);
+  }
 
   useEffect(() => {
     sockets.on("notification", (data: any) => {

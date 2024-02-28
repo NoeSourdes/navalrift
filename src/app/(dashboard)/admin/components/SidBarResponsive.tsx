@@ -192,7 +192,7 @@ export const SideBarResponsive = ({
         }}
       >
         <ModalContent>
-          {(onClose) => (
+          {(onClose: any) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <h3>Se Déconnecter</h3>

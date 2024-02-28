@@ -121,7 +121,7 @@ const ButtonSideBar: FC<ButtonSideBarProps> = ({
                           ? isSelectedVibration
                           : isSelectedAnimation
                       }
-                      onValueChange={(value) => {
+                      onValueChange={(value: any) => {
                         if (index === 0) {
                           setIsPlayingMusic(value);
                         } else if (index === 1) {

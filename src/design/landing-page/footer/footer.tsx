@@ -14,8 +14,11 @@ export const Footer = () => {
             <span className="text-primary">aventure épique</span> dans le monde
             de la <span className="text-primary">bataille navale</span> ?
           </h3>
-          <Link href="/sign-up">
-            <Button color="primary" size="lg">
+          <Link href="/sign-in">
+            <Button
+              size="lg"
+              className="bg-gradient-to-tr from-blue-500 to-blue-800 text-white shadow-lg"
+            >
               Commencer maintenant
             </Button>
           </Link>

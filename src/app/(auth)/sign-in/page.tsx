@@ -9,10 +9,11 @@ import { FaGithub } from "react-icons/fa6";
 import { NavBar } from "../components/navBar";
 
 export default function Page() {
-  const url = new URL(window.location.href);
-  const params = new URLSearchParams(url.search);
-  const token = params.get("token");
   const { lien } = useAppContext();
+  if (typeof window !== "undefined") {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+  }
   return (
     <div className="w-full relative">
       <div>
