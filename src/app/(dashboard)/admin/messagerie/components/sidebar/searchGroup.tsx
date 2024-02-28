@@ -153,6 +153,12 @@ export const SearchGroup = ({
 
   // partie de la gestion des sockets pour les groupes
 
+  const handleJoinGroup = async (id_group: string) => {
+    if (id_group) {
+      await sockets.emit("join_conversation", id_group);
+    }
+  };
+
   // gestions des routes pour les groupes
 
   return (
@@ -182,6 +188,7 @@ export const SearchGroup = ({
                     setNameGroupeSelected(group.name);
                     setIdGroupeSelected(group.id);
                     setCreatorGroupSelected(group.isCreator);
+                    handleJoinGroup(group.id);
                     setOpen(false);
                     play();
                   }}
