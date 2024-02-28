@@ -2,24 +2,22 @@
 
 import { useAppContext } from "@/context";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import PageConnect from "./components/pageConnect";
-import PageNoConnect from "./components/pageNoConnect";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { sockets } = useAppContext();
+  const { sockets, setLien } = useAppContext();
   const { status } = useSession();
-  const [lien, setLien] = useState<string>("");
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setLien(window.location.href);
-    }
-  }, []);
+  const router = useRouter();
+  const url = new URL(window.location.href);
+  const urlModdif = url.pathname + url.search;
+  setLien(urlModdif);
+
   useEffect(() => {
     sockets.on("notification", (data: any) => {
       console.log(data.message);
@@ -29,15 +27,13 @@ export default function Layout({ children }: LayoutProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [status, router]);
+
   return (
-    <>
-      {status === "authenticated" ? (
-        <PageConnect>{children}</PageConnect>
-      ) : (
-        <div className=" overflow-y-auto">
-          <PageNoConnect lien={lien}>{children}</PageNoConnect>
-        </div>
-      )}
-    </>
+    <>{status === "authenticated" && <PageConnect>{children}</PageConnect>}</>
   );
 }

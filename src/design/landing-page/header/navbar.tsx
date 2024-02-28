@@ -38,7 +38,6 @@ export const NavbarComponent = ({
     "Fonctionnalités",
     "Jeux",
     "Connexion",
-    "Inscription",
     "Termes",
     "Confidentialité",
     "Cookies",
@@ -103,8 +102,8 @@ export const NavbarComponent = ({
           <Link href="/sign-in">Connexion</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="/sign-up" variant="flat">
-            Inscription
+          <Button as={Link} color="primary" href="/sign-in" variant="flat">
+            Se connecter
           </Button>
         </NavbarItem>
       </NavbarContent>
