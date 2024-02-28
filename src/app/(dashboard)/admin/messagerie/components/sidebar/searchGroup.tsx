@@ -159,9 +159,9 @@ export const SearchGroup = ({
 
   // partie de la gestion des sockets pour les groupes
 
-  const handleJoinGroup = (id_group: string) => {
+  const handleJoinGroup = async (id_group: string) => {
     if (id_group) {
-      sockets.emit("join_conversation", id_group);
+      await sockets.emit("join_conversation", id_group);
     }
   };
 
