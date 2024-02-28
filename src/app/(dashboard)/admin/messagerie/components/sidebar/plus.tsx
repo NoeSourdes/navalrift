@@ -70,7 +70,6 @@ export const AddGroup = ({
       fetchGroups();
       setGroups(newGroups);
       setCreateGroupe(false);
-      router.push(`/admin/messagerie/${createGroupe.id}`);
     } else {
       toast.error(createGroupe.message);
     }
@@ -88,7 +87,6 @@ export const AddGroup = ({
     if (Join_group.success) {
       toast.success(Join_group.message);
       fetchGroups();
-      router.push(`/admin/messagerie/${codeGroup}`);
     } else {
       toast.error(Join_group.message);
     }
