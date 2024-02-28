@@ -53,13 +53,22 @@ export const SearchGroup = ({
   const user_id = session?.user?.id ? session.user.id : "";
   const {
     setIsSelectGroupe,
+    isSelectGroupe,
     setNameGroupeSelected,
     nameGroupeSelected,
     setIdGroupeSelected,
+    idGroupeSelected,
     setCreatorGroupSelected,
+    creatorGroupSelected,
     sockets,
   } = useAppContext();
   const router = useRouter();
+  console.log(
+    isSelectGroupe,
+    idGroupeSelected,
+    nameGroupeSelected,
+    creatorGroupSelected
+  );
 
   useEffect(() => {
     if (user_id) {
@@ -157,12 +166,6 @@ export const SearchGroup = ({
   };
 
   // gestions des routes pour les groupes
-
-  const handleClickGroup = async (
-    id_group: string,
-    group_name: string,
-    group_creator: string
-  ) => {};
 
   return (
     <div>
