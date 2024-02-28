@@ -63,6 +63,7 @@ model Group {
 model Message {
   id        String    @id @default(cuid())
   content   String
+  image     String?
   createdAt DateTime  @default(now())
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String

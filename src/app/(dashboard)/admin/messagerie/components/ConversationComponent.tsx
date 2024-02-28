@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  createMessage,
+  getMessagesByGroupId,
+} from "@/app/actions/users/sendMessage";
 import { useAppContext } from "@/context";
 import {
   Button,
@@ -43,6 +47,21 @@ export const ConversationComponent = ({
 }: ConversationComponentProps) => {
   const { sockets } = useAppContext();
   const [message, setMessage] = useState<string>("");
+  useEffect(() => {
+    const loadMessages = async () => {
+      const messages = await getMessagesByGroupId(id_group);
+      const adaptedMessages = messages.map((msg) => ({
+        img: msg.image || "",
+        id_group: msg.groupId,
+        message: msg.content,
+        user_id: msg.authorId,
+        time: msg.createdAt.getHours() + ":" + msg.createdAt.getMinutes(),
+      }));
+      setChat(adaptedMessages);
+    };
+
+    loadMessages();
+  }, [id_group, setChat]);
 
   const sendMessage = async () => {
     if (message) {
@@ -59,6 +78,7 @@ export const ConversationComponent = ({
       await sockets.emit("send_msg", msgData);
       setChat((pre) => [...pre, msgData]);
       setMessage("");
+      await createMessage(msgData);
     }
   };
   const messagesEndRef = useRef<HTMLDivElement>(null);
