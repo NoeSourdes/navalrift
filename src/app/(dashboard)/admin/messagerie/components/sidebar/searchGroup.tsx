@@ -157,6 +157,21 @@ export const SearchGroup = ({
 
   // gestions des routes pour les groupes
 
+  const handleClickGroup = async (
+    id_group: string,
+    group_name: string,
+    group_creator: string
+  ) => {
+    await setIsSelectGroupe(true);
+    await setNameGroupeSelected(group_name);
+    await setIdGroupeSelected(id_group);
+    await setCreatorGroupSelected(group_creator);
+    await handleJoinGroup(id_group);
+    await handlePushGroup(id_group);
+    await setOpen(false);
+    play();
+  };
+
   const handlePushGroup = (id_group: string) => {
     router.push(`/admin/messagerie/${id_group}`);
   };
@@ -183,16 +198,9 @@ export const SearchGroup = ({
               <>
                 <div
                   key={group.id}
-                  onClick={() => {
-                    setIsSelectGroupe(true);
-                    setNameGroupeSelected(group.name);
-                    setIdGroupeSelected(group.id);
-                    setCreatorGroupSelected(group.isCreator);
-                    handleJoinGroup(group.id);
-                    handlePushGroup(group.id);
-                    setOpen(false);
-                    play();
-                  }}
+                  onClick={() =>
+                    handleClickGroup(group.id, group.name, group.isCreator)
+                  }
                   className="py-2 px-5 cursor-pointer hover:bg-black/25 transition-colors"
                   style={{
                     backgroundColor:
