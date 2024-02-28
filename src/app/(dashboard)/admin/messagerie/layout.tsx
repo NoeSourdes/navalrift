@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppContext } from "@/context";
 import { ChevronRight } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ interface Props {
 export default function Layout({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
+  const { sockets } = useAppContext();
 
   useEffect(() => {
     if (/^\/admin\/messagerie\/.+/i.test(pathname)) {
@@ -28,6 +30,15 @@ export default function Layout({ children }: Props) {
     media.addEventListener("change", (e) => {
       setMaxLg(e.matches);
     });
+  }, []);
+
+  useEffect(() => {
+    sockets.on("notification", (data: any) => {
+      console.log(data.message);
+    });
+    return () => {
+      sockets.off("notification");
+    };
   }, []);
 
   return (
