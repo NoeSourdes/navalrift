@@ -60,7 +60,7 @@ export default function Layout({ children }: Props) {
       >
         <SideBar setOpen={setOpen} />{" "}
         <div
-          className="absolute top-8 -right-12 p-3 bg-primary rounded-r-xl z-20 cursor-pointer lg:hidden"
+          className="absolute top-10 -right-12 p-3 bg-primary rounded-r-xl z-20 cursor-pointer lg:hidden"
           onClick={() => setOpen(!open)}
         >
           <div className={`${open ? "rotate-180" : ""} transition-all`}>
