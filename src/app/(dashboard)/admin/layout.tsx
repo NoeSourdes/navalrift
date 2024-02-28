@@ -23,7 +23,6 @@ export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
     sockets.on("notification", (data: any) => {
       console.log(data.message);
-      toast(data.message);
     });
     return () => {
       sockets.off("notification");
