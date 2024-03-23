@@ -131,3 +131,27 @@ body {
   height: 60%;
   background: linear-gradient(to top, black, transparent);
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 384px;
+  height: 384px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 38.4px;
+  width: 38.4px;
+}
+
+.border-green {
+  border-color: green;
+}
+
+.border-black {
+  border-color: black;
+}

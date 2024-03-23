@@ -15,7 +15,7 @@ export default function BatailleAmi() {
     }, 100);
   }, []);
   return (
-    <div className="relative w-full h-full bg-blue-800/75 rounded-xl p-6">
+    <div className="relative w-full h-full bg-blue-800/75 rounded-xl lg:p-6 p-3">
       <Button
         variant="faded"
         color="primary"

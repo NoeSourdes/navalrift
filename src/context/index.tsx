@@ -14,6 +14,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   let [nameGroupeSelected, setNameGroupeSelected] = useState<string>("");
   let [idGroupeSelected, setIdGroupeSelected] = useState<string>("");
   let [creatorGroupSelected, setCreatorGroupSelected] = useState<string>("");
+  const [sizeShipClicked, setSizeShipClicked] = useState<number>(0);
+  const [rotateShipClicked, setRotateShipClicked] = useState<boolean>(false);
   let [lien, setLien] = useState<string>("");
   const url_server = "https://navalrift-server.onrender.com";
   // "https://navalrift-server.onrender.com";
@@ -41,6 +43,10 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         sockets,
         lien,
         setLien,
+        sizeShipClicked,
+        setSizeShipClicked,
+        rotateShipClicked,
+        setRotateShipClicked,
       }}
     >
       {children}

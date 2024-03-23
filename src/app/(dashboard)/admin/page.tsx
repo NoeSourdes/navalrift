@@ -21,8 +21,8 @@ export default function Page() {
   const router = useRouter();
 
   return (
-    <div className="h-full w-full flex flex-col gap-6">
-      <div className="relative h-full w-full bg-blue-800/75 rounded-xl flex max-md:flex-col items-center lg:justify-center gap-6 p-6 overflow-y-scroll">
+    <div className="h-full w-full flex flex-col lg:gap-6 gap-3">
+      <div className="relative h-full w-full bg-blue-800/75 rounded-xl flex max-md:flex-col items-center lg:justify-center lg:gap-6 gap-3 lg:p-6 p-3 overflow-y-scroll">
         <div className="absolute sm:top-12 top-5 left-1/2 text-sm text-gray-300 -translate-x-1/2 h-15 px-3 py-2 rounded-full bg-blue-900 border-2 border-blue-800 z-20 shadow-xl">
           Faites votre choix
         </div>
