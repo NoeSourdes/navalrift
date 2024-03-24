@@ -16,9 +16,9 @@ export default function BatailleIa() {
       >
         Retour
       </Button>
-      <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-y-auto p-2 max-md:pt-16">
+      <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center rounded-lg overflow-hidden p-2 max-md:pt-16">
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-        <div className="relative flex flex-col items-center justify-center gap-10 z-20">
+        <div className="relative flex flex-col gap-10 z-20 overflow-y-auto py-10">
           <div className="text-center space-y-3">
             <h1 className="text-4xl font-bold max-md:text-3xl">
               Bataile contre <span className="text-primary">l&apos;IA</span>
@@ -32,13 +32,15 @@ export default function BatailleIa() {
             <div className="w-96 h-96 border-border bg-blue-800/75 rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
               <Grid />
             </div>
-            <Button color="primary" variant="faded">
-              Regénérer la grille
-            </Button>
+            <div className="flex flex-col space-y-10">
+              <Button color="primary" variant="faded">
+                Regénérer la grille
+              </Button>
+              <Button color="primary" size="lg">
+                Affronter l&apos;IA
+              </Button>
+            </div>
           </div>
-          <Button color="primary" size="lg">
-            Affronter l&apos;IA
-          </Button>
         </div>
       </div>
     </div>
