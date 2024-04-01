@@ -14,22 +14,32 @@ export function useButtonSounds() {
     loop: true,
     volume: 0.07,
   });
+  const [battleMusic, { stop: stopBattleMusic }] = useSound(
+    "/sound/battle.mp3",
+    {
+      loop: true,
+      volume: 0.1,
+    }
+  );
 
   let sounds = {
     play: () => {},
     playHover: () => {},
     playSwitch: () => {},
     playMusic: () => {},
+    battleMusic: () => {},
   };
 
   if (isSelectedSound) {
     sounds.play = play;
     sounds.playHover = playHover;
     sounds.playSwitch = playSwitch;
+    sounds.battleMusic = battleMusic;
   } else {
     stop();
     stopHover();
     stopSwitch();
+    stopBattleMusic();
   }
 
   if (isPlayingMusic) {

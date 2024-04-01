@@ -10,6 +10,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   let [isSelectedVibration, setIsSelectedVibration] = useState<boolean>(true);
   let [isSelectedAnimation, setIsSelectedAnimation] = useState<boolean>(true);
   let [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(false);
+  let [isPlayingMusicBattle, setIsPlayingMusicBattle] =
+    useState<boolean>(false);
   let [isSelectGroupe, setIsSelectGroupe] = useState<boolean>(false);
   let [nameGroupeSelected, setNameGroupeSelected] = useState<string>("");
   let [idGroupeSelected, setIdGroupeSelected] = useState<string>("");
@@ -47,6 +49,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         setSizeShipClicked,
         rotateShipClicked,
         setRotateShipClicked,
+        isPlayingMusicBattle,
+        setIsPlayingMusicBattle,
       }}
     >
       {children}

@@ -1,3 +1,4 @@
+import { useAppContext } from "@/context";
 import {
   Button,
   Modal,
@@ -10,6 +11,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { RotateCcw, RotateCw } from "lucide-react";
+import { useState } from "react";
 import { Grid } from "../../components/bataille/Grid";
 
 interface ChooseShipProps {
@@ -22,6 +24,9 @@ interface ChooseShipProps {
   setLapTime: (time: number) => void;
   setPlayerTime: (time: number) => void;
   setHowStart: (start: string) => void;
+  setShipPlayer: (ship: any) => void;
+  setShipAi: (ship: any) => void;
+  shipAi: any;
 }
 
 export const ChooseShip = ({
@@ -34,27 +39,32 @@ export const ChooseShip = ({
   setLapTime,
   setPlayerTime,
   setHowStart,
+  setShipPlayer,
+  setShipAi,
+  shipAi,
 }: ChooseShipProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { setIsPlayingMusic, setIsPlayingMusicBattle } = useAppContext();
   const TimeForLap = [
     { label: "10 secondes", value: "10" },
     { label: "15 secondes", value: "15" },
     { label: "30 secondes", value: "30" },
     { label: "40 secondes", value: "40" },
-    { label: "Illimité", value: "illimite" },
   ];
   const TimeForPlayer = [
-    { label: "1 minutes", value: "1" },
-    { label: "2 minutes", value: "2" },
-    { label: "3 minutes", value: "3" },
-    { label: "5 minutes", value: "5" },
-    { label: "Illimité", value: "illimite" },
+    { label: "1 minutes", value: "60" },
+    { label: "2 minutes", value: "120" },
+    { label: "3 minutes", value: "180" },
+    { label: "5 minutes", value: "300" },
   ];
   const WhoStart = [
     { label: "Aléatoire", value: "aleatoire" },
-    { label: "Moi", value: "moi" },
-    { label: "IA", value: "ia" },
+    { label: "Moi", value: "player" },
+    { label: "IA", value: "ai" },
   ];
+
+  const [touchAi, setTouchAi] = useState<Record<string, boolean>>({});
+  const [numberShipTouchAi, setNumberShipTouchAi] = useState<number>(0);
 
   return (
     <>
@@ -72,7 +82,11 @@ export const ChooseShip = ({
           </div>
           <div className="flex items-center gap-6 flex-col">
             <div className="w-96 h-96 border-border bg-blue-800/75 rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
-              <Grid ship={shipHistory[currentShipIndex]} />
+              <Grid
+                ship={shipHistory[currentShipIndex]}
+                touchedAi={touchAi}
+                setNumberShipTouchAi={setNumberShipTouchAi}
+              />
             </div>
             <div className="flex flex-col space-y-8">
               <div className="flex gap-5">
@@ -163,7 +177,7 @@ export const ChooseShip = ({
                   <Select
                     items={TimeForPlayer}
                     label="Temps par joueur"
-                    defaultSelectedKeys={["3"]}
+                    defaultSelectedKeys={["180"]}
                     placeholder="Sélectionnez le temps par joueur"
                     onChange={(value: any) =>
                       setPlayerTime(parseInt(value.target.value))
@@ -197,7 +211,11 @@ export const ChooseShip = ({
                 <Button
                   color="primary"
                   onPress={() => {
+                    setShipPlayer(shipHistory[currentShipIndex]);
+                    setShipAi(shipAi);
                     setStep(1);
+                    setIsPlayingMusic(false);
+                    setIsPlayingMusicBattle(true);
                     onClose();
                   }}
                 >
