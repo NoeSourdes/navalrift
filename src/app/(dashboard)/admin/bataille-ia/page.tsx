@@ -53,6 +53,7 @@ export default function BatailleIa() {
   const [touchShipAi, setTouchShipAi] = useState<Record<string, boolean>>(
     JSON.parse(localStorage.getItem("touchShipAi") || "{}")
   );
+  const [winner, setWinner] = useState("");
 
   useEffect(() => {
     localStorage.setItem("step", step.toString());
@@ -91,13 +92,13 @@ export default function BatailleIa() {
 
   useEffect(() => {
     if (numbershipTouchPlayer === shipPlayer.length) {
-      console.log("Player win");
+      setWinner("player");
     }
   }, [numbershipTouchPlayer, shipPlayer]);
 
   useEffect(() => {
     if (numbershipTouchAi === shipAi.length) {
-      console.log("Ai win");
+      setWinner("ai");
     }
   }, [numbershipTouchAi, shipAi]);
 
@@ -230,6 +231,11 @@ export default function BatailleIa() {
             </ModalContent>
           </Modal>
           <Combat
+            setHowStart={setHowStart}
+            setTimeLapse={setTimeLapse}
+            setTimePlayer={setTimePlayer}
+            setWinner={setWinner}
+            winner={winner}
             touchShipPlayer={touchShipPlayer}
             setTouchShipPlayer={setTouchShipPlayer}
             touchShipAi={touchShipAi}

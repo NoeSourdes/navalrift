@@ -1,5 +1,14 @@
 "use client";
 
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@nextui-org/react";
 import { RotateCw } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -25,6 +34,11 @@ interface CombatProps {
   setTouchShipPlayer: (touch: Record<string, boolean>) => void;
   touchShipAi: Record<string, boolean>;
   setTouchShipAi: (touch: Record<string, boolean>) => void;
+  setWinner: (winner: string) => void;
+  winner: string;
+  setHowStart: (howStart: string) => void;
+  setTimeLapse: (timeLapse: number) => void;
+  setTimePlayer: (timePlayer: number) => void;
 }
 
 export const Combat = ({
@@ -42,6 +56,11 @@ export const Combat = ({
   setTouchShipPlayer,
   touchShipAi,
   setTouchShipAi,
+  setWinner,
+  setTimeLapse,
+  setTimePlayer,
+  setHowStart,
+  winner,
 }: CombatProps) => {
   const { data: session } = useSession();
   const [loader, setLoader] = useState(true);
@@ -58,6 +77,7 @@ export const Combat = ({
 
   const [aiTouchShip, setAiTouchShip] = useState<number>(0);
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   useEffect(() => {
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
   }, [currentPlayer]);
@@ -81,14 +101,17 @@ export const Combat = ({
       setLoader(false);
     }, 1000);
     playTurn();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [howStart]);
 
   useEffect(() => {
     playTurn();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coordonnees, currentPlayer]);
 
   useEffect(() => {
     playTurn();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aiTouchShip]);
 
   const playTurn = () => {
@@ -206,6 +229,33 @@ export const Combat = ({
     }
   }, [currentPlayer]);
 
+  const [lapse, setLapse] = useState(0);
+  useEffect(() => {
+    setLapse(0);
+    if (currentPlayer === "player") {
+      const intervalId = setInterval(() => {
+        setLapse((prevLapse) => (prevLapse < 100 ? prevLapse + 1 : 100));
+      }, (timeLapse / 100) * 1000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [currentPlayer, timeLapse]);
+
+  useEffect(() => {
+    if (lapse === 100) {
+      setWinner("ai");
+    }
+  }, [lapse]);
+
+  useEffect(() => {
+    if (durationPlayer - playerTime === 0) {
+      setWinner("ai");
+    }
+    if (durationAi - timeAi === 0) {
+      setWinner("player");
+    }
+  }, [durationAi, durationPlayer, playerTime, timeAi]);
+
   return (
     <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center rounded-lg overflow-hidden p-2 max-md:pt-16">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
@@ -314,11 +364,17 @@ export const Combat = ({
           </div>
           <div className="flex flex-col gap-3">
             <div
-              className={`w-96 h-10 rounded-xl flex items-center justify-center transition-all ${
-                currentPlayer === "player" ? "bg-primary" : "bg-blue-800/75"
-              }`}
+              className={`relative w-96 h-10 rounded-xl flex items-center justify-center transition-all overflow-hidden bg-blue-800/75`}
             >
-              <span className="font-bold text-xl transition-all">
+              <div
+                className="absolute inset-0 bg-primary z-10"
+                style={{
+                  opacity: currentPlayer === "player" && winner === "" ? 1 : 0,
+                  transform: `translateX(-${lapse}%)`,
+                  transition: "transform 1s ease",
+                }}
+              ></div>
+              <span className="relative font-bold text-xl transition-all z-20">
                 {currentPlayer === "player" && "Attaquer votre adversaire"}
                 {currentPlayer === "ai" && "A l'IA de jouer"}
               </span>
@@ -350,6 +406,59 @@ export const Combat = ({
           </div>
         </div>
       </div>
+      <Modal
+        backdrop="blur"
+        isDismissable={false}
+        isOpen={winner !== ""}
+        onOpenChange={onOpenChange}
+        hideCloseButton={true}
+      >
+        <ModalContent>
+          {(onClose: any) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <h3 className="text-2xl font-bold">Fin de la partie</h3>
+                <h4 className="text-lg">
+                  {winner === "player" && "Vous avez gagné"}
+                  {winner === "ai" && "L'IA a gagné"}
+                </h4>
+              </ModalHeader>
+              <ModalBody>
+                <p>La partie est terminée</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  className="w-full"
+                  color="primary"
+                  onPress={() => {
+                    setStep(0);
+                    onClose();
+                    setWinner("");
+                    localStorage.removeItem("howStart");
+                    localStorage.removeItem("timeLapse");
+                    localStorage.removeItem("timePlayer");
+                    localStorage.removeItem("touchShipPlayer");
+                    localStorage.removeItem("touchShipAi");
+                    localStorage.removeItem("shipAi");
+                    localStorage.removeItem("shipPlayer");
+                    localStorage.removeItem("numberShipTouchPlayer");
+                    localStorage.removeItem("numberShipTouchAi");
+                    setHowStart("aleatoire");
+                    setTimeLapse(40);
+                    setTimePlayer(180);
+                    setNumberShipTouchPlayer(0);
+                    setNumberShipTouchAi(0);
+                    setTouchShipPlayer({});
+                    setTouchShipAi({});
+                  }}
+                >
+                  Retour au menu
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
