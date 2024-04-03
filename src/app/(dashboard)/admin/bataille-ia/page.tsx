@@ -39,15 +39,43 @@ export default function BatailleIa() {
   const [timePlayer, setTimePlayer] = useState(
     Number(localStorage.getItem("timePlayer")) || 180
   );
-  const [numbershipTouchPlayer, setNumberShipTouchPlayer] = useState<number>(0);
+  const [numbershipTouchPlayer, setNumberShipTouchPlayer] = useState<number>(
+    Number(localStorage.getItem("touchShipPlayer")) || 0
+  );
 
-  const [numbershipTouchAi, setNumberShipTouchAi] = useState<number>(0);
+  const [numbershipTouchAi, setNumberShipTouchAi] = useState<number>(
+    Number(localStorage.getItem("touchShipAi")) || 0
+  );
+
+  const [touchShipPlayer, setTouchShipPlayer] = useState<
+    Record<string, boolean>
+  >(JSON.parse(localStorage.getItem("touchShipPlayer") || "{}"));
+  const [touchShipAi, setTouchShipAi] = useState<Record<string, boolean>>(
+    JSON.parse(localStorage.getItem("touchShipAi") || "{}")
+  );
 
   useEffect(() => {
     localStorage.setItem("step", step.toString());
     localStorage.setItem("shipPlayer", JSON.stringify(shipPlayer));
     localStorage.setItem("shipAi", JSON.stringify(shipAi));
-  }, [step, shipAi, shipPlayer]);
+    localStorage.setItem("touchShipPlayer", numbershipTouchPlayer.toString());
+    localStorage.setItem("touchShipAi", numbershipTouchAi.toString());
+    localStorage.setItem(
+      "numberShipTouchPlayer",
+      numbershipTouchPlayer.toString()
+    );
+    localStorage.setItem("numberShipTouchAi", numbershipTouchAi.toString());
+    localStorage.setItem("touchShipPlayer", JSON.stringify(touchShipPlayer));
+    localStorage.setItem("touchShipAi", JSON.stringify(touchShipAi));
+  }, [
+    step,
+    shipAi,
+    shipPlayer,
+    numbershipTouchPlayer,
+    numbershipTouchAi,
+    touchShipAi,
+    touchShipPlayer,
+  ]);
 
   useEffect(() => {
     localStorage.setItem("timeLapse", timeLapse.toString());
@@ -181,9 +209,17 @@ export default function BatailleIa() {
                         localStorage.removeItem("timePlayer");
                         localStorage.removeItem("touchShipPlayer");
                         localStorage.removeItem("touchShipAi");
+                        localStorage.removeItem("shipAi");
+                        localStorage.removeItem("shipPlayer");
+                        localStorage.removeItem("numberShipTouchPlayer");
+                        localStorage.removeItem("numberShipTouchAi");
                         setHowStart("aleatoire");
                         setTimeLapse(40);
                         setTimePlayer(180);
+                        setNumberShipTouchPlayer(0);
+                        setNumberShipTouchAi(0);
+                        setTouchShipPlayer({});
+                        setTouchShipAi({});
                       }}
                     >
                       Abandonner
@@ -194,6 +230,10 @@ export default function BatailleIa() {
             </ModalContent>
           </Modal>
           <Combat
+            touchShipPlayer={touchShipPlayer}
+            setTouchShipPlayer={setTouchShipPlayer}
+            touchShipAi={touchShipAi}
+            setTouchShipAi={setTouchShipAi}
             numberShipTouchAi={numbershipTouchAi}
             numberShipTouchPlayer={numbershipTouchPlayer}
             setNumberShipTouchPlayer={setNumberShipTouchPlayer}

@@ -1,21 +1,73 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-interface PropsGrid {
-  ship: any;
-  touchedAi: Record<string, boolean>;
-  setNumberShipTouchAi: (number: number) => void;
+interface Ship {
+  size: number;
+  direction: string;
+  position: [number, number];
 }
 
-export const Grid = ({ ship, touchedAi, setNumberShipTouchAi }: PropsGrid) => {
+interface PropsGrid {
+  ship: Ship[];
+  touchedAi: Record<string, boolean>;
+  setNumberShipTouchAi: (number: number) => void;
+  setCoordShipAroundAi: (coord: [number, number][]) => void;
+  numberShipTouchAi: number;
+}
+
+export const Grid = ({
+  ship,
+  touchedAi,
+  setNumberShipTouchAi,
+  setCoordShipAroundAi,
+  numberShipTouchAi,
+}: PropsGrid) => {
   const rows = new Array(10).fill(null);
   const cols = new Array(10).fill(null);
-  const [shipTouchFull, setShipTouchFull] = useState<{ [key: number]: number }>(
-    {}
-  );
   const [coordShipTouch, setCoordShipTouch] = useState<
     { coords: string[]; size: number }[]
   >([]);
+
+  useEffect(() => {
+    ship.forEach((ship: Ship) => {
+      let allHit = true;
+      const { size, direction, position } = ship;
+      const [startRow, startCol] = position;
+      let currentShipCoords: string[] = [];
+
+      for (let i = 0; i < size; i++) {
+        const coord =
+          direction === "horizontal"
+            ? `${startRow},${startCol + i}`
+            : `${startRow + i},${startCol}`;
+
+        currentShipCoords.push(coord);
+
+        if (!(coord in touchedAi) || !touchedAi[coord]) {
+          allHit = false;
+          break;
+        }
+      }
+
+      if (allHit) {
+        setCoordShipTouch((prevState) => {
+          const doesExist = prevState.some((item) =>
+            arraysAreEqual(item.coords, currentShipCoords)
+          );
+          if (!doesExist) {
+            return [...prevState, { coords: currentShipCoords, size: size }];
+          }
+          return prevState;
+        });
+        setNumberShipTouchAi(coordShipTouch.length);
+      }
+    });
+  }, [touchedAi, ship, setNumberShipTouchAi, coordShipTouch]);
+
+  function arraysAreEqual(a: any[], b: any[]) {
+    return a.length === b.length && a.every((val, index) => val === b[index]);
+  }
+
   const isShipPosition = (rowIndex: number, colIndex: number) => {
     for (let s = 0; s < ship.length; s++) {
       for (let i = 0; i < ship[s].size; i++) {
@@ -38,77 +90,13 @@ export const Grid = ({ ship, touchedAi, setNumberShipTouchAi }: PropsGrid) => {
     }
     return false;
   };
+
   const getColorClass = (coord: string) => {
-    if (touchedAi)
-      if (coord in touchedAi) {
-        if (touchedAi[coord]) {
-          return "bg-primary";
-        } else {
-          return "bg-error";
-        }
-      }
+    if (touchedAi && coord in touchedAi) {
+      return touchedAi[coord] ? "bg-primary" : "bg-error";
+    }
     return "bg-border";
   };
-
-  const getColorClassShip = (coord: string) => {
-    if (touchedAi)
-      if (coord in touchedAi) {
-        if (touchedAi[coord]) {
-          return "bg-primary";
-        } else {
-          return "bg-error";
-        }
-      }
-    return "";
-  };
-
-  interface Ship {
-    size: number;
-    direction: string;
-    position: [number, number];
-    id: number;
-  }
-  const isShipFullyTouched = (ship: Ship) => {
-    for (let i = 0; i < ship.size; i++) {
-      let coord =
-        ship.direction === "horizontal"
-          ? `${ship.position[0]},${ship.position[1] + i}`
-          : `${ship.position[0] + i},${ship.position[1]}`;
-
-      if (!(coord in touchedAi && touchedAi[coord])) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    const newCoordShipTouch: { coords: string[]; size: number }[] = [];
-    ship.forEach((s: Ship) => {
-      if (isShipFullyTouched(s)) {
-        setShipTouchFull((prevState) => {
-          const newState = { ...prevState };
-          if (!newState[s.id]) {
-            newState[s.id] = s.size;
-          }
-          return newState;
-        });
-        const shipCoords = [];
-        for (let i = 0; i < s.size; i++) {
-          let coord =
-            s.direction === "horizontal"
-              ? `${s.position[0]},${s.position[1] + i}`
-              : `${s.position[0] + i},${s.position[1]}`;
-          shipCoords.push(coord);
-        }
-        newCoordShipTouch.push({ coords: shipCoords, size: s.size });
-      }
-    });
-
-    setCoordShipTouch(newCoordShipTouch);
-
-    setNumberShipTouchAi(Object.keys(shipTouchFull).length);
-  }, [touchedAi]);
 
   return (
     <div>
@@ -117,15 +105,15 @@ export const Grid = ({ ship, touchedAi, setNumberShipTouchAi }: PropsGrid) => {
           {cols.map((_, colIndex) => (
             <div
               key={colIndex}
-              className={`w-[38.4px] h-[38.4px] flex items-center justify-center max-sm:w-8 max-sm:h-8 ${
+              className={`w-[38.4px] h-[38.4px] flex items-center justify-center max-sm:w-8 max-sm:h-8 rounded-[9px] ${
                 isShipPosition(rowIndex, colIndex) === 5
-                  ? "bg-warning rounded-[7px]"
+                  ? "bg-warning"
                   : isShipPosition(rowIndex, colIndex) === 4
-                  ? "bg-success rounded-[7px]"
+                  ? "bg-success"
                   : isShipPosition(rowIndex, colIndex) === 3
-                  ? "bg-secondary rounded-[7px]"
+                  ? "bg-secondary"
                   : isShipPosition(rowIndex, colIndex) === 2
-                  ? "bg-primary rounded-[7px]"
+                  ? "bg-primary"
                   : ""
               }`}
             >

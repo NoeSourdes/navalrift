@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Timecode from "react-timecode";
 import Timer from "react-timer-wrapper";
 import { Grid } from "../../components/bataille/Grid";
-import { GridAi } from "../../components/bataille/GridAi";
+import { GridPlayer } from "../../components/bataille/GridPlayer";
 import { touchShip } from "../../function/touchShip";
 
 interface CombatProps {
@@ -21,6 +21,10 @@ interface CombatProps {
   numberShipTouchPlayer: number;
   setNumberShipTouchAi: (number: number) => void;
   numberShipTouchAi: number;
+  touchShipPlayer: Record<string, boolean>;
+  setTouchShipPlayer: (touch: Record<string, boolean>) => void;
+  touchShipAi: Record<string, boolean>;
+  setTouchShipAi: (touch: Record<string, boolean>) => void;
 }
 
 export const Combat = ({
@@ -34,6 +38,10 @@ export const Combat = ({
   setNumberShipTouchAi,
   numberShipTouchPlayer,
   numberShipTouchAi,
+  touchShipPlayer,
+  setTouchShipPlayer,
+  touchShipAi,
+  setTouchShipAi,
 }: CombatProps) => {
   const { data: session } = useSession();
   const [loader, setLoader] = useState(true);
@@ -41,26 +49,20 @@ export const Combat = ({
     const localData = localStorage.getItem("currentPlayer");
     return localData ? JSON.parse(localData) : "";
   });
-  const [touchShipPlayer, setTouchShipPlayer] = useState<
-    Record<string, boolean>
-  >(JSON.parse(localStorage.getItem("touchShipPlayer") || "{}"));
-  const [touchShipAi, setTouchShipAi] = useState<Record<string, boolean>>(
-    JSON.parse(localStorage.getItem("touchShipAi") || "{}")
-  );
   const [coordonnees, setCoordonnees] = useState("");
   const [coordShipTouchAi, setCoordShipTouchAi] = useState<string[]>([]);
 
-  useEffect(() => {
-    localStorage.setItem("touchShipPlayer", JSON.stringify(touchShipPlayer));
-  }, [touchShipPlayer]);
-
-  useEffect(() => {
-    localStorage.setItem("touchShipAi", JSON.stringify(touchShipAi));
-  }, [touchShipAi]);
+  const [coordShipAroundAi, setCoordShipAroundAi] = useState<
+    [number, number][]
+  >([]);
 
   useEffect(() => {
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
   }, [currentPlayer]);
+
+  useEffect(() => {
+    setCoordShipAroundAi([]);
+  }, [numberShipTouchAi]);
 
   useEffect(() => {
     if (howStart === "aleatoire" && !currentPlayer) {
@@ -97,6 +99,8 @@ export const Combat = ({
       const touched = touchShip(x, y, shipAi);
       if (touched) {
         setTouchShipPlayer({ ...touchShipPlayer, [coordonnees]: true });
+        setCurrentPlayer("player");
+        return;
       } else {
         setTouchShipPlayer({ ...touchShipPlayer, [coordonnees]: false });
       }
@@ -104,25 +108,51 @@ export const Combat = ({
       setCurrentPlayer("ai");
     }
     if (currentPlayer === "ai") {
-      let x, y;
-      let newCoord;
-      do {
-        x = Math.floor(Math.random() * 10);
-        y = Math.floor(Math.random() * 10);
-        newCoord = `${x},${y}`;
-      } while (coordShipTouchAi.includes(newCoord));
+      setTimeout(() => {
+        let x: number, y: number;
+        let newCoord;
+        if (coordShipAroundAi.length > 0) {
+          do {
+            [x, y] = coordShipAroundAi.pop()!;
+            newCoord = `${x},${y}`;
+          } while (coordShipTouchAi.includes(newCoord));
+        } else {
+          do {
+            x = Math.floor(Math.random() * 10);
+            y = Math.floor(Math.random() * 10);
+            newCoord = `${x},${y}`;
+          } while (coordShipTouchAi.includes(newCoord));
+        }
 
-      setCoordShipTouchAi([...coordShipTouchAi, newCoord]);
-      const touched = touchShip(x, y, shipPlayer);
-      if (touched) {
-        setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: true });
-      } else {
-        setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: false });
-      }
-      setCurrentPlayer("player");
+        setCoordShipTouchAi([...coordShipTouchAi, newCoord]);
+        const touched = touchShip(x, y, shipPlayer);
+        if (touched) {
+          setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: true });
+          if (!checkShipAlreadyTouch(x, y + 1))
+            coordShipAroundAi.push([x, y + 1]);
+          if (!checkShipAlreadyTouch(x - 1, y))
+            coordShipAroundAi.push([x - 1, y]);
+          if (!checkShipAlreadyTouch(x + 1, y))
+            coordShipAroundAi.push([x + 1, y]);
+          if (!checkShipAlreadyTouch(x, y - 1))
+            coordShipAroundAi.push([x, y - 1]);
+          setCurrentPlayer("ai");
+          return;
+        } else {
+          setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: false });
+        }
+        setCurrentPlayer("player");
+      }, 1000);
     } else {
       return;
     }
+  };
+
+  const checkShipAlreadyTouch = (x: number, y: number) => {
+    if (x < 0 || x > 9 || y < 0 || y > 9) {
+      return true;
+    }
+    return coordShipTouchAi.includes(`${x},${y}`);
   };
 
   // Gestion du timer:
@@ -219,6 +249,8 @@ export const Combat = ({
             </div>
             <div className="w-96 h-96 border-border bg-blue-800/75 rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
               <Grid
+                numberShipTouchAi={numberShipTouchAi}
+                setCoordShipAroundAi={setCoordShipAroundAi}
                 ship={shipPlayer}
                 touchedAi={touchShipAi}
                 setNumberShipTouchAi={setNumberShipTouchAi}
@@ -232,10 +264,10 @@ export const Combat = ({
               </span>
             </div>
             <div className="w-96 h-96 border-border rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
-              <GridAi
+              <GridPlayer
                 numberShipTouchPlayer={numberShipTouchPlayer}
                 setNumberShipTouchPlayer={setNumberShipTouchPlayer}
-                shipAi={shipAi}
+                ship={shipAi}
                 setCoordonnees={setCoordonnees}
                 touchPlayer={touchShipPlayer}
               />

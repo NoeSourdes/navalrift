@@ -65,6 +65,9 @@ export const ChooseShip = ({
 
   const [touchAi, setTouchAi] = useState<Record<string, boolean>>({});
   const [numberShipTouchAi, setNumberShipTouchAi] = useState<number>(0);
+  const [coordShipAroundAi, setCoordShipAroundAi] = useState<
+    [number, number][]
+  >([]);
 
   return (
     <>
@@ -83,6 +86,8 @@ export const ChooseShip = ({
           <div className="flex items-center gap-6 flex-col">
             <div className="w-96 h-96 border-border bg-blue-800/75 rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
               <Grid
+                numberShipTouchAi={numberShipTouchAi}
+                setCoordShipAroundAi={setCoordShipAroundAi}
                 ship={shipHistory[currentShipIndex]}
                 touchedAi={touchAi}
                 setNumberShipTouchAi={setNumberShipTouchAi}

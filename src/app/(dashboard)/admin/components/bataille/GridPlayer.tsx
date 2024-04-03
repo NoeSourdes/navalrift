@@ -4,19 +4,18 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface GridAiProps {
-  setCoordonnees: (coord: string) => void;
+  ship: any;
   touchPlayer: Record<string, boolean>;
-  shipAi: any;
+  setCoordonnees: (coord: string) => void;
   setNumberShipTouchPlayer: (number: number) => void;
   numberShipTouchPlayer: number;
 }
 
-export const GridAi = ({
+export const GridPlayer = ({
   setCoordonnees,
   touchPlayer,
-  shipAi,
+  ship: shipAi,
   setNumberShipTouchPlayer,
-  numberShipTouchPlayer,
 }: GridAiProps) => {
   const rows = new Array(10).fill(null);
   const cols = new Array(10).fill(null);
@@ -133,7 +132,7 @@ export const GridAi = ({
                     ship.coords.includes(`${rowIndex},${colIndex}`)
                   ) ? (
                     <div
-                      className={`h-full w-full rounded-lg flex items-center justify-center ${getBgColor(
+                      className={`h-full w-full rounded-[9px] flex items-center justify-center ${getBgColor(
                         getBoatSize(`${rowIndex},${colIndex}`)
                       )}`}
                     >
