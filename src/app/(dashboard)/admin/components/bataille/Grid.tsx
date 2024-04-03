@@ -149,7 +149,7 @@ export const Grid = ({ ship, touchedAi, setNumberShipTouchAi }: PropsGrid) => {
                       </div>
                     ) : (
                       <Image
-                        src="/img/Vhdl.gif"
+                        src="https://i.postimg.cc/CxqvSr40/VhdL.gif"
                         alt="Mon Gif"
                         width={50}
                         height={50}
