@@ -9,18 +9,16 @@ interface Ship {
 
 interface PropsGrid {
   ship: Ship[];
-  touchedAi: Record<string, boolean>;
-  setNumberShipTouchAi: (number: number) => void;
-  setCoordShipAroundAi: (coord: [number, number][]) => void;
-  numberShipTouchAi: number;
+  touchedShip: Record<string, boolean>;
+  setNumberShipTouch: (number: number) => void;
+  setCoordShipAround: (coord: [number, number][]) => void;
 }
 
 export const Grid = ({
   ship,
-  touchedAi,
-  setNumberShipTouchAi,
-  setCoordShipAroundAi,
-  numberShipTouchAi,
+  touchedShip: touchedAi,
+  setNumberShipTouch,
+  setCoordShipAround,
 }: PropsGrid) => {
   const rows = new Array(10).fill(null);
   const cols = new Array(10).fill(null);
@@ -59,10 +57,10 @@ export const Grid = ({
           }
           return prevState;
         });
-        setNumberShipTouchAi(coordShipTouch.length);
+        setNumberShipTouch(coordShipTouch.length);
       }
     });
-  }, [touchedAi, ship, setNumberShipTouchAi, coordShipTouch]);
+  }, [touchedAi, ship, setNumberShipTouch, coordShipTouch]);
 
   function arraysAreEqual(a: any[], b: any[]) {
     return a.length === b.length && a.every((val, index) => val === b[index]);

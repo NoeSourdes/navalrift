@@ -110,7 +110,7 @@ export const GridPlayer = ({
                 setCoordonnees(`${rowIndex},${colIndex}`);
               }}
               key={colIndex}
-              className={`relative w-[38.4px] h-[38.4px] flex items-center justify-center max-sm:w-8 max-sm:h-8 bg-blue-800/75`}
+              className={`relative w-[38.4px] h-[38.4px] flex items-center justify-center max-sm:w-8 max-sm:h-8`}
             >
               <div className="absolute h-full w-full cursor-pointer hover:opacity-100 opacity-0">
                 {getColorClass(`${rowIndex},${colIndex}`) !== "touch" &&

@@ -56,6 +56,8 @@ export const Combat = ({
     [number, number][]
   >([]);
 
+  const [aiTouchShip, setAiTouchShip] = useState<number>(0);
+
   useEffect(() => {
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
   }, [currentPlayer]);
@@ -84,6 +86,10 @@ export const Combat = ({
   useEffect(() => {
     playTurn();
   }, [coordonnees, currentPlayer]);
+
+  useEffect(() => {
+    playTurn();
+  }, [aiTouchShip]);
 
   const playTurn = () => {
     if (currentPlayer === "player") {
@@ -136,13 +142,13 @@ export const Combat = ({
             coordShipAroundAi.push([x + 1, y]);
           if (!checkShipAlreadyTouch(x, y - 1))
             coordShipAroundAi.push([x, y - 1]);
-          setCurrentPlayer("ai");
+          setAiTouchShip(aiTouchShip + 1);
           return;
         } else {
           setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: false });
+          setCurrentPlayer("player");
         }
-        setCurrentPlayer("player");
-      }, 1000);
+      }, 2000);
     } else {
       return;
     }
@@ -156,8 +162,13 @@ export const Combat = ({
   };
 
   // Gestion du timer:
-  const [time, setTime] = useState(0);
-  const [duration, setDuration] = useState((timePlayer + 1.5) * 1000);
+  const [durationPlayer, setDurationPlayer] = useState(timePlayer * 1000);
+  const [durationAi, setDurationAi] = useState(timePlayer * 1000);
+  const [playerTime, setPlayerTime] = useState(0);
+  const [timeAi, setTimeAi] = useState(0);
+
+  const [isActivePlayer, setIsActivePlayer] = useState(true);
+  const [isActiveAi, setIsActiveAi] = useState(false);
 
   const onTimerUpdate = ({
     time,
@@ -166,9 +177,34 @@ export const Combat = ({
     time: number;
     duration: number;
   }) => {
-    setTime(time);
-    setDuration(duration);
+    if (currentPlayer === "player" && isActivePlayer) {
+      setPlayerTime(time);
+      setDurationPlayer(duration);
+    }
   };
+
+  const onTimerUpdateAi = ({
+    time,
+    duration,
+  }: {
+    time: number;
+    duration: number;
+  }) => {
+    if (currentPlayer === "ai" && isActiveAi) {
+      setTimeAi(time);
+      setDurationAi(duration);
+    }
+  };
+
+  useEffect(() => {
+    if (currentPlayer === "player") {
+      setIsActivePlayer(true);
+      setIsActiveAi(false);
+    } else {
+      setIsActivePlayer(false);
+      setIsActiveAi(true);
+    }
+  }, [currentPlayer]);
 
   return (
     <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center rounded-lg overflow-hidden p-2 max-md:pt-16">
@@ -203,13 +239,23 @@ export const Combat = ({
               <h4 className="font-bold">
                 {session?.user?.name?.split(" ")[0]}
               </h4>
-              <Timer active duration={duration} onTimeUpdate={onTimerUpdate} />
+              <Timer
+                active={isActivePlayer}
+                duration={durationPlayer}
+                onTimeUpdate={onTimerUpdate}
+              />
               <div className="w-16 py-1 border-2 rounded-md">
-                <Timecode className="" time={duration - time} />
+                <Timecode className="" time={durationPlayer - playerTime} />
               </div>
             </div>
             <div className="relative z-10">
-              <div className="p-3 rounded-full flex items-center justify-center bg-primary">
+              <div
+                className="p-3 rounded-full flex items-center justify-center transition-all"
+                style={{
+                  backgroundColor:
+                    currentPlayer === "player" ? "#0070EF" : "transparent",
+                }}
+              >
                 <Image
                   src={session?.user?.image ? session?.user?.image : ""}
                   alt="avatar"
@@ -223,7 +269,13 @@ export const Combat = ({
           <div className="h-[80%] w-1 rounded-xl bg-border"></div>
           <div className="grow flex items-center justify-center gap-5">
             <div>
-              <div className=" p-3 rounded-full flex items-center justify-center bg-primary">
+              <div
+                className="p-3 rounded-full flex items-center justify-center transition-all"
+                style={{
+                  backgroundColor:
+                    currentPlayer === "ai" ? "#0070EF" : "transparent",
+                }}
+              >
                 <Image
                   src="/img/ai-avatar.jpg"
                   alt="avatar"
@@ -235,42 +287,65 @@ export const Combat = ({
             </div>
             <div className="space-y-2 pb-1 text-center">
               <h4 className="font-bold">AI</h4>
-              <Timer active duration={duration} onTimeUpdate={onTimerUpdate} />
+              <Timer
+                active={isActiveAi}
+                duration={durationAi}
+                onTimeUpdate={onTimerUpdateAi}
+              />
               <div className="w-16 py-1 border-2 rounded-md">
-                <Timecode className="" time={duration - time} />
+                <Timecode className="" time={durationAi - timeAi} />
               </div>
             </div>
           </div>
         </div>
         <div className="flex items-center gap-10 ">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 max-lg:hidden">
             <div className="w-96 h-10 rounded-xl bg-blue-800/75 flex items-center justify-center">
               <span className="font-bold text-xl">Vos navires</span>
             </div>
             <div className="w-96 h-96 border-border bg-blue-800/75 rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
               <Grid
-                numberShipTouchAi={numberShipTouchAi}
-                setCoordShipAroundAi={setCoordShipAroundAi}
+                setCoordShipAround={setCoordShipAroundAi}
                 ship={shipPlayer}
-                touchedAi={touchShipAi}
-                setNumberShipTouchAi={setNumberShipTouchAi}
+                touchedShip={touchShipAi}
+                setNumberShipTouch={setNumberShipTouchAi}
               />
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <div className="w-96 h-10 rounded-xl bg-blue-800/75 flex items-center justify-center">
-              <span className="font-bold text-xl">
-                Attaquer votre adversaire
+            <div
+              className={`w-96 h-10 rounded-xl flex items-center justify-center transition-all ${
+                currentPlayer === "player" ? "bg-primary" : "bg-blue-800/75"
+              }`}
+            >
+              <span className="font-bold text-xl transition-all">
+                {currentPlayer === "player" && "Attaquer votre adversaire"}
+                {currentPlayer === "ai" && "A l'IA de jouer"}
               </span>
             </div>
-            <div className="w-96 h-96 border-border rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
-              <GridPlayer
-                numberShipTouchPlayer={numberShipTouchPlayer}
-                setNumberShipTouchPlayer={setNumberShipTouchPlayer}
-                ship={shipAi}
-                setCoordonnees={setCoordonnees}
-                touchPlayer={touchShipPlayer}
-              />
+            <div className="w-96 h-96 border-border bg-blue-800/75 rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80 relative">
+              <div
+                className="absolute inset-0 bg-black/35"
+                style={{
+                  opacity: currentPlayer === "player" ? 0 : 1,
+                  zIndex: currentPlayer === "player" ? 10 : 20,
+                  transition: "opacity 0.5s ease-in-out",
+                }}
+              ></div>
+              <div
+                className="relative"
+                style={{
+                  zIndex: currentPlayer === "player" ? 20 : 10,
+                }}
+              >
+                <GridPlayer
+                  numberShipTouchPlayer={numberShipTouchPlayer}
+                  setNumberShipTouchPlayer={setNumberShipTouchPlayer}
+                  ship={shipAi}
+                  setCoordonnees={setCoordonnees}
+                  touchPlayer={touchShipPlayer}
+                />
+              </div>
             </div>
           </div>
         </div>
