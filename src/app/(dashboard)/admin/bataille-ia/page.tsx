@@ -13,8 +13,10 @@ import { useEffect, useState } from "react";
 import { generateShips } from "../function/CreateGrid";
 import { ChooseShip } from "./pages/ChooseShip";
 import { Combat } from "./pages/Combat";
+import { useAppContext } from "@/context";
 
 export default function BatailleIa() {
+  const { setVolume } = useAppContext();
   const [shipHistory, setShipHistory] = useState([generateShips()]);
   const [shipPlayer, setShipPlayer] = useState(() => {
     const savedShip = localStorage.getItem("shipPlayer");
@@ -221,6 +223,7 @@ export default function BatailleIa() {
                         setNumberShipTouchAi(0);
                         setTouchShipPlayer({});
                         setTouchShipAi({});
+                        setVolume(0.5);
                       }}
                     >
                       Abandonner

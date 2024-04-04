@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 const AppContext = createContext<any>(undefined);
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  let [isSelectedSound, setIsSelectedSound] = useState<boolean>(false);
+  let [isSelectedSound, setIsSelectedSound] = useState<boolean>(true);
   let [isSelectedVibration, setIsSelectedVibration] = useState<boolean>(true);
   let [isSelectedAnimation, setIsSelectedAnimation] = useState<boolean>(true);
   let [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(false);
@@ -18,6 +18,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   let [creatorGroupSelected, setCreatorGroupSelected] = useState<string>("");
   const [sizeShipClicked, setSizeShipClicked] = useState<number>(0);
   const [rotateShipClicked, setRotateShipClicked] = useState<boolean>(false);
+  const [volume, setVolume] = useState<number>(0.5);
   let [lien, setLien] = useState<string>("");
   const url_server = "https://navalrift-server.onrender.com";
   // "https://navalrift-server.onrender.com";
@@ -51,6 +52,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         setRotateShipClicked,
         isPlayingMusicBattle,
         setIsPlayingMusicBattle,
+        volume,
+        setVolume,
       }}
     >
       {children}

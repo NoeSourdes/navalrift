@@ -1,5 +1,6 @@
 "use client";
 
+import { useButtonSounds } from "@/app/actions/sound/sound";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -19,12 +20,13 @@ export const GridPlayer = ({
 }: GridAiProps) => {
   const rows = new Array(10).fill(null);
   const cols = new Array(10).fill(null);
+  const { play, playHover } = useButtonSounds();
   const getColorClass = (coord: string) => {
     if (coord in touchPlayer) {
       if (touchPlayer[coord]) {
         return "touch";
       } else {
-        return "bg-error";
+        return "bg-primary";
       }
     }
     return "bg-border";
@@ -112,7 +114,12 @@ export const GridPlayer = ({
               key={colIndex}
               className={`relative w-[38.4px] h-[38.4px] flex items-center justify-center max-sm:w-8 max-sm:h-8`}
             >
-              <div className="absolute h-full w-full cursor-pointer hover:opacity-100 opacity-0">
+              <div
+                className="absolute h-full w-full cursor-pointer hover:opacity-100 opacity-0"
+                // onMouseEnter={() => {
+                //   playHover();
+                // }}
+              >
                 {getColorClass(`${rowIndex},${colIndex}`) !== "touch" &&
                   getColorClass(`${rowIndex},${colIndex}`) !== "bg-error" && (
                     <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-7 h-7 bg-white flex items-center rounded-full justify-center">

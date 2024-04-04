@@ -91,7 +91,7 @@ export const Grid = ({
 
   const getColorClass = (coord: string) => {
     if (touchedAi && coord in touchedAi) {
-      return touchedAi[coord] ? "bg-primary" : "bg-error";
+      return touchedAi[coord] ? "bg-primary" : "bg-primary";
     }
     return "bg-border";
   };

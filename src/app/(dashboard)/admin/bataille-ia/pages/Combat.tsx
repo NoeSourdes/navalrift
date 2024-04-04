@@ -1,5 +1,7 @@
 "use client";
 
+import { useButtonSounds } from "@/app/actions/sound/sound";
+import { useAppContext } from "@/context";
 import {
   Button,
   Modal,
@@ -62,6 +64,9 @@ export const Combat = ({
   setHowStart,
   winner,
 }: CombatProps) => {
+  const { setVolume } = useAppContext();
+  const { play, playHover, explosion, goutte_1, goutte_2, start } =
+    useButtonSounds();
   const { data: session } = useSession();
   const [loader, setLoader] = useState(true);
   const [currentPlayer, setCurrentPlayer] = useState(() => {
@@ -127,10 +132,12 @@ export const Combat = ({
       const [x, y] = coordonnees.split(",").map((el) => parseInt(el));
       const touched = touchShip(x, y, shipAi);
       if (touched) {
+        explosion();
         setTouchShipPlayer({ ...touchShipPlayer, [coordonnees]: true });
         setCurrentPlayer("player");
         return;
       } else {
+        Math.floor(Math.random() * 2) + 1 === 1 ? goutte_1() : goutte_2();
         setTouchShipPlayer({ ...touchShipPlayer, [coordonnees]: false });
       }
       setCoordonnees("");
@@ -156,6 +163,7 @@ export const Combat = ({
         setCoordShipTouchAi([...coordShipTouchAi, newCoord]);
         const touched = touchShip(x, y, shipPlayer);
         if (touched) {
+          explosion();
           setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: true });
           if (!checkShipAlreadyTouch(x, y + 1))
             coordShipAroundAi.push([x, y + 1]);
@@ -168,6 +176,7 @@ export const Combat = ({
           setAiTouchShip(aiTouchShip + 1);
           return;
         } else {
+          Math.floor(Math.random() * 2) + 1 === 1 ? goutte_1() : goutte_2();
           setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: false });
           setCurrentPlayer("player");
         }
@@ -278,12 +287,13 @@ export const Combat = ({
           </h1>
         </div>
         <div className="relative w-96 h-24 rounded-xl bg-blue-800/75 flex items-center justify-between overflow-hidden">
-          {/* <div
+          <div
             className="absolute bg-error/35 mx-2 py-1 rounded-lg h-full w-full z-5 animate-ping"
             style={{
-              visibility: time < 30000 ? "hidden" : "visible",
+              visibility:
+                playerTime < timePlayer * 1000 - 10000 ? "hidden" : "visible",
             }}
-          ></div> */}
+          ></div>
           <div className=" relative grow flex items-center justify-center gap-5 z-10">
             <div className="relative space-y-2 pb-1 text-center z-10">
               <h4 className="font-bold">
@@ -450,6 +460,7 @@ export const Combat = ({
                     setNumberShipTouchAi(0);
                     setTouchShipPlayer({});
                     setTouchShipAi({});
+                    setVolume(0.5);
                   }}
                 >
                   Retour au menu

@@ -1,3 +1,4 @@
+import { useButtonSounds } from "@/app/actions/sound/sound";
 import { useAppContext } from "@/context";
 import {
   Button,
@@ -44,7 +45,8 @@ export const ChooseShip = ({
   shipAi,
 }: ChooseShipProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { setIsPlayingMusic, setIsPlayingMusicBattle } = useAppContext();
+  const { setVolume } = useAppContext();
+  const { play, playHover, start } = useButtonSounds();
   const TimeForLap = [
     { label: "10 secondes", value: "10" },
     { label: "15 secondes", value: "15" },
@@ -98,14 +100,20 @@ export const ChooseShip = ({
                   isIconOnly
                   color="primary"
                   variant="faded"
-                  onClick={goBack}
+                  onClick={() => {
+                    play();
+                    goBack();
+                  }}
                 >
                   <RotateCcw />
                 </Button>
                 <Button
                   color="primary"
                   variant="faded"
-                  onClick={regenerateGrid}
+                  onClick={() => {
+                    play();
+                    regenerateGrid();
+                  }}
                 >
                   Regénérer la grille
                 </Button>
@@ -113,12 +121,22 @@ export const ChooseShip = ({
                   isIconOnly
                   color="primary"
                   variant="faded"
-                  onClick={goForward}
+                  onClick={() => {
+                    play();
+                    goForward();
+                  }}
                 >
                   <RotateCw />
                 </Button>
               </div>
-              <Button color="primary" size="lg" onPress={onOpen}>
+              <Button
+                color="primary"
+                size="lg"
+                onPress={() => {
+                  play();
+                  onOpen();
+                }}
+              >
                 Affronter l&apos;IA
               </Button>
             </div>
@@ -171,9 +189,18 @@ export const ChooseShip = ({
                     onChange={(value: any) =>
                       setLapTime(parseInt(value.target.value))
                     }
+                    onClick={() => {
+                      play();
+                    }}
                   >
                     {(timeLap: any) => (
-                      <SelectItem key={timeLap.value}>
+                      <SelectItem
+                        variant="faded"
+                        key={timeLap.value}
+                        onMouseEnter={() => {
+                          playHover();
+                        }}
+                      >
                         {timeLap.label}
                       </SelectItem>
                     )}
@@ -186,9 +213,18 @@ export const ChooseShip = ({
                     onChange={(value: any) =>
                       setPlayerTime(parseInt(value.target.value))
                     }
+                    onClick={() => {
+                      play();
+                    }}
                   >
                     {(timePlayer: any) => (
-                      <SelectItem key={timePlayer.value}>
+                      <SelectItem
+                        variant="faded"
+                        key={timePlayer.value}
+                        onMouseEnter={() => {
+                          playHover();
+                        }}
+                      >
                         {timePlayer.label}
                       </SelectItem>
                     )}
@@ -199,9 +235,18 @@ export const ChooseShip = ({
                     defaultSelectedKeys={["aleatoire"]}
                     placeholder="Sélectionnez qui commence"
                     onChange={(value: any) => setHowStart(value.target.value)}
+                    onClick={() => {
+                      play();
+                    }}
                   >
                     {(whoStart: any) => (
-                      <SelectItem key={whoStart.value}>
+                      <SelectItem
+                        variant="faded"
+                        key={whoStart.value}
+                        onMouseEnter={() => {
+                          playHover();
+                        }}
+                      >
                         {whoStart.label}
                       </SelectItem>
                     )}
@@ -209,7 +254,14 @@ export const ChooseShip = ({
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={() => {
+                    onClose();
+                    play();
+                  }}
+                >
                   Fermer
                 </Button>
                 <Button
@@ -218,9 +270,11 @@ export const ChooseShip = ({
                     setShipPlayer(shipHistory[currentShipIndex]);
                     setShipAi(shipAi);
                     setStep(1);
-                    setIsPlayingMusic(false);
-                    setIsPlayingMusicBattle(true);
+                    setVolume(0);
                     onClose();
+                    setTimeout(() => {
+                      start();
+                    }, 1200);
                   }}
                 >
                   Jouer
