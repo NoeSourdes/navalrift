@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppContext } from "@/context";
 import {
   Button,
   Modal,
@@ -13,7 +14,6 @@ import { useEffect, useState } from "react";
 import { generateShips } from "../function/CreateGrid";
 import { ChooseShip } from "./pages/ChooseShip";
 import { Combat } from "./pages/Combat";
-import { useAppContext } from "@/context";
 
 export default function BatailleIa() {
   const { setVolume } = useAppContext();
@@ -129,7 +129,7 @@ export default function BatailleIa() {
           <Button
             variant="faded"
             color="primary"
-            className="absolute top-10 left-10 z-30"
+            className="absolute md:top-10 top-5 left-10 z-30"
             onClick={() => {
               window.history.back();
             }}
@@ -158,7 +158,7 @@ export default function BatailleIa() {
           <Button
             variant="faded"
             color="primary"
-            className="absolute top-10 left-10 z-30"
+            className="absolute md:top-10 sm:top-5 bottom-5 md:left-10 sm:left-9 left-1/2 -translate-x-1/2 z-30"
             onPress={onOpen}
           >
             Abandonner

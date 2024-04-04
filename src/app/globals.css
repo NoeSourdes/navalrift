@@ -150,14 +150,14 @@ body {
   width: 38.4px;
 }
 
-.border-green {
-  border-color: green;
-}
-
-.border-black {
-  border-color: black;
-}
-
 .font-game {
   font-family: "Workbench";
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

@@ -83,9 +83,14 @@ export const Combat = ({
   const [aiTouchShip, setAiTouchShip] = useState<number>(0);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [playerToPlay, setPlayerToPlay] = useState(() => {
+    const localData = localStorage.getItem("currentPlayer");
+    return localData ? JSON.parse(localData) : "";
+  });
   useEffect(() => {
     localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
-  }, [currentPlayer]);
+    localStorage.setItem("currentPlayer", JSON.stringify(playerToPlay));
+  }, [currentPlayer, playerToPlay]);
 
   useEffect(() => {
     setCoordShipAroundAi([]);
@@ -134,14 +139,20 @@ export const Combat = ({
       if (touched) {
         explosion();
         setTouchShipPlayer({ ...touchShipPlayer, [coordonnees]: true });
-        setCurrentPlayer("player");
+        setPlayerToPlay("player");
+        setTimeout(() => {
+          setCurrentPlayer("player");
+        }, 1000);
         return;
       } else {
         Math.floor(Math.random() * 2) + 1 === 1 ? goutte_1() : goutte_2();
         setTouchShipPlayer({ ...touchShipPlayer, [coordonnees]: false });
       }
       setCoordonnees("");
-      setCurrentPlayer("ai");
+      setPlayerToPlay("ai");
+      setTimeout(() => {
+        setCurrentPlayer("ai");
+      }, 1000);
     }
     if (currentPlayer === "ai") {
       setTimeout(() => {
@@ -178,7 +189,10 @@ export const Combat = ({
         } else {
           Math.floor(Math.random() * 2) + 1 === 1 ? goutte_1() : goutte_2();
           setTouchShipAi({ ...touchShipAi, [`${x},${y}`]: false });
-          setCurrentPlayer("player");
+          setPlayerToPlay("player");
+          setTimeout(() => {
+            setCurrentPlayer("player");
+          }, 1000);
         }
       }, 2000);
     } else {
@@ -252,21 +266,21 @@ export const Combat = ({
 
   useEffect(() => {
     if (lapse === 100) {
-      setWinner("ai");
+      // setWinner("ai");
     }
   }, [lapse]);
 
   useEffect(() => {
     if (durationPlayer - playerTime === 0) {
-      setWinner("ai");
+      // setWinner("ai");
     }
     if (durationAi - timeAi === 0) {
-      setWinner("player");
+      // setWinner("player");
     }
   }, [durationAi, durationPlayer, playerTime, timeAi]);
 
   return (
-    <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center rounded-lg overflow-hidden p-2 max-md:pt-16">
+    <div className="h-full w-full bg-blue-900 dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center rounded-lg overflow-hidden p-2">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       <div
         className="absolute top-96"
@@ -277,16 +291,16 @@ export const Combat = ({
         <RotateCw size={50} className="animate-spin" />
       </div>
       <div
-        className={`relative flex flex-col items-center gap-8 z-20 overflow-y-auto py-8 transition-all ${
+        className={`relative flex flex-col items-center md:gap-8 gap-[12px] z-20 overflow-y-auto md:py-8 py-4 transition-all ${
           loader ? "scale-0" : "scale-1"
         }`}
       >
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 max-sm:hidden">
           <h1 className="text-4xl font-bold max-md:text-3xl">
             Bataile contre <span className="text-primary">l&apos;IA</span>
           </h1>
         </div>
-        <div className="relative w-96 h-24 rounded-xl bg-blue-800/75 flex items-center justify-between overflow-hidden">
+        <div className="relative md:w-96 w-80  md:min-h-24 min-h-20 rounded-xl bg-blue-800/75 flex items-center justify-between overflow-hidden">
           <div
             className="absolute bg-error/35 mx-2 py-1 rounded-lg h-full w-full z-5 animate-ping"
             style={{
@@ -310,7 +324,7 @@ export const Combat = ({
             </div>
             <div className="relative z-10">
               <div
-                className="p-3 rounded-full flex items-center justify-center transition-all"
+                className="md:p-3 p-2 rounded-full flex items-center justify-center transition-all"
                 style={{
                   backgroundColor:
                     currentPlayer === "player" ? "#0070EF" : "transparent",
@@ -321,7 +335,7 @@ export const Combat = ({
                   alt="avatar"
                   width={50}
                   height={50}
-                  className="rounded-full"
+                  className="md:w-12 md:h-12 w-10 h-10 rounded-full"
                 />
               </div>
             </div>
@@ -330,7 +344,7 @@ export const Combat = ({
           <div className="grow flex items-center justify-center gap-5">
             <div>
               <div
-                className="p-3 rounded-full flex items-center justify-center transition-all"
+                className="md:p-3 p-2 rounded-full flex items-center justify-center transition-all"
                 style={{
                   backgroundColor:
                     currentPlayer === "ai" ? "#0070EF" : "transparent",
@@ -341,7 +355,7 @@ export const Combat = ({
                   alt="avatar"
                   width={50}
                   height={50}
-                  className="rounded-full"
+                  className="md:w-12 md:h-12 w-10 h-10 rounded-full"
                 />
               </div>
             </div>
@@ -359,8 +373,14 @@ export const Combat = ({
           </div>
         </div>
         <div className="flex items-center gap-10 ">
-          <div className="flex flex-col gap-3 max-lg:hidden">
-            <div className="w-96 h-10 rounded-xl bg-blue-800/75 flex items-center justify-center">
+          <div
+            className={`flex flex-col gap-3 ${
+              currentPlayer === "player" && "max-lg:hidden"
+            }`}
+          >
+            <div
+              className={`relative md:w-96 w-80 h-10 rounded-xl flex items-center justify-center transition-all overflow-hidden bg-blue-800/75`}
+            >
               <span className="font-bold text-xl">Vos navires</span>
             </div>
             <div className="w-96 h-96 border-border bg-blue-800/75 rounded-xl overflow-hidden max-sm:w-80 max-sm:h-80">
@@ -372,9 +392,13 @@ export const Combat = ({
               />
             </div>
           </div>
-          <div className="flex flex-col gap-3">
+          <div
+            className={`flex flex-col gap-3 ${
+              currentPlayer === "ai" && "max-lg:hidden"
+            }`}
+          >
             <div
-              className={`relative w-96 h-10 rounded-xl flex items-center justify-center transition-all overflow-hidden bg-blue-800/75`}
+              className={`relative md:w-96 w-80 h-10 rounded-xl flex items-center justify-center transition-all overflow-hidden bg-blue-800/75`}
             >
               <div
                 className="absolute inset-0 bg-primary z-10"
@@ -399,9 +423,17 @@ export const Combat = ({
                 }}
               ></div>
               <div
+                className="absolute inset-0"
+                style={{
+                  opacity: playerToPlay === "player" ? 0 : 1,
+                  zIndex: playerToPlay === "player" ? 10 : 20,
+                  transition: "opacity",
+                }}
+              ></div>
+              <div
                 className="relative"
                 style={{
-                  zIndex: currentPlayer === "player" ? 20 : 10,
+                  zIndex: playerToPlay === "player" ? 20 : 10,
                 }}
               >
                 <GridPlayer
