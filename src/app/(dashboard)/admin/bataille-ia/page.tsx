@@ -158,7 +158,7 @@ export default function BatailleIa() {
           <Button
             variant="faded"
             color="primary"
-            className="absolute md:top-10 sm:top-5 bottom-5 md:left-10 sm:left-9 left-1/2 -translate-x-1/2 z-30"
+            className="absolute md:top-10 sm:top-5 bottom-5 md:left-10 sm:left-9 left-1/2 max-sm:-translate-x-1/2 z-30"
             onPress={onOpen}
           >
             Abandonner

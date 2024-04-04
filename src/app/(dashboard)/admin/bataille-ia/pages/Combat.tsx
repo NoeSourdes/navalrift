@@ -266,16 +266,16 @@ export const Combat = ({
 
   useEffect(() => {
     if (lapse === 100) {
-      // setWinner("ai");
+      setWinner("ai");
     }
   }, [lapse]);
 
   useEffect(() => {
     if (durationPlayer - playerTime === 0) {
-      // setWinner("ai");
+      setWinner("ai");
     }
     if (durationAi - timeAi === 0) {
-      // setWinner("player");
+      setWinner("player");
     }
   }, [durationAi, durationPlayer, playerTime, timeAi]);
 
