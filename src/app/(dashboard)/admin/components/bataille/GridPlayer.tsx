@@ -121,7 +121,7 @@ export const GridPlayer = ({
                 // }}
               >
                 {getColorClass(`${rowIndex},${colIndex}`) !== "touch" &&
-                  getColorClass(`${rowIndex},${colIndex}`) !== "bg-error" && (
+                  getColorClass(`${rowIndex},${colIndex}`) !== "bg-primary" && (
                     <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-7 h-7 bg-white flex items-center rounded-full justify-center">
                       <span className="h-5 w-5 bg-blue-800 rounded-full flex justify-center items-center">
                         <span className="h-2 w-2 rounded-full bg-white"></span>
