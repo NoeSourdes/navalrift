@@ -155,18 +155,12 @@ export default function BatailleIa() {
     case 1:
       return (
         <div className="relative w-full h-full bg-blue-800/75 rounded-xl lg:p-6 p-3">
-          <Button
-            variant="faded"
-            color="primary"
-            className="absolute md:top-10 sm:top-5 bottom-5 md:left-10 sm:left-9 left-1/2 max-sm:-translate-x-1/2 z-30"
-            onPress={onOpen}
-          >
-            Abandonner
-          </Button>
           <Modal
-            backdrop="opaque"
-            isOpen={isOpen}
+            backdrop="blur"
+            isDismissable={false}
+            isOpen={winner !== ""}
             onOpenChange={onOpenChange}
+            hideCloseButton={true}
             motionProps={{
               variants: {
                 enter: {
@@ -192,21 +186,23 @@ export default function BatailleIa() {
               {(onClose: any) => (
                 <>
                   <ModalHeader className="flex flex-col gap-1">
-                    <h1 className="text-2xl font-bold">Abandonner la partie</h1>
+                    <h3 className="text-2xl font-bold">Fin de la partie</h3>
+                    <h4 className="text-lg">
+                      {winner === "player" && "Vous avez gagné"}
+                      {winner === "ai" && "L'IA a gagné"}
+                    </h4>
                   </ModalHeader>
                   <ModalBody>
-                    <p>Êtes-vous sûr de vouloir abandonner la partie ?</p>
-                    <p>Vous allez perdre la partie en cours.</p>
+                    <p>La partie est terminée</p>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                      Annuler
-                    </Button>
                     <Button
+                      className="w-full"
                       color="primary"
                       onPress={() => {
                         setStep(0);
                         onClose();
+                        setWinner("");
                         localStorage.removeItem("howStart");
                         localStorage.removeItem("timeLapse");
                         localStorage.removeItem("timePlayer");
@@ -226,7 +222,7 @@ export default function BatailleIa() {
                         setVolume(0.5);
                       }}
                     >
-                      Abandonner
+                      Retour au menu
                     </Button>
                   </ModalFooter>
                 </>

@@ -266,16 +266,16 @@ export const Combat = ({
 
   useEffect(() => {
     if (lapse === 100) {
-      setWinner("ai");
+      // setWinner("ai");
     }
   }, [lapse]);
 
   useEffect(() => {
     if (durationPlayer - playerTime === 0) {
-      setWinner("ai");
+      // setWinner("ai");
     }
     if (durationAi - timeAi === 0) {
-      setWinner("player");
+      // setWinner("player");
     }
   }, [durationAi, durationPlayer, playerTime, timeAi]);
 
@@ -283,7 +283,7 @@ export const Combat = ({
     <div className="h-full w-full bg-blue-900 dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center rounded-lg overflow-hidden p-2">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       <div
-        className="absolute top-96"
+        className="absolute inset-0 flex items-center justify-center"
         style={{
           transform: loader ? "scale(1)" : "scale(0)",
         }}
@@ -291,7 +291,7 @@ export const Combat = ({
         <RotateCw size={50} className="animate-spin" />
       </div>
       <div
-        className={`relative flex flex-col items-center md:gap-8 gap-[12px] z-20 overflow-y-auto md:py-8 py-4 transition-all ${
+        className={`relative flex flex-col items-center md:gap-8 gap-8 z-20 overflow-y-auto md:py-8 py-4 transition-all ${
           loader ? "scale-0" : "scale-1"
         }`}
       >
@@ -447,61 +447,82 @@ export const Combat = ({
             </div>
           </div>
         </div>
+        <div className="min-h-10">
+          <Button variant="faded" color="primary" className="" onPress={onOpen}>
+            Abandonner
+          </Button>
+          <Modal
+            backdrop="opaque"
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            motionProps={{
+              variants: {
+                enter: {
+                  y: 0,
+                  opacity: 1,
+                  transition: {
+                    duration: 0.3,
+                    ease: "easeOut",
+                  },
+                },
+                exit: {
+                  y: -20,
+                  opacity: 0,
+                  transition: {
+                    duration: 0.2,
+                    ease: "easeIn",
+                  },
+                },
+              },
+            }}
+          >
+            <ModalContent>
+              {(onClose: any) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    <h1 className="text-2xl font-bold">Abandonner la partie</h1>
+                  </ModalHeader>
+                  <ModalBody>
+                    <p>Êtes-vous sûr de vouloir abandonner la partie ?</p>
+                    <p>Vous allez perdre la partie en cours.</p>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" variant="light" onPress={onClose}>
+                      Annuler
+                    </Button>
+                    <Button
+                      color="primary"
+                      onPress={() => {
+                        setStep(0);
+                        onClose();
+                        localStorage.removeItem("howStart");
+                        localStorage.removeItem("timeLapse");
+                        localStorage.removeItem("timePlayer");
+                        localStorage.removeItem("touchShipPlayer");
+                        localStorage.removeItem("touchShipAi");
+                        localStorage.removeItem("shipAi");
+                        localStorage.removeItem("shipPlayer");
+                        localStorage.removeItem("numberShipTouchPlayer");
+                        localStorage.removeItem("numberShipTouchAi");
+                        setHowStart("aleatoire");
+                        setTimeLapse(40);
+                        setTimePlayer(180);
+                        setNumberShipTouchPlayer(0);
+                        setNumberShipTouchAi(0);
+                        setTouchShipPlayer({});
+                        setTouchShipAi({});
+                        setVolume(0.5);
+                      }}
+                    >
+                      Abandonner
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
+        </div>
       </div>
-      <Modal
-        backdrop="blur"
-        isDismissable={false}
-        isOpen={winner !== ""}
-        onOpenChange={onOpenChange}
-        hideCloseButton={true}
-      >
-        <ModalContent>
-          {(onClose: any) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                <h3 className="text-2xl font-bold">Fin de la partie</h3>
-                <h4 className="text-lg">
-                  {winner === "player" && "Vous avez gagné"}
-                  {winner === "ai" && "L'IA a gagné"}
-                </h4>
-              </ModalHeader>
-              <ModalBody>
-                <p>La partie est terminée</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  className="w-full"
-                  color="primary"
-                  onPress={() => {
-                    setStep(0);
-                    onClose();
-                    setWinner("");
-                    localStorage.removeItem("howStart");
-                    localStorage.removeItem("timeLapse");
-                    localStorage.removeItem("timePlayer");
-                    localStorage.removeItem("touchShipPlayer");
-                    localStorage.removeItem("touchShipAi");
-                    localStorage.removeItem("shipAi");
-                    localStorage.removeItem("shipPlayer");
-                    localStorage.removeItem("numberShipTouchPlayer");
-                    localStorage.removeItem("numberShipTouchAi");
-                    setHowStart("aleatoire");
-                    setTimeLapse(40);
-                    setTimePlayer(180);
-                    setNumberShipTouchPlayer(0);
-                    setNumberShipTouchAi(0);
-                    setTouchShipPlayer({});
-                    setTouchShipAi({});
-                    setVolume(0.5);
-                  }}
-                >
-                  Retour au menu
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </div>
   );
 };
