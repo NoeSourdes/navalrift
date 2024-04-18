@@ -78,8 +78,7 @@ export default function BatailleAmi() {
     return () => {
       sockets.off("game_can_start");
     };
-  }, [sockets]);
-
+  }, []); // Empty dependency array
   const handlePlayer = async (player: string) => {
     if (game?.creator === player) {
       setPlayer(1);
