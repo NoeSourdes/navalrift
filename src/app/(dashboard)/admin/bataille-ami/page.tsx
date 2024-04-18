@@ -65,10 +65,10 @@ export default function BatailleAmi() {
   }, [player1, player2]);
 
   useEffect(() => {
+    console.log(player1, player2);
     sockets.on(
       "game_can_start",
       ({ player1, player2 }: { player1: string; player2: string }) => {
-        console.log("Le deuxième joueur a rejoint la partie");
         setPlayer1(player1);
         setPlayer2(player2);
         setStep(1);
