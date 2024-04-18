@@ -137,9 +137,9 @@ export default function BatailleIa() {
             Retour
           </Button>
           <ChooseShip
-            shipAi={shipAiGenerate}
+            ship={shipAiGenerate}
             setShipPlayer={setShipPlayer}
-            setShipAi={setShipAi}
+            setShip={setShipAi}
             setHowStart={setHowStart}
             setPlayerTime={setTimePlayer}
             setLapTime={setTimeLapse}

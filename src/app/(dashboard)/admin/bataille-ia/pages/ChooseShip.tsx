@@ -26,8 +26,8 @@ interface ChooseShipProps {
   setPlayerTime: (time: number) => void;
   setHowStart: (start: string) => void;
   setShipPlayer: (ship: any) => void;
-  setShipAi: (ship: any) => void;
-  shipAi: any;
+  setShip: (ship: any) => void;
+  ship: any;
 }
 
 export const ChooseShip = ({
@@ -41,8 +41,8 @@ export const ChooseShip = ({
   setPlayerTime,
   setHowStart,
   setShipPlayer,
-  setShipAi,
-  shipAi,
+  setShip: setShipAi,
+  ship: shipAi,
 }: ChooseShipProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { setVolume } = useAppContext();

@@ -187,6 +187,6 @@ export default function BatailleAmi() {
         );
       }
     case 1:
-      return <div>choose ship</div>;
+      return;
   }
 }
