@@ -57,6 +57,7 @@ export default function BatailleAmi() {
 
   useEffect(() => {
     sockets.on("game_can_start", () => {
+      console.log("Le deuxième joueur a rejoint la partie");
       setStep(1);
     });
 
