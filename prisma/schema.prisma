@@ -71,6 +71,12 @@ model Message {
   groupId   String
 }
 
+model BattleShipGame {
+  token String @id @unique
+  players String[]
+  dateExpire DateTime
+}
+
 model VerificationToken {
   identifier String
   token      String   @unique

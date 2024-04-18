@@ -1,5 +1,6 @@
 "use client";
 
+import { createGame } from "@/app/actions/game_ami/game";
 import { useButtonSounds } from "@/app/actions/sound/sound";
 import {
   Button,
@@ -10,15 +11,35 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import { randomBytes } from "crypto";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Page() {
   const { playHover, play } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [sentance, setSentance] = useState("");
+  const [sentence, setSentence] = useState("");
+  const [token, setToken] = useState("");
+  const { data: session } = useSession();
 
   const router = useRouter();
+
+  const createGameWithFriend = async () => {
+    const createToken = randomBytes(16).toString("hex");
+    setToken(createToken);
+    window.history.replaceState({}, "", `?token=${createToken}`);
+    if (session?.user) {
+      const playerId = session.user.id || "default-id";
+      const create = createGame({
+        id: createToken,
+        playerId: playerId,
+      });
+      create.then(() => {
+        router.push(`/admin/bataille-ami?token=${createToken}`);
+      });
+    }
+  };
 
   return (
     <div className="h-full w-full flex flex-col lg:gap-6 gap-3">
@@ -28,7 +49,7 @@ export default function Page() {
         </div>
         <div
           onClick={() => {
-            setSentance("Jouer contre une IA");
+            setSentence("Jouer contre une IA");
             onOpen();
           }}
           onMouseEnter={() => playHover()}
@@ -49,7 +70,7 @@ export default function Page() {
         </div>
         <div
           onClick={() => {
-            setSentance("Jouer contre un ami");
+            setSentence("Jouer contre un ami");
             onOpen();
           }}
           onMouseEnter={() => playHover()}
@@ -102,7 +123,7 @@ export default function Page() {
                 <h3>Commencer une partie</h3>
               </ModalHeader>
               <ModalBody>
-                <p>{sentance}</p>
+                <p>{sentence}</p>
               </ModalBody>
               <ModalFooter>
                 <Button
@@ -117,12 +138,14 @@ export default function Page() {
                   Annuler
                 </Button>
                 <Button
-                  onPress={() => {
+                  onPress={async () => {
                     onClose();
                     play();
-                    if (sentance === "Jouer contre une IA")
+                    if (sentence === "Jouer contre une IA")
                       router.push("/admin/bataille-ia");
-                    else router.push("/admin/bataille-ami");
+                    else {
+                      await createGameWithFriend();
+                    }
                   }}
                   color="primary"
                   onMouseEnter={() => playHover()}

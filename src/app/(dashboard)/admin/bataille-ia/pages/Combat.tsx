@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useButtonSounds } from "@/app/actions/sound/sound";
@@ -268,6 +269,7 @@ export const Combat = ({
     if (lapse === 100) {
       setWinner("ai");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lapse]);
 
   useEffect(() => {

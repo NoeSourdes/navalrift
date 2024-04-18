@@ -30,6 +30,18 @@ io.on("connection", (socket) => {
     console.log("Message envoyé au groupe : ", data.id_group);
   });
 
+  // gestion de la connexion d'un utilisateur a une game de battaille navale
+
+  socket.on("join_game", (id_game) => {
+    socket.join(id_game);
+    console.log(`L'utilisateur ${socket.id} a rejoint la game : ${id_game}`);
+  });
+
+  socket.on("join_game", (id_game) => {
+    socket.join(id_game);
+    console.log(`L'utilisateur ${socket.id} a rejoint la game : ${id_game}`);
+  });
+
   socket.on("disconnect", () => {
     console.log("utilisateur déconnecté", socket.id);
   });

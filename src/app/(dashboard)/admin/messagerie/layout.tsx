@@ -13,7 +13,6 @@ interface Props {
 export default function Layout({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const { sockets } = useAppContext();
 
   useEffect(() => {
     if (/^\/admin\/messagerie\/.+/i.test(pathname)) {
