@@ -49,12 +49,14 @@ export default function BatailleAmi() {
   }, [token]);
 
   useEffect(() => {
+    console.log(player1, player2);
     if (player1 && player2) {
       setStep(1);
     }
   }, [player1, player2]);
 
   useEffect(() => {
+    console.log("player2_joined");
     sockets.on("player2_joined", () => {
       setStep(1);
     });
