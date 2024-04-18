@@ -50,6 +50,7 @@ io.on("connection", (socket) => {
       game.player1 = socket.id;
     } else if (!game.player2) {
       game.player2 = socket.id;
+      io.to(game.player1).emit("player2_joined");
     } else {
       console.log("La partie est pleine");
       socket.emit("game_full");

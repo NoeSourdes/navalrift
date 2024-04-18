@@ -54,6 +54,16 @@ export default function BatailleAmi() {
     }
   }, [player1, player2]);
 
+  useEffect(() => {
+    sockets.on("player2_joined", () => {
+      setStep(1);
+    });
+
+    return () => {
+      sockets.off("player2_joined");
+    };
+  }, [sockets]);
+
   const handleJoinGame = async (id_game: string) => {
     if (game?.players.length === 2) {
       if (id_game) {
