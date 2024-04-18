@@ -56,13 +56,12 @@ export default function BatailleAmi() {
   }, [player1, player2]);
 
   useEffect(() => {
-    console.log("player2_joined");
-    sockets.on("player2_joined", () => {
+    sockets.on("game_can_start", () => {
       setStep(1);
     });
 
     return () => {
-      sockets.off("player2_joined");
+      sockets.off("game_can_start");
     };
   }, [sockets]);
 
