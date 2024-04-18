@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 const AppContext = createContext<any>(undefined);
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  let [isSelectedSound, setIsSelectedSound] = useState<boolean>(true);
+  let [isSelectedSound, setIsSelectedSound] = useState<boolean>(false);
   let [isSelectedVibration, setIsSelectedVibration] = useState<boolean>(true);
   let [isSelectedAnimation, setIsSelectedAnimation] = useState<boolean>(true);
   let [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(false);

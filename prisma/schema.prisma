@@ -73,6 +73,7 @@ model Message {
 
 model BattleShipGame {
   token String @id @unique
+  creator String
   players String[]
   dateExpire DateTime
 }

@@ -1,5 +1,6 @@
 "use client";
 
+// Imports
 import { addPlayer, deleteGame, getGame } from "@/app/actions/game_ami/game";
 import { useAppContext } from "@/context";
 import { Button, Tooltip } from "@nextui-org/react";
@@ -10,27 +11,46 @@ import QRCode from "qrcode.react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-type GameType = { token: string; players: string[]; dateExpire: Date } | null;
+// Définition du type de jeu
+type GameType = {
+  token: string;
+  players: string[];
+  dateExpire: Date;
+  creator: string;
+} | null;
 
+// Composant principal
 export default function BatailleAmi() {
+  // States
   const [hover, setHover] = useState(false);
   const [lien, setLien] = useState("");
   const [game, setGame] = useState<GameType>(null);
   const [step, setStep] = useState(0);
   const { sockets } = useAppContext();
+
+  // states gestion des joueurs de la partie
+  const [player, setPlayer] = useState<number>(); // soit 1 soit 2
   const [player1, setPlayer1] = useState("");
   const [player2, setPlayer2] = useState("");
+  const [shipPlayer1, setShipPlayer1] = useState([]);
+  const [shipPlayer2, setShipPlayer2] = useState([]);
 
+  console.log(player1, player2);
+  console.log(player);
+
+  // Effet pour obtenir le lien de la page
   useEffect(() => {
     setTimeout(() => {
       setLien(window.location.href);
     }, 100);
   }, []);
 
+  // Hooks NextAuth
   const { data: session } = useSession();
   const token = new URLSearchParams(window.location.search).get("token");
   const router = useRouter();
 
+  // Effet pour obtenir les détails du jeu
   useEffect(() => {
     let isCancelled = false;
 
@@ -48,18 +68,18 @@ export default function BatailleAmi() {
     };
   }, [token]);
 
+  // Effet pour déterminer si les joueurs sont prêts
   useEffect(() => {
-    console.log(player1, player2);
     if (player1 && player2) {
       setStep(1);
     }
   }, [player1, player2]);
 
+  // Effet pour gérer l'arrivée du deuxième joueur
   useEffect(() => {
     sockets.on(
       "game_can_start",
       ({ player1, player2 }: { player1: string; player2: string }) => {
-        console.log("Le deuxième joueur a rejoint la partie");
         setPlayer1(player1);
         setPlayer2(player2);
         setStep(1);
@@ -71,12 +91,22 @@ export default function BatailleAmi() {
     };
   }, [sockets]);
 
+  // fuction pour savoir quelle joueur est le joueur 1
+
+  const handlePlayer = (player: string) => {
+    if (game?.creator === player) {
+      setPlayer(1);
+    } else setPlayer(2);
+  };
+
+  // Fonction pour rejoindre le jeu
   const handleJoinGame = async (id_game: string) => {
     if (game?.players.length === 2) {
       if (id_game) {
         sockets.emit("join_game", id_game);
         setPlayer1(game.players[0]);
         setPlayer2(game.players[1]);
+        handlePlayer(session?.user?.id as string);
       }
     } else {
       if (session) {
@@ -87,11 +117,13 @@ export default function BatailleAmi() {
             sockets.emit("join_game", id_game);
             setPlayer1(game.players[0]);
             setPlayer2(game.players[1]);
+            handlePlayer(session?.user?.id as string);
           }
       }
     }
   };
 
+  // Effet pour rejoindre automatiquement le jeu
   useEffect(() => {
     if (game) {
       handleJoinGame(game.token);

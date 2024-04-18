@@ -13,6 +13,7 @@ export const createGame = async (gameData: GameDataTypes) => {
       token: gameData.id,
       players: [gameData.playerId],
       dateExpire: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      creator: gameData.playerId,
     },
   });
 };
