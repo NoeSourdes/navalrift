@@ -10,7 +10,12 @@ import QRCode from "qrcode.react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-type GameType = { token: string; players: string[]; dateExpire: Date } | null;
+type GameType = {
+  token: string;
+  players: string[];
+  dateExpire: Date;
+  creator: string;
+} | null;
 
 export default function BatailleAmi() {
   const [hover, setHover] = useState(false);
@@ -18,8 +23,12 @@ export default function BatailleAmi() {
   const [game, setGame] = useState<GameType>(null);
   const [step, setStep] = useState(0);
   const { sockets } = useAppContext();
+
   const [player1, setPlayer1] = useState("");
   const [player2, setPlayer2] = useState("");
+  const [player, setPlayer] = useState<number>();
+  const [shipPlayer1, setShipPlayer1] = useState([]);
+  const [shipPlayer2, setShipPlayer2] = useState([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -71,12 +80,19 @@ export default function BatailleAmi() {
     };
   }, [sockets]);
 
+  const handlePlayer = async (player: string) => {
+    if (game?.creator === player) {
+      setPlayer(1);
+    } else setPlayer(2);
+  };
+
   const handleJoinGame = async (id_game: string) => {
     if (game?.players.length === 2) {
       if (id_game) {
         sockets.emit("join_game", id_game);
         setPlayer1(game.players[0]);
         setPlayer2(game.players[1]);
+        handlePlayer(session?.user?.id as string);
       }
     } else {
       if (session) {
@@ -87,6 +103,7 @@ export default function BatailleAmi() {
             sockets.emit("join_game", id_game);
             setPlayer1(game.players[0]);
             setPlayer2(game.players[1]);
+            handlePlayer(session?.user?.id as string);
           }
       }
     }
