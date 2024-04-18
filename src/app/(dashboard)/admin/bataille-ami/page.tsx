@@ -69,7 +69,7 @@ export default function BatailleAmi() {
           if (id_game) {
             sockets.emit("join_game", id_game);
             setPlayer1(game.players[0]);
-            setPlayer2(session.user?.id as string);
+            setPlayer2(game.players[1]);
           }
       }
     }
