@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteGame, getGame } from "@/app/actions/game_ami/game";
+import { addPlayer, deleteGame, getGame } from "@/app/actions/game_ami/game";
 import { useAppContext } from "@/context";
 import { Button, Tooltip } from "@nextui-org/react";
 import { Copy } from "lucide-react";
@@ -18,6 +18,8 @@ export default function BatailleAmi() {
   const [game, setGame] = useState<GameType>(null);
   const [step, setStep] = useState(0);
   const { sockets } = useAppContext();
+  const [player1, setPlayer1] = useState("");
+  const [player2, setPlayer2] = useState("");
 
   useEffect(() => {
     setTimeout(() => {
@@ -46,9 +48,30 @@ export default function BatailleAmi() {
     };
   }, [token]);
 
+  useEffect(() => {
+    if (player1 && player2) {
+      setStep(1);
+    }
+  }, [player1, player2]);
+
   const handleJoinGame = async (id_game: string) => {
-    if (id_game) {
-      sockets.emit("join_game", id_game);
+    if (game?.players.length === 2) {
+      if (id_game) {
+        sockets.emit("join_game", id_game);
+        setPlayer1(game.players[0]);
+        setPlayer2(game.players[1]);
+      }
+    } else {
+      if (session) {
+        if (!game?.players.includes(session.user?.id as string))
+          await addPlayer(id_game, session.user?.id as string);
+        if (game)
+          if (id_game) {
+            sockets.emit("join_game", id_game);
+            setPlayer1(game.players[0]);
+            setPlayer2(session.user?.id as string);
+          }
+      }
     }
   };
 

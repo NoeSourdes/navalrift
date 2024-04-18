@@ -13,6 +13,11 @@ const io = new Server(httpServer, {
   },
 });
 
+let game = {
+  player1: null,
+  player2: null,
+};
+
 io.on("connection", (socket) => {
   socket.on("join_conversation", (id_group) => {
     socket.join(id_group);
@@ -40,6 +45,15 @@ io.on("connection", (socket) => {
   socket.on("join_game", (id_game) => {
     socket.join(id_game);
     console.log(`L'utilisateur ${socket.id} a rejoint la game : ${id_game}`);
+
+    if (!game.player1) {
+      game.player1 = socket.id;
+    } else if (!game.player2) {
+      game.player2 = socket.id;
+    } else {
+      console.log("La partie est pleine");
+      socket.emit("game_full");
+    }
   });
 
   socket.on("disconnect", () => {

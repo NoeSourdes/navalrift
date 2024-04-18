@@ -32,3 +32,16 @@ export const deleteGame = async (token: string) => {
     },
   });
 };
+
+export const addPlayer = async (token: string, playerId: string) => {
+  return await prisma.battleShipGame.update({
+    where: {
+      token: token,
+    },
+    data: {
+      players: {
+        push: playerId,
+      },
+    },
+  });
+};
