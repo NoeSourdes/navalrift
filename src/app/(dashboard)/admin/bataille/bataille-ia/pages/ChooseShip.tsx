@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { RotateCcw, RotateCw } from "lucide-react";
 import { useState } from "react";
-import { Grid } from "../../components/bataille/Grid";
+import { Grid } from "../../../components/bataille/Grid";
 
 interface ChooseShipProps {
   shipHistory: any[];

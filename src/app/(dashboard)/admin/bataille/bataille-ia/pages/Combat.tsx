@@ -18,9 +18,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Timecode from "react-timecode";
 import Timer from "react-timer-wrapper";
-import { Grid } from "../../components/bataille/Grid";
-import { GridPlayer } from "../../components/bataille/GridPlayer";
-import { touchShip } from "../../function/touchShip";
+import { Grid } from "../../../components/bataille/Grid";
+import { GridPlayer } from "../../../components/bataille/GridPlayer";
+import { touchShip } from "../../../function/touchShip";
 
 interface CombatProps {
   setStep: (step: number) => void;

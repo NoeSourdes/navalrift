@@ -1,45 +1,11 @@
 "use client";
 
-import { createGame } from "@/app/actions/game_ami/game";
 import { useButtonSounds } from "@/app/actions/sound/sound";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@nextui-org/react";
-import { randomBytes } from "crypto";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function Page() {
   const { playHover, play } = useButtonSounds();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [sentence, setSentence] = useState("");
-  const [token, setToken] = useState("");
-  const { data: session } = useSession();
-
   const router = useRouter();
-
-  const createGameWithFriend = async () => {
-    const createToken = randomBytes(16).toString("hex");
-    setToken(createToken);
-    window.history.replaceState({}, "", `?token=${createToken}`);
-    if (session?.user) {
-      const playerId = session.user.id || "default-id";
-      const create = createGame({
-        id: createToken,
-        playerId: playerId,
-      });
-      create.then(() => {
-        router.push(`/admin/bataille-ami?token=${createToken}`);
-      });
-    }
-  };
 
   return (
     <div className="h-full w-full flex flex-col lg:gap-6 gap-3">
@@ -49,8 +15,7 @@ export default function Page() {
         </div>
         <div
           onClick={() => {
-            setSentence("Jouer contre une IA");
-            onOpen();
+            router.push("/admin/bataille");
           }}
           onMouseEnter={() => playHover()}
           className="h-full w-full bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-hidden cursor-pointer hover:scale-[1.02] transition-all z-10 min-h-[300px] hover:shadow-2xl"
@@ -58,105 +23,37 @@ export default function Page() {
           <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] "></div>
           <div className="max-w-2xl mx-auto p-4">
             <h1 className="relative z-10 text-3xl md:text-6xl  bg-clip-text text-transparent bg-foreground  text-center font-sans font-bold">
-              Jouer contre <br /> <span className="text-primary">une IA</span>
+              Bataille <br /> <span className="text-primary">navale</span>
             </h1>
-            <p></p>
             <p className="text-gray-300 max-w-lg mx-auto my-2 text-sm text-center relative z-10 mt-5">
-              La Bataille navale, un jeu de stratégie où l&apos;IA devient votre
-              adversaire redoutable. Placez vos navires avec ruse et défiez
-              l&apos;intelligence artificielle pour une victoire maritime.
+              La bataille navale est un jeu de stratégie. Deux joueurs
+              s&apos;affrontent pour couler les navires adverses. Utilisez votre
+              intelligence pour localiser et détruire les navires ennemis tout
+              en protégeant les vôtres. Préparez-vous à une bataille épique !
             </p>
           </div>
         </div>
         <div
           onClick={() => {
-            setSentence("Jouer contre un ami");
-            onOpen();
+            router.push("/admin/demineur");
           }}
           onMouseEnter={() => playHover()}
           className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-hidden cursor-pointer hover:scale-[1.02] transition-all z-10 min-h-[300px] hover:shadow-2xl"
         >
           <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
           <div className="max-w-2xl mx-auto p-4">
-            <h1 className="relative z-10 text-3xl md:text-6xl  bg-clip-text text-transparent bg-foreground  text-center font-sans font-bold">
-              Jouer contre <br /> <span className="text-primary">un ami</span>
+            <h1 className="relative h-[120px] flex items-center justify-center z-10 text-3xl md:text-6xl  bg-clip-text text-transparent bg-foreground  text-center font-sans font-bold">
+              Démi<span className="text-primary">neur</span>
             </h1>
-            <p></p>
             <p className="text-gray-300 max-w-lg mx-auto my-2 text-sm text-center relative z-10 mt-5">
-              La Bataille navale, jeu stratégique classique où l&apos;amitié
-              s&apos;exprime dans le défi. Déployez vos navires, affrontez votre
-              ami, et que la meilleure tactique l&apos;emporte dans cette
-              bataille navale amicale.
+              Le démineur est un jeu de réflexion. Trouvez les mines cachées
+              dans un champ de jeu en cliquant sur les cases. Utilisez les
+              indices pour éviter les mines et déminez le terrain. Soyez
+              prudent, une seule erreur peut être fatale !
             </p>
           </div>
         </div>
       </div>
-      <Modal
-        backdrop="opaque"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        motionProps={{
-          variants: {
-            enter: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                duration: 0.3,
-                ease: "easeOut",
-              },
-            },
-            exit: {
-              y: -20,
-              opacity: 0,
-              transition: {
-                duration: 0.2,
-                ease: "easeIn",
-              },
-            },
-          },
-        }}
-      >
-        <ModalContent>
-          {(onClose: any) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                <h3>Commencer une partie</h3>
-              </ModalHeader>
-              <ModalBody>
-                <p>{sentence}</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  onMouseEnter={() => playHover()}
-                  color="danger"
-                  variant="ghost"
-                  onPress={() => {
-                    onClose();
-                    play();
-                  }}
-                >
-                  Annuler
-                </Button>
-                <Button
-                  onPress={async () => {
-                    onClose();
-                    play();
-                    if (sentence === "Jouer contre une IA")
-                      router.push("/admin/bataille-ia");
-                    else {
-                      await createGameWithFriend();
-                    }
-                  }}
-                  color="primary"
-                  onMouseEnter={() => playHover()}
-                >
-                  Commencer
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </div>
   );
 }

@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { generateShips } from "../function/CreateGrid";
+import { generateShips } from "../../function/CreateGrid";
 import { ChooseShip } from "./pages/ChooseShip";
 import { Combat } from "./pages/Combat";
 
