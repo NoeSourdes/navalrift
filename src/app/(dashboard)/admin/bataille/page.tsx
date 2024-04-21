@@ -12,9 +12,10 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { randomBytes } from "crypto";
+import { Undo2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   const { playHover, play } = useButtonSounds();
@@ -40,6 +41,18 @@ export default function Page() {
       });
     }
   };
+  const [isIconOnly, setIsIconOnly] = useState(window.innerWidth <= 640);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsIconOnly(window.innerWidth <= 640);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="h-full w-full flex flex-col lg:gap-6 gap-3">
@@ -49,13 +62,17 @@ export default function Page() {
         </div>
         <Button
           variant="faded"
+          isIconOnly={isIconOnly}
           color="primary"
-          className="absolute md:top-10 top-5 left-10 z-30"
+          className="absolute md:top-10 top-5 sm:left-10 left-5 z-30"
           onClick={() => {
             window.history.back();
           }}
         >
-          Retour
+          <span className="max-sm:hidden">Retour</span>
+          <span className="sm:hidden">
+            <Undo2 />
+          </span>
         </Button>
         <div
           onClick={() => {

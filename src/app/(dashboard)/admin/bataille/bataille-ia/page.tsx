@@ -10,6 +10,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import { Undo2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { generateShips } from "../../function/CreateGrid";
 import { ChooseShip } from "./pages/ChooseShip";
@@ -121,6 +122,18 @@ export default function BatailleIa() {
     setShipHistory([...shipHistory.slice(0, currentShipIndex + 1), newShips]);
     setCurrentShipIndex(currentShipIndex + 1);
   };
+  const [isIconOnly, setIsIconOnly] = useState(window.innerWidth <= 640);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsIconOnly(window.innerWidth <= 640);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   switch (step) {
     case 0:
@@ -128,13 +141,17 @@ export default function BatailleIa() {
         <div className="relative w-full h-full bg-blue-800/75 rounded-xl lg:p-6 p-3">
           <Button
             variant="faded"
+            isIconOnly={isIconOnly}
             color="primary"
-            className="absolute md:top-10 top-5 left-10 z-30"
+            className="absolute md:top-10 top-5 sm:left-10 left-5 z-30"
             onClick={() => {
               window.history.back();
             }}
           >
-            Retour
+            <span className="max-sm:hidden">Retour</span>
+            <span className="sm:hidden">
+              <Undo2 />
+            </span>
           </Button>
           <ChooseShip
             ship={shipAiGenerate}

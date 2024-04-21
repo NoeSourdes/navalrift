@@ -3,7 +3,7 @@
 import { addPlayer, deleteGame, getGame } from "@/app/actions/game_ami/game";
 import { useAppContext } from "@/context";
 import { Button, Tooltip } from "@nextui-org/react";
-import { Copy } from "lucide-react";
+import { Copy, Undo2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import QRCode from "qrcode.react";
@@ -114,6 +114,18 @@ export default function BatailleAmi() {
     }
   }, [game]);
 
+  const [isIconOnly, setIsIconOnly] = useState(window.innerWidth <= 640);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsIconOnly(window.innerWidth <= 640);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   switch (step) {
     case 0:
       if (!token || !game) {
@@ -122,13 +134,17 @@ export default function BatailleAmi() {
             <Button
               variant="faded"
               color="primary"
+              isIconOnly={isIconOnly}
               className="absolute top-10 left-10 z-30"
               onClick={async () => {
                 if (token) await deleteGame(token);
                 router.push("/admin");
               }}
             >
-              Retour
+              <span className="max-sm:hidden">Retour</span>
+              <span className="sm:hidden">
+                <Undo2 />
+              </span>
             </Button>
             <div className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-hidden p-2 ">
               <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
