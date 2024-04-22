@@ -80,7 +80,7 @@ export default function Page() {
             onOpen();
           }}
           onMouseEnter={() => playHover()}
-          className="h-full w-full bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-hidden cursor-pointer hover:scale-[1.02] transition-all z-10 min-h-[300px] hover:shadow-2xl"
+          className="h-full w-full bg-blue-900  bg-dot-[#0070EF] relative flex items-center justify-center rounded-lg overflow-hidden cursor-pointer hover:scale-[1.02] transition-all z-10 min-h-[300px] hover:shadow-2xl"
         >
           <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] "></div>
           <div className="max-w-2xl mx-auto p-4">
@@ -101,7 +101,7 @@ export default function Page() {
             onOpen();
           }}
           onMouseEnter={() => playHover()}
-          className="h-full w-full  bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center rounded-lg overflow-hidden cursor-pointer hover:scale-[1.02] transition-all z-10 min-h-[300px] hover:shadow-2xl"
+          className="h-full w-full  bg-blue-900  bg-dot-[#0070EF] relative flex items-center justify-center rounded-lg overflow-hidden cursor-pointer hover:scale-[1.02] transition-all z-10 min-h-[300px] hover:shadow-2xl"
         >
           <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
           <div className="max-w-2xl mx-auto p-4">

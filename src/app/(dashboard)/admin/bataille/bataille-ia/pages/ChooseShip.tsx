@@ -73,7 +73,7 @@ export const ChooseShip = ({
 
   return (
     <>
-      <div className="h-full w-full bg-blue-900  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center lg:pt-10 rounded-lg overflow-hidden p-2 overflow-x-hidden">
+      <div className="h-full w-full bg-blue-900  bg-dot-[#0070EF] relative flex justify-center lg:pt-10 rounded-lg overflow-hidden p-2 overflow-x-hidden">
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         <div className="relative flex flex-col gap-8 z-20 overflow-y-auto max-md:pt-14 py-10 ">
           <div className="text-center space-y-2">

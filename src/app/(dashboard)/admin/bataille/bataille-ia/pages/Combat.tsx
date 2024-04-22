@@ -282,7 +282,7 @@ export const Combat = ({
   }, [durationAi, durationPlayer, playerTime, timeAi]);
 
   return (
-    <div className="h-full w-full bg-blue-900 dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex justify-center rounded-lg overflow-hidden p-2">
+    <div className="h-full w-full bg-blue-900 bg-dot-[#0070EF] relative flex justify-center rounded-lg overflow-hidden p-2">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-blue-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       <div
         className="absolute inset-0 flex items-center justify-center"
