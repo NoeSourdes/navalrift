@@ -1,25 +1,59 @@
 "use client";
 
+import { useButtonSounds } from "@/app/actions/sound/sound";
 import { Button } from "@nextui-org/react";
 import { Undo2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Grid from "./components/grid";
 
 export default function Page() {
   const [start, setStart] = useState(false);
+  const [startTime, setStartTime] = useState(false);
   const [isIconOnly, setIsIconOnly] = useState(window.innerWidth <= 640);
   const [clickCell, setClickCell] = useState<string[]>([]);
   const [selectTools, setSelectTools] = useState("shovel");
   const [revealedCells, setRevealedCells] = useState<string[]>([]);
   const [board, setBoard] = useState<string[][]>([[]]);
   const [caseFlag, setCaseFlag] = useState<string[]>([]);
+  const { explosion } = useButtonSounds();
+  const [win, setWin] = useState<string>("start");
+  const router = useRouter();
+  const [nbClick, setNbClick] = useState(0);
+  const [tot, setTot] = useState(0);
+  console.log(tot);
+
+  const generateBombs = () => {
+    const bombPositions = new Set();
+    const bombs = [];
+
+    while (bombs.length < 10) {
+      const x = Math.floor(Math.random() * 10);
+      const y = Math.floor(Math.random() * 10);
+      const position = `${x},${y}`;
+
+      if (!bombPositions.has(position)) {
+        bombPositions.add(position);
+        bombs.push({ x, y });
+      }
+    }
+
+    return bombs;
+  };
+
+  const [bombs, setBombs] = useState(generateBombs());
 
   const revealCell = (x: number, y: number, revealed: string[] = []) => {
+    if (bombs.some((bomb) => bomb.x === x && bomb.y === y)) {
+      revealBomb(x, y);
+      return;
+    }
     const cellKey = `${x},${y}`;
     if (revealedCells.includes(cellKey) || revealed.includes(cellKey)) return;
     revealed.push(cellKey);
     setRevealedCells((prev) => [...prev, cellKey]);
+    setTot((prev) => prev + 1);
     const cellValue = board[x][y];
     if (cellValue === "0") {
       const adjacentCells = [
@@ -46,6 +80,38 @@ export default function Page() {
   };
 
   useEffect(() => {
+    if (tot === 90) {
+      setWin("win");
+      setStart(false);
+      setStartTime(false);
+    }
+  }, [tot]);
+
+  const revealBomb = (x: number, y: number) => {
+    setStartTime(false);
+    const cellKey = `${x},${y}`;
+    setRevealedCells((prev) => [...prev, cellKey]);
+    const popElement = { x: x, y: y };
+    const newBombs = bombs.filter(
+      (item) => !(item.x === popElement.x && item.y === popElement.y)
+    );
+    const time = bombs.length * 600;
+    setTimeout(() => {
+      newBombs.forEach((bomb, index) => {
+        setTimeout(() => {
+          const cellKey = `${bomb.x},${bomb.y}`;
+          setRevealedCells((prev) => [...prev, cellKey]);
+          explosion();
+        }, index * 600);
+      });
+    }, 600);
+    setTimeout(() => {
+      setStart(false);
+      setWin("lose");
+    }, time);
+  };
+
+  useEffect(() => {
     const handleResize = () => {
       setIsIconOnly(window.innerWidth <= 640);
     };
@@ -61,14 +127,14 @@ export default function Page() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (start) {
+    if (startTime) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1000);
     }
 
     return () => clearInterval(interval);
-  }, [start]);
+  }, [startTime]);
 
   const formatTime = () => {
     const getSeconds = `0${time % 60}`.slice(-2);
@@ -105,20 +171,103 @@ export default function Page() {
                   display: start ? "none" : "flex",
                 }}
               >
-                <div className="w-96 max-sm:w-80 max-sm:h-52 h-60 bg-[#27272A] rounded-xl p-5 flex flex-col justify-center items-center space-y-5 border-2 border-[#3F3F46]">
-                  <h1 className="text-center text-2xl font-bold">
-                    Commencer une partie de démineur
-                  </h1>
-                  <Button
-                    color="primary"
-                    className="w-full"
-                    onClick={() => {
-                      setStart(true);
-                    }}
-                  >
-                    Commencer
-                  </Button>
-                </div>
+                {win === "start" ? (
+                  <div className="w-96 max-sm:w-80 max-sm:h-52 h-60 bg-[#27272A] rounded-xl p-5 flex flex-col justify-center items-center space-y-5 border-2 border-[#3F3F46]">
+                    <h1 className="text-center text-2xl font-bold">
+                      Commencer une partie de démineur
+                    </h1>
+                    <Button
+                      color="primary"
+                      className="w-full"
+                      onClick={() => {
+                        setStart(true);
+                        setStartTime(true);
+                      }}
+                    >
+                      Commencer
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        router.push("/admin");
+                      }}
+                    >
+                      Retour a la page d&apos;accueil
+                    </Button>
+                  </div>
+                ) : win === "lose" ? (
+                  <div className="w-96 max-sm:w-80  bg-[#27272A] rounded-xl p-5 flex flex-col justify-center items-center space-y-5 border-2 border-[#3F3F46]">
+                    <h1 className="text-center text-2xl font-bold text-danger">
+                      Vous avez perdu
+                    </h1>
+                    <div className="flex flex-col text-center space-y-1 ">
+                      <span>
+                        Nombre de coups :{" "}
+                        <span className="font-bold">{nbClick}</span>
+                      </span>
+                      <span>
+                        Temps écoulé :{" "}
+                        <span className="font-bold">{formatTime()}</span>
+                      </span>
+                    </div>
+                    <Button
+                      color="primary"
+                      className="w-full"
+                      onClick={() => {
+                        setTot(0);
+                        setStart(true);
+                        setStartTime(true);
+                        setWin("start");
+                        setClickCell([]);
+                        setRevealedCells([]);
+                        setCaseFlag([]);
+                        setTime(0);
+                        setNbClick(0);
+                        setBombs(generateBombs());
+                      }}
+                    >
+                      Recommencer
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        router.push("/admin");
+                      }}
+                    >
+                      Retour a la page d&apos;accueil
+                    </Button>
+                  </div>
+                ) : win === "win" ? (
+                  <div className="w-96 max-sm:w-80 max-sm:h-52 h-60 bg-[#27272A] rounded-xl p-5 flex flex-col justify-center items-center space-y-5 border-2 border-[#3F3F46]">
+                    <h1 className="text-center text-2xl font-bold">
+                      Vous avez gagné
+                    </h1>
+                    <Button
+                      color="primary"
+                      className="w-full"
+                      onClick={() => {
+                        setTot(0);
+                        setNbClick(0);
+                        setStart(true);
+                        setStartTime(true);
+                        setWin("start");
+                        setRevealedCells([]);
+                        setCaseFlag([]);
+                        setTime(0);
+                        setBombs(generateBombs());
+                      }}
+                    >
+                      Recommencer
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        router.push("/admin");
+                      }}
+                    >
+                      Retour a la page d&apos;accueil
+                    </Button>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="relative h-full w-full flex flex-col space-y-5 max-sm:space-y-3 justify-center items-center z-20">
                 <div className="w-[500px] flex max-sm:w-80 max-sm:h-16 h-32 rounded-xl bg-blue-800/75">
@@ -148,6 +297,8 @@ export default function Page() {
                 </div>
                 <div className="h-[400px] max-sm:w-80 max-sm:h-[350px] w-[400px] rounded-xl overflow-hidden bg-blue-800/75">
                   <Grid
+                    setNbClick={setNbClick}
+                    bombs={bombs}
                     revealCell={revealCell}
                     clickCell={clickCell}
                     setClickCell={setClickCell}

@@ -11,6 +11,8 @@ interface gridProps {
   caseFlag: string[];
   setCaseFlag: React.Dispatch<React.SetStateAction<string[]>>;
   selectTools: string;
+  bombs: { x: number; y: number }[];
+  setNbClick: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function Grid({
@@ -23,29 +25,11 @@ export default function Grid({
   caseFlag,
   setCaseFlag,
   selectTools,
+  bombs,
+  setNbClick,
 }: gridProps) {
   const x = 10;
   const y = 10;
-
-  const generateBombs = () => {
-    const bombPositions = new Set();
-    const bombs = [];
-
-    while (bombs.length < 10) {
-      const x = Math.floor(Math.random() * 10);
-      const y = Math.floor(Math.random() * 10);
-      const position = `${x},${y}`;
-
-      if (!bombPositions.has(position)) {
-        bombPositions.add(position);
-        bombs.push({ x, y });
-      }
-    }
-
-    return bombs;
-  };
-
-  const [bombs, setBombs] = useState(generateBombs());
 
   const generateGrid = () => {
     let grid = Array.from({ length: x }, () =>
@@ -90,6 +74,7 @@ export default function Grid({
         row.map((cell, j) => (
           <div
             onClick={() => {
+              setNbClick((prev) => prev + 1);
               if (selectTools === "flag") {
                 if (caseFlag.length === 10) {
                   alert("Vous avez déjà placé 10 drapeaux");
@@ -101,9 +86,6 @@ export default function Grid({
                 setCaseFlag([...caseFlag, `${i},${j}`]);
               } else {
                 if (!clickCell.includes(`${i},${j}`)) {
-                  if (cell === "B") {
-                    console.log("Perdu");
-                  }
                   revealCell(i, j);
                   setClickCell([...clickCell, `${i},${j}`]);
                 } else console.log("Déjà cliqué");
@@ -132,7 +114,9 @@ export default function Grid({
             <span
               className={`absolute w-full h-full flex justify-center items-center ${
                 (i + j) % 2 === 0 ? "bg-[#053B48]" : "bg-[#09AACD]"
-              } ${revealedCells.includes(`${i},${j}`) ? "" : "hidden"}`}
+              } ${cell === "B" ? "bg-error rounded" : ""} ${
+                revealedCells.includes(`${i},${j}`) ? "" : "hidden"
+              }`}
             >
               <span
                 className={`font-bold ${
