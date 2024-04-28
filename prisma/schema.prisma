@@ -78,6 +78,18 @@ model BattleShipGame {
   dateExpire DateTime
 }
 
+model DemineurGameSession {
+  id String @id @default(cuid())
+  name String
+  date String
+  time String
+  nb_cout String
+  win String
+  avatar String
+  email String
+  urlRedif String?
+}
+
 model VerificationToken {
   identifier String
   token      String   @unique

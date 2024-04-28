@@ -3,9 +3,11 @@
 import { useButtonSounds } from "@/app/actions/sound/sound";
 import { Button } from "@nextui-org/react";
 import { Undo2 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { stockGame } from "./actions/stockGame";
 import Grid from "./components/grid";
 
 export default function Page() {
@@ -22,7 +24,7 @@ export default function Page() {
   const router = useRouter();
   const [nbClick, setNbClick] = useState(0);
   const [tot, setTot] = useState(0);
-  console.log(tot);
+  const { data: session } = useSession();
 
   const generateBombs = () => {
     const bombPositions = new Set();
@@ -82,8 +84,31 @@ export default function Page() {
   useEffect(() => {
     if (tot === 90) {
       setWin("win");
-      setStart(false);
-      setStartTime(false);
+      const name = session?.user?.name ? session?.user?.name : "Anonyme";
+      const time = formatTime() as string;
+      const click = nbClick.toString();
+      const date = new Date();
+      const day = date.getDate().toString();
+      const month = (date.getMonth() + 1).toString();
+      const year = date.getFullYear().toString();
+      const formattedDate = `${day}/${month}/${year}`;
+      (async () => {
+        const win = "Gagné";
+        const avatar = session?.user?.image ? session?.user?.image : "";
+        const email = session?.user?.email ? session?.user?.email : "";
+        const data = {
+          name,
+          time,
+          click,
+          formattedDate,
+          win,
+          avatar,
+          email,
+        };
+        await stockGame(data);
+        setStart(false);
+        setStartTime(false);
+      })();
     }
   }, [tot]);
 
@@ -108,6 +133,31 @@ export default function Page() {
     setTimeout(() => {
       setStart(false);
       setWin("lose");
+      const name = session?.user?.name ? session?.user?.name : "Anonyme";
+      const time = formatTime() as string;
+      const click = nbClick.toString();
+      const date = new Date();
+      const day = date.getDate().toString();
+      const month = (date.getMonth() + 1).toString();
+      const year = date.getFullYear().toString();
+      const formattedDate = `${day}/${month}/${year}`;
+      (async () => {
+        const win = "Perdu";
+        const avatar = session?.user?.image ? session?.user?.image : "";
+        const email = session?.user?.email ? session?.user?.email : "";
+        const data = {
+          name,
+          time,
+          click,
+          formattedDate,
+          win,
+          avatar,
+          email,
+        };
+        await stockGame(data);
+        setStart(false);
+        setStartTime(false);
+      })();
     }, time);
   };
 

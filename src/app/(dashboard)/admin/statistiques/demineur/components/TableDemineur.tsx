@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Button,
   Chip,
@@ -19,22 +21,51 @@ import {
   User,
 } from "@nextui-org/react";
 import { ChevronDownIcon, SearchIcon, Undo2 } from "lucide-react";
-import React from "react";
-import { columns, statusOptions, users } from "../data/data";
+import React, { useEffect, useState } from "react";
+import { getGame } from "../actions/getGame";
+import { columns, statusOptions } from "../data/data";
 import { capitalize } from "../utils/utils";
 import { VerticalDotsIcon } from "./verticalDot";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
+  Gagné: "success",
+  Perdu: "danger",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "name",
+  "date",
+  "time",
+  "nb_cout",
+  "win",
+  "actions",
+];
 
-type User = (typeof users)[0];
+type Game = {
+  id: string;
+  name: string;
+  date: string;
+  time: string;
+  nb_cout: string;
+  win: string;
+  avatar: string;
+  email: string;
+};
 
 export default function App() {
+  useEffect(() => {
+    const getGameFunction = async () => {
+      try {
+        const response = await getGame();
+        setGame(response);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      }
+    };
+    getGameFunction();
+  }, []);
+
+  const [game, setGame] = useState<Game[]>([]);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -50,7 +81,7 @@ export default function App() {
   });
   const [page, setPage] = React.useState(1);
 
-  const pages = Math.ceil(users.length / rowsPerPage);
+  const pages = Math.ceil(game.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -63,7 +94,7 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredUsers = [...game];
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
@@ -75,12 +106,12 @@ export default function App() {
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+        Array.from(statusFilter).includes(user.win)
       );
     }
 
     return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+  }, [game, filterValue, statusFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -91,8 +122,10 @@ export default function App() {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+      const first = a[sortDescriptor.column as keyof User] as unknown as number;
+      const second = b[
+        sortDescriptor.column as keyof User
+      ] as unknown as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -116,20 +149,17 @@ export default function App() {
             {user.email}
           </User>
         );
-      case "role":
+      case "date":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-500">
-              {user.team}
-            </p>
           </div>
         );
-      case "status":
+      case "win":
         return (
           <Chip
             className="capitalize border-none gap-1 text-default-600"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.win]}
             size="sm"
             variant="dot"
           >
@@ -146,9 +176,8 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem className="text-danger">Delete</DropdownItem>
+                <DropdownItem>Revisionner</DropdownItem>
+                <DropdownItem className="text-danger">Supprimer</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -215,31 +244,6 @@ export default function App() {
                   size="sm"
                   variant="flat"
                 >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
                   Columns
                 </Button>
               </DropdownTrigger>
@@ -262,7 +266,7 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} users
+            Total {game.length} users
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -285,7 +289,7 @@ export default function App() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    game.length,
     hasSearchFilter,
   ]);
 
@@ -349,7 +353,6 @@ export default function App() {
         }}
         classNames={classNames}
         selectedKeys={selectedKeys}
-        selectionMode="multiple"
         sortDescriptor={sortDescriptor}
         onSelectionChange={setSelectedKeys}
         onSortChange={setSortDescriptor}
@@ -367,7 +370,7 @@ export default function App() {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={"No users found"}
+          emptyContent={"Aucune game trouvée"}
           items={sortedItems}
           className="h-full"
         >
