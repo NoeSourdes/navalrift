@@ -55,15 +55,15 @@ type Game = {
 };
 
 export default function App() {
+  const getGameFunction = async () => {
+    try {
+      const response = await getGame();
+      setGame(response);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données :", error);
+    }
+  };
   useEffect(() => {
-    const getGameFunction = async () => {
-      try {
-        const response = await getGame();
-        setGame(response);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
-      }
-    };
     getGameFunction();
   }, []);
 
@@ -185,13 +185,19 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>Revisionner</DropdownItem>
-                <DropdownItem
-                  className="text-danger"
-                  onClick={() => deleteGameFunction(game.id)}
-                >
-                  Supprimer
-                </DropdownItem>
+                {game.email === session?.user?.email ? (
+                  <DropdownItem>Revisionner</DropdownItem>
+                ) : (
+                  <DropdownItem>Visionner le combat</DropdownItem>
+                )}
+                {game.email === session?.user?.email && (
+                  <DropdownItem
+                    className="text-danger"
+                    onClick={() => deleteGameFunction(game.id)}
+                  >
+                    Supprimer
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -227,17 +233,9 @@ export default function App() {
       const filteredItems = game.filter((game) => game.email === email);
       setGame(filteredItems);
     } else {
-      const getGameFunction = async () => {
-        try {
-          const response = await getGame();
-          setGame(response);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des données :", error);
-        }
-      };
       getGameFunction();
     }
-  }, [isChecked, session, game]);
+  }, [isChecked, session]);
 
   const topContent = React.useMemo(() => {
     return (
