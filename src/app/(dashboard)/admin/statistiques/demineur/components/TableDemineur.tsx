@@ -121,11 +121,9 @@ export default function App() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as unknown as number;
-      const second = b[
-        sortDescriptor.column as keyof User
-      ] as unknown as number;
+    return [...items].sort((a: Game, b: Game) => {
+      const first = parseInt(a[sortDescriptor.column as keyof Game], 10);
+      const second = parseInt(b[sortDescriptor.column as keyof Game], 10);
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
