@@ -23,6 +23,8 @@ export default function Page() {
   const [sentence, setSentence] = useState("");
   const [token, setToken] = useState("");
   const { data: session } = useSession();
+  const status = process.env.STATUS;
+  console.log(status);
 
   const router = useRouter();
 
