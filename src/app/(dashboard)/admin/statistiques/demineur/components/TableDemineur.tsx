@@ -176,6 +176,17 @@ export default function App() {
           </Chip>
         );
       case "actions":
+        let actionContent = null;
+        if (game.email === session?.user?.email) {
+          actionContent = (
+            <DropdownItem
+              className="text-danger"
+              onClick={() => deleteGameFunction(game.id)}
+            >
+              Supprimer
+            </DropdownItem>
+          );
+        }
         return (
           <div className="relative flex justify-end items-center gap-2">
             <Dropdown className="border-1 border-default-200">
@@ -185,23 +196,13 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                {game.email === session?.user?.email ? (
-                  <DropdownItem>Revisionner</DropdownItem>
-                ) : (
-                  <DropdownItem>Visionner le combat</DropdownItem>
-                )}
-                {game.email === session?.user?.email && (
-                  <DropdownItem
-                    className="text-danger"
-                    onClick={() => deleteGameFunction(game.id)}
-                  >
-                    Supprimer
-                  </DropdownItem>
-                )}
+                <DropdownItem>Visionner le combat</DropdownItem>
+                {actionContent}
               </DropdownMenu>
             </Dropdown>
           </div>
         );
+
       default:
         return cellValue;
     }
