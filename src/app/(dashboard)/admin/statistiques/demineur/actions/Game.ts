@@ -17,3 +17,11 @@ export async function getGame() {
   });
   return games;
 }
+
+export const deleteGame = async (id: string) => {
+  await prisma.demineurGameSession.delete({
+    where: {
+      id,
+    },
+  });
+};

@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Checkbox,
   Chip,
   ChipProps,
   Dropdown,
@@ -21,8 +22,9 @@ import {
   User,
 } from "@nextui-org/react";
 import { ChevronDownIcon, SearchIcon, Undo2 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import { getGame } from "../actions/getGame";
+import { deleteGame, getGame } from "../actions/Game";
 import { columns, statusOptions } from "../data/data";
 import { capitalize } from "../utils/utils";
 import { VerticalDotsIcon } from "./verticalDot";
@@ -97,16 +99,16 @@ export default function App() {
     let filteredUsers = [...game];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredUsers = filteredUsers.filter((game) =>
+        game.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.win)
+      filteredUsers = filteredUsers.filter((game) =>
+        Array.from(statusFilter).includes(game.win)
       );
     }
 
@@ -130,21 +132,30 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const deleteGameFunction = async (id: string) => {
+    try {
+      await deleteGame(id);
+      setGame((prev) => prev.filter((game) => game.id !== id));
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la game :", error);
+    }
+  };
+
+  const renderCell = React.useCallback((game: Game, columnKey: React.Key) => {
+    const cellValue = game[columnKey as keyof Game];
 
     switch (columnKey) {
       case "name":
         return (
           <User
-            avatarProps={{ radius: "full", size: "sm", src: user.avatar }}
+            avatarProps={{ radius: "full", size: "sm", src: game.avatar }}
             classNames={{
               description: "text-default-500",
             }}
-            description={user.email}
+            description={game.email}
             name={cellValue}
           >
-            {user.email}
+            {game.email}
           </User>
         );
       case "date":
@@ -157,7 +168,7 @@ export default function App() {
         return (
           <Chip
             className="capitalize border-none gap-1 text-default-600"
-            color={statusColorMap[user.win]}
+            color={statusColorMap[game.win]}
             size="sm"
             variant="dot"
           >
@@ -175,7 +186,12 @@ export default function App() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem>Revisionner</DropdownItem>
-                <DropdownItem className="text-danger">Supprimer</DropdownItem>
+                <DropdownItem
+                  className="text-danger"
+                  onClick={() => deleteGameFunction(game.id)}
+                >
+                  Supprimer
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -202,6 +218,27 @@ export default function App() {
     }
   }, []);
 
+  const [isChecked, setIsChecked] = useState(false);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (isChecked) {
+      const email = session?.user?.email;
+      const filteredItems = game.filter((game) => game.email === email);
+      setGame(filteredItems);
+    } else {
+      const getGameFunction = async () => {
+        try {
+          const response = await getGame();
+          setGame(response);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des données :", error);
+        }
+      };
+      getGameFunction();
+    }
+  }, [isChecked, session, game]);
+
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -222,10 +259,10 @@ export default function App() {
             <Input
               isClearable
               classNames={{
-                base: "w-full sm:max-w-[44%]",
+                base: "w-full sm:max-w-[70%]",
                 inputWrapper: "border-1",
               }}
-              placeholder="Search by name..."
+              placeholder="Rechercher une game..."
               size="sm"
               startContent={<SearchIcon className="text-default-300" />}
               value={filterValue}
@@ -234,7 +271,10 @@ export default function App() {
               onValueChange={onSearchChange}
             />
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 min-w-60 justify-end">
+            <Checkbox onValueChange={setIsChecked} size="sm">
+              joué par moi
+            </Checkbox>
             <Dropdown>
               <DropdownTrigger className="">
                 <Button
@@ -242,7 +282,7 @@ export default function App() {
                   size="sm"
                   variant="flat"
                 >
-                  Columns
+                  Colonnes
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -264,10 +304,10 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {game.length} users
+            Nombre total de games : {game.length}
           </span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            Ligne par page :
             <select
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
@@ -306,11 +346,6 @@ export default function App() {
           variant="light"
           onChange={setPage}
         />
-        <span className="text-small text-default-400">
-          {selectedKeys === "all"
-            ? "All items selected"
-            : `${selectedKeys.size} of ${items.length} selected`}
-        </span>
       </div>
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
