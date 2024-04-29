@@ -197,7 +197,7 @@ export default function App() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem>Visionner le combat</DropdownItem>
-                {actionContent || <></>}
+                {actionContent && actionContent}
               </DropdownMenu>
             </Dropdown>
           </div>
