@@ -1,6 +1,7 @@
 "use client";
 
 import { CallToAction } from "@/design/landing-page/call-to-action/callToAction";
+import Particles from "@/design/landing-page/components/particles";
 import { Creator } from "@/design/landing-page/creator/creator";
 import { Dashboard } from "@/design/landing-page/dashboard/dashboard";
 import { Features } from "@/design/landing-page/features/features";
@@ -112,7 +113,14 @@ export default function Home() {
   };
 
   return (
-    <div className="">
+    <div className="relative">
+      <Particles
+        className="absolute inset-0 "
+        quantity={200}
+        ease={80}
+        color={"#ffffff"}
+        refresh
+      />
       <NavbarComponent
         isCallToActionVisible={isCallToActionVisible}
         isFeaturesVisible={isFeaturesVisible}

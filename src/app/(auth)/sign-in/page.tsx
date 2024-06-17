@@ -5,7 +5,6 @@ import { Button } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa6";
 import { NavBar } from "../components/navBar";
 
 export default function Page() {
@@ -43,7 +42,7 @@ export default function Page() {
               <Button
                 onClick={() => {
                   signIn("google", {
-                    callbackUrl: lien,
+                    callbackUrl: "/admin",
                   });
                 }}
                 variant="bordered"
@@ -56,18 +55,6 @@ export default function Page() {
                   height={20}
                 />
                 avec Google
-              </Button>
-              <Button
-                onClick={() => {
-                  signIn("github", {
-                    callbackUrl: lien,
-                  });
-                }}
-                variant="bordered"
-                size="lg"
-              >
-                <FaGithub className="text-gray-400 text-xl" />
-                avec GitHub
               </Button>
             </div>
           </div>

@@ -1,0 +1,10 @@
+{
+  "liveServer.settings.port": 5502,
+  "tailwindCSS.experimental.classRegex": [
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+  "css.lint.unknownAtRules": "ignore",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}
