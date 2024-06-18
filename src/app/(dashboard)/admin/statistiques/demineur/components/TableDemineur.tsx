@@ -27,7 +27,6 @@ import React, { useEffect, useState } from "react";
 import { deleteGame, getGame } from "../actions/Game";
 import { columns, statusOptions } from "../data/data";
 import { capitalize } from "../utils/utils";
-import { VerticalDotsIcon } from "./verticalDot";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   Gagné: "success",
@@ -189,7 +188,7 @@ export default function App() {
         }
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Dropdown className="border-1 border-default-200">
+            {/* <Dropdown className="border-1 border-default-200">
               <DropdownTrigger>
                 <Button isIconOnly radius="full" size="sm" variant="light">
                   <VerticalDotsIcon />
@@ -199,7 +198,7 @@ export default function App() {
                 <DropdownItem>Visionner le combat</DropdownItem>
                 {actionContent !== null ? actionContent : null}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         );
 
