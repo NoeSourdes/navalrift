@@ -8,12 +8,12 @@ import { Ambilight } from "../components/ambilight";
 
 export const Creator = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
-      <Chip color="primary" variant="dot" className="mb-3">
+    <div className="flex flex-col max-w-5xl w-full mx-auto">
+      <Chip color="primary" variant="dot" className="mb-3 mx-auto">
         Créateur
       </Chip>
 
-      <div className="flex max-lg:flex-col justify-center items-center space-y-10 lg:gap-16 gap-5">
+      <div className="flex max-lg:flex-col justify-between items-center space-y-10 lg:gap-16 gap-5">
         <div className="max-w-lg space-y-3 ">
           <h2 className="text-xl font-bold text-primary">
             CRÉÉ DE A À Z PAR...

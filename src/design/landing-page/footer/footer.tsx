@@ -5,18 +5,15 @@ import Link from "next/link";
 export const Footer = () => {
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="relative w-full h-96 rounded-[25px]">
-        <div className="relative w-full h-full bg-[#27272A]/50 border-[#3F4047] rounded-[25px] flex flex-col justify-center items-center px-5 z-20 space-y-10 max-w-4xl mx-auto border">
-          <h3 className="sm:text-4xl text-3xl font-bold text-center">
+      <div className="relative w-full h-80 rounded-[25px]">
+        <div className="relative w-full h-full bg-[#27272A]/50 border-[#3F4047] rounded-[25px] flex flex-col justify-center items-center px-5 z-20 space-y-10 max-w-5xl mx-auto border">
+          <h3 className="sm:text-4xl text-2xl font-medium text-center max-w-xl">
             Prêt à vivre une{" "}
             <span className="text-primary">aventure épique</span> dans le monde
             de la <span className="text-primary">bataille navale</span> ?
           </h3>
           <Link href="/sign-in">
-            <Button
-              size="lg"
-              className="bg-gradient-to-tr from-blue-500 to-blue-800 text-white shadow-lg"
-            >
+            <Button size="lg" className="bg-primary text-white shadow-lg">
               Rejoindre NavalRift
             </Button>
           </Link>
