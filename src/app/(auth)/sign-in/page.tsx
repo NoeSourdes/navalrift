@@ -1,5 +1,6 @@
 "use client";
 
+import Safari from "@/app/components/ui/Safari";
 import { useAppContext } from "@/context";
 import { Button } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
@@ -23,12 +24,10 @@ export default function Page() {
         <div className="relative flex lg:items-center max-lg:flex-col-reverse gap-10 lg:gap-16 z-20">
           <div className="relative overflow-hidden">
             <div className="relative-image">
-              <Image
-                className="border border-border rounded-xl"
-                src="/svg/app.svg"
-                alt="NavalRift"
-                width={650}
-                height={650}
+              <Safari
+                url="navailrift.vercel.app"
+                className="size-full border border-[#3F3F46] rounded-xl"
+                src="/img/app.png"
               />
             </div>
           </div>

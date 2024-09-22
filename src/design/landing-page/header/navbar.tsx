@@ -89,7 +89,7 @@ export const NavbarComponent = ({
             Fonctionnalités
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={isPriceVisible}>
+        {/* <NavbarItem isActive={isPriceVisible}>
           <Link
             onClick={scrollToPrice}
             color={isPriceVisible ? "primary" : "foreground"}
@@ -97,7 +97,7 @@ export const NavbarComponent = ({
           >
             Tarifs
           </Link>
-        </NavbarItem>
+        </NavbarItem> */}
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">

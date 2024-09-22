@@ -7,7 +7,6 @@ import { Dashboard } from "@/design/landing-page/dashboard/dashboard";
 import { Features } from "@/design/landing-page/features/features";
 import { Footer } from "@/design/landing-page/footer/footer";
 import { NavbarComponent } from "@/design/landing-page/header/navbar";
-import { Price } from "@/design/landing-page/price/price";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -137,9 +136,9 @@ export default function Home() {
         <div ref={FeaturesRef}>
           <Features />
         </div>
-        <div ref={PriceRef}>
+        {/* <div ref={PriceRef}>
           <Price />
-        </div>
+        </div> */}
         <Creator />
         <Footer />
       </div>
