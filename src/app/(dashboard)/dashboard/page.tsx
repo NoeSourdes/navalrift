@@ -29,7 +29,7 @@ export default function Page() {
               La bataille navale est un jeu de stratégie. Deux joueurs
               s&apos;affrontent pour couler les navires adverses. Utilisez votre
               intelligence pour localiser et détruire les navires ennemis tout
-              en protégeant les vôtres. Préparez-vous à une bataille épique !
+              en protégeant les vôtres. Préparez-vous à une bataille épique
             </p>
           </div>
         </div>
