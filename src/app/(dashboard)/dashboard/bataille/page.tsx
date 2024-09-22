@@ -5,7 +5,6 @@ import { useButtonSounds } from "@/app/actions/sound/sound";
 import {
   Button,
   Modal,
-  ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -39,7 +38,7 @@ export default function Page() {
         playerId: playerId,
       });
       create.then(() => {
-        router.push(`/admin/bataille/bataille-ami?token=${createToken}`);
+        router.push(`/dashboard/bataille/bataille-ami?token=${createToken}`);
       });
     }
   };
@@ -149,11 +148,11 @@ export default function Page() {
           {(onClose: any) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                <h3>Commencer une partie</h3>
+                <h3>La page suivant sera bientôt disponible</h3>
               </ModalHeader>
-              <ModalBody>
+              {/* <ModalBody>
                 <p>{sentence}</p>
-              </ModalBody>
+              </ModalBody> */}
               <ModalFooter>
                 <Button
                   onMouseEnter={() => playHover()}
@@ -166,12 +165,12 @@ export default function Page() {
                 >
                   Annuler
                 </Button>
-                <Button
+                {/* <Button
                   onPress={async () => {
                     onClose();
                     play();
                     if (sentence === "Jouer contre une IA")
-                      router.push("/admin/bataille/bataille-ia");
+                      router.push("/dashboard/bataille/bataille-ia");
                     else {
                       await createGameWithFriend();
                     }
@@ -180,7 +179,7 @@ export default function Page() {
                   onMouseEnter={() => playHover()}
                 >
                   Commencer
-                </Button>
+                </Button> */}
               </ModalFooter>
             </>
           )}

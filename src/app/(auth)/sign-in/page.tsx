@@ -42,7 +42,7 @@ export default function Page() {
               <Button
                 onClick={() => {
                   signIn("google", {
-                    callbackUrl: "/admin",
+                    callbackUrl: "/dashboard",
                   });
                 }}
                 variant="bordered"

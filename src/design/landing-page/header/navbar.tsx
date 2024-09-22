@@ -11,6 +11,7 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -32,6 +33,7 @@ export const NavbarComponent = ({
   scrollToTop,
 }: NavbarComponentProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const elementsMenu = [
     "Accueil",
@@ -102,8 +104,13 @@ export const NavbarComponent = ({
           <Link href="/sign-in">Connexion</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="/sign-in" variant="flat">
-            Se connecter
+          <Button
+            as={Link}
+            color="primary"
+            href={session ? "/dashboard" : "/sign-in"}
+            variant="flat"
+          >
+            {session ? "Dashboard" : "Se connecter"}
           </Button>
         </NavbarItem>
       </NavbarContent>

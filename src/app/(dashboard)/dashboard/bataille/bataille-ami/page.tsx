@@ -138,7 +138,7 @@ export default function BatailleAmi() {
               className="absolute top-10 left-10 z-30"
               onClick={async () => {
                 if (token) await deleteGame(token);
-                router.push("/admin");
+                router.push("/dashboard");
               }}
             >
               <span className="max-sm:hidden">Retour</span>
@@ -154,7 +154,7 @@ export default function BatailleAmi() {
                 </h1>
                 <Button
                   onClick={() => {
-                    router.push("/admin");
+                    router.push("/dashboard");
                   }}
                 >
                   Accueil
@@ -172,7 +172,7 @@ export default function BatailleAmi() {
               className="absolute top-10 left-10 z-30"
               onClick={async () => {
                 if (token) await deleteGame(token);
-                router.push("/admin");
+                router.push("/dashboard");
               }}
             >
               Retour

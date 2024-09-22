@@ -1,7 +1,8 @@
 "use client";
 
 import { Cobe } from "@/app/library/createGlobe";
-import Spotlight, { SpotlightCard } from "@/app/library/spotlight";
+import { SpotlightCard } from "../../../app/components/ui/SpotlightCard";
+
 import { Chip } from "@nextui-org/react";
 import createGlobe from "cobe";
 import Image from "next/image";
@@ -87,40 +88,60 @@ export const Features = () => {
               </h5>
             </div>
             <div className="w-full max-w-6xl mx-auto px-4 md:px-6">
-              <Spotlight className="max-w-sm mx-auto grid gap-6 lg:grid-cols-3 items-start lg:max-w-none group">
-                <SpotlightCard>
-                  <div className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden">
-                    <Cobe />
-                    <h3 className="text-xl font-bold mb-4">Mode multijoueur</h3>
-                    <p className="text-gray-500">
-                      Jouez en ligne avec vos amis ou des joueurs du monde
-                      entier.
-                    </p>
-                  </div>
-                </SpotlightCard>
-                <SpotlightCard>
-                  <div className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden flex flex-col justify-between">
-                    <div className="relative w-full min-h-80">
-                      <Image
-                        src="/svg/computer.svg"
-                        layout="fill"
-                        alt="computer"
-                        objectFit="contain"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-4">Mode solo</h3>
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center max-lg:flex-col gap-5">
+                  <SpotlightCard
+                    from="#1cd1c6"
+                    via="#407cff"
+                    size={300}
+                    className="relative mx-auto w-full h-[460px] max-w-2xl rounded-[--radius] bg-white/10 p-0.5 [--radius:theme(borderRadius.2xl)]"
+                  >
+                    <div className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden">
+                      <div className="relative w-full h-[320px] max-h-[320px]  overflow-hidden">
+                        <Cobe />
+                      </div>
+
+                      <h3 className="text-xl font-bold mb-4">
+                        Mode multijoueur
+                      </h3>
                       <p className="text-gray-500">
-                        Jouez contre l&apos;ordinateur et améliorez vos
-                        compétences.
+                        Jouez en ligne avec vos amis ou des joueurs du monde
+                        entier.
                       </p>
                     </div>
-                  </div>
-                </SpotlightCard>
-                <SpotlightCard>
-                  <div className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden flex flex-col justify-between">
-                    <div className="w-full min-h-80 p-3">
-                      <div className="relative w-full h-full">
+                  </SpotlightCard>
+                  <SpotlightCard
+                    from="#1cd1c6"
+                    via="#407cff"
+                    size={300}
+                    className="relative mx-auto w-full h-[460px] max-w-2xl rounded-[--radius] bg-white/10 p-0.5 [--radius:theme(borderRadius.2xl)]"
+                  >
+                    <div className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden flex flex-col justify-between">
+                      <div className="relative w-full min-h-80">
+                        <Image
+                          src="/svg/computer.svg"
+                          layout="fill"
+                          alt="computer"
+                          objectFit="contain"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold mb-4">Mode solo</h3>
+                        <p className="text-gray-500">
+                          Jouez contre l&apos;ordinateur et améliorez vos
+                          compétences.
+                        </p>
+                      </div>
+                    </div>
+                  </SpotlightCard>
+                  <SpotlightCard
+                    from="#1cd1c6"
+                    via="#407cff"
+                    size={300}
+                    className="relative mx-auto h-[460px] w-full max-w-2xl rounded-[--radius] bg-white/10 p-0.5 [--radius:theme(borderRadius.2xl)]"
+                  >
+                    <div className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden flex flex-col justify-between">
+                      <div className="relative w-full min-h-80">
                         <Image
                           src="/svg/grille.svg"
                           layout="fill"
@@ -128,55 +149,76 @@ export const Features = () => {
                           objectFit="contain"
                         />
                       </div>
+
+                      <div>
+                        <h3 className="text-xl font-bold mb-4">
+                          Grille moderne
+                        </h3>
+                        <p className="text-gray-500">
+                          Profitez d&apos;une grille moderne et d&apos;une
+                          interface utilisateur intuitive.
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-4">Grille moderne</h3>
+                  </SpotlightCard>
+                </div>
+                <div className="flex items-center max-lg:flex-col gap-5">
+                  <SpotlightCard
+                    from="#1cd1c6"
+                    via="#407cff"
+                    size={300}
+                    className="relative mx-auto  w-full max-w-2xl rounded-[--radius] bg-white/10 p-0.5 [--radius:theme(borderRadius.2xl)]"
+                  >
+                    <div
+                      onClick={play}
+                      className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden cursor-pointer"
+                    >
+                      <h3 className="text-xl font-bold mb-4">Effets sonores</h3>
                       <p className="text-gray-500">
-                        Profitez d&apos;une grille moderne et d&apos;une
-                        interface utilisateur intuitive.
+                        Intensifiez l&apos;expérience avec des sons captivants.
                       </p>
                     </div>
-                  </div>
-                </SpotlightCard>
-                <SpotlightCard>
-                  <div
-                    onClick={play}
-                    className="relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden cursor-pointer"
+                  </SpotlightCard>
+                  <SpotlightCard
+                    from="#1cd1c6"
+                    via="#407cff"
+                    size={300}
+                    className="relative mx-auto w-full max-w-2xl rounded-[--radius] bg-white/10 p-0.5 [--radius:theme(borderRadius.2xl)]"
                   >
-                    <h3 className="text-xl font-bold mb-4">Effets sonores</h3>
-                    <p className="text-gray-500">
-                      Intensifiez l&apos;expérience avec des sons captivants.
-                    </p>
-                  </div>
-                </SpotlightCard>
-                <SpotlightCard>
-                  <div
-                    className={`relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden cursor-pointer ${
-                      vibrate ? "vibrate" : ""
-                    }`}
-                    onClick={handleClick}
+                    <div
+                      className={`relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden cursor-pointer ${
+                        vibrate ? "vibrate" : ""
+                      }`}
+                      onClick={handleClick}
+                    >
+                      <h3 className="text-xl font-bold mb-4">Vibrations</h3>
+                      <p className="text-gray-500">
+                        Ressentez chaque mouvement avec des vibrations
+                        réalistes.
+                      </p>
+                    </div>
+                  </SpotlightCard>
+                  <SpotlightCard
+                    from="#1cd1c6"
+                    via="#407cff"
+                    size={300}
+                    className="relative mx-auto w-full max-w-2xl rounded-[--radius] bg-white/10 p-0.5 [--radius:theme(borderRadius.2xl)]"
                   >
-                    <h3 className="text-xl font-bold mb-4">Vibrations</h3>
-                    <p className="text-gray-500">
-                      Ressentez chaque mouvement avec des vibrations réalistes.
-                    </p>
-                  </div>
-                </SpotlightCard>
-                <SpotlightCard>
-                  <div
-                    className={`relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden cursor-pointer ${
-                      rotate ? "rotate" : ""
-                    }`}
-                    onClick={handleClickAnimation}
-                  >
-                    <h3 className="text-xl font-bold mb-4">Animations</h3>
-                    <p className="text-gray-500">
-                      Intensifiez l&apos;expérience avec des animations
-                      captivantes.
-                    </p>
-                  </div>
-                </SpotlightCard>
-              </Spotlight>
+                    <div
+                      className={`relative h-full bg-background p-6 pb-8 rounded-[inherit] z-20 overflow-hidden cursor-pointer ${
+                        rotate ? "rotate" : ""
+                      }`}
+                      onClick={handleClickAnimation}
+                    >
+                      <h3 className="text-xl font-bold mb-4">Animations</h3>
+                      <p className="text-gray-500">
+                        Intensifiez l&apos;expérience avec des animations
+                        captivantes.
+                      </p>
+                    </div>
+                  </SpotlightCard>
+                </div>
+              </div>
             </div>
           </div>
         </div>

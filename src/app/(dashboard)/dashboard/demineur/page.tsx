@@ -238,7 +238,7 @@ export default function Page() {
                     </Button>
                     <Button
                       onClick={() => {
-                        router.push("/admin");
+                        router.push("/dashboard");
                       }}
                     >
                       Retour a la page d&apos;accueil
@@ -279,7 +279,7 @@ export default function Page() {
                     </Button>
                     <Button
                       onClick={() => {
-                        router.push("/admin");
+                        router.push("/dashboard");
                       }}
                     >
                       Retour a la page d&apos;accueil
@@ -309,7 +309,7 @@ export default function Page() {
                     </Button>
                     <Button
                       onClick={() => {
-                        router.push("/admin");
+                        router.push("/dashboard");
                       }}
                     >
                       Retour a la page d&apos;accueil

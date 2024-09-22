@@ -15,8 +15,8 @@ export default function Layout({ children }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (/^\/admin\/messagerie\/.+/i.test(pathname)) {
-      router.push("/admin/messagerie");
+    if (/^\/dashboard\/messagerie\/.+/i.test(pathname)) {
+      router.push("/dashboard/messagerie");
     }
   }, []);
   const [open, setOpen] = useState(false);

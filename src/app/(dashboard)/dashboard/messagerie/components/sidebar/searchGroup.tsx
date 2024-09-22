@@ -129,7 +129,7 @@ export const SearchGroup = ({
     setRenameGroupe(false);
     onOpenChange(id_group, false);
     setLoading(false);
-    router.push("/admin/messagerie");
+    router.push("/dashboard/messagerie");
     fetchGroups();
   };
 
@@ -147,7 +147,7 @@ export const SearchGroup = ({
     setRenameGroupe(false);
     onOpenChange(id_group, false);
     setLoading(false);
-    router.push("/admin/messagerie");
+    router.push("/dashboard/messagerie");
     fetchGroups();
   };
 
@@ -205,7 +205,7 @@ export const SearchGroup = ({
                   }}
                 >
                   <div className="flex items-center justify-between">
-                    <Link href={`/admin/messagerie/${group.id}`}>
+                    <Link href={`/dashboard/messagerie/${group.id}`}>
                       <div className="">
                         <div className="flex items-center text-gray-400 text-sm">
                           <h5>Créateur : {group.isCreator}</h5>

@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-import { AreaChart, Home, MessageSquareMore, Settings, X } from "lucide-react";
+import { AreaChart, Home, MessageSquareMore, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -26,14 +26,9 @@ import ButtonSideBar from "./buttonSideBar";
 interface SideBarProps {
   session: any;
   isOpenSidebar: boolean;
-  setIsOpenSidBarResponsive: (value: boolean) => void;
 }
 
-export const SideBarResponsive = ({
-  session,
-  isOpenSidebar,
-  setIsOpenSidBarResponsive,
-}: SideBarProps) => {
+export const SideBar = ({ session, isOpenSidebar }: SideBarProps) => {
   const { play, playHover } = useButtonSounds();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
@@ -45,15 +40,9 @@ export const SideBarResponsive = ({
   };
 
   return (
-    <div className="h-full w-full rounded-xl flex flex-col justify-between px-5 pb-7 pt-3 overflow-hidden">
+    <div className="h-full w-full rounded-xl flex flex-col justify-between px-5 py-7 overflow-hidden">
       <div className="">
         <div className="flex items-center gap-3">
-          <div
-            className="p-3 rounded-lg cursor-pointer hover:bg-blue-900 transition-colors"
-            onClick={() => setIsOpenSidBarResponsive(false)}
-          >
-            <X />
-          </div>
           <Image
             src="/img/logo-navalRift.png"
             alt="logo"
@@ -69,30 +58,24 @@ export const SideBarResponsive = ({
           </h1>
         </div>
         <div className="mt-5 flex flex-col gap-2">
-          <div onClick={() => setIsOpenSidBarResponsive(false)}>
-            <ButtonSideBar
-              logo={Home}
-              title="Acceuil"
-              pathName="/admin"
-              isOpenSideBar={isOpenSidebar}
-            />
-          </div>
-          <div onClick={() => setIsOpenSidBarResponsive(false)}>
-            <ButtonSideBar
-              logo={MessageSquareMore}
-              title="Messagerie"
-              pathName="/admin/messagerie"
-              isOpenSideBar={isOpenSidebar}
-            />
-          </div>
-          <div onClick={() => setIsOpenSidBarResponsive(false)}>
-            <ButtonSideBar
-              logo={AreaChart}
-              title="Statistiques"
-              pathName="/admin/statistiques"
-              isOpenSideBar={isOpenSidebar}
-            />
-          </div>
+          <ButtonSideBar
+            logo={Home}
+            title="Acceuil"
+            pathName="/dashboard"
+            isOpenSideBar={isOpenSidebar}
+          />
+          <ButtonSideBar
+            logo={MessageSquareMore}
+            title="Messagerie"
+            pathName="/dashboard/messagerie"
+            isOpenSideBar={isOpenSidebar}
+          />
+          <ButtonSideBar
+            logo={AreaChart}
+            title="Statistiques"
+            pathName="/dashboard/statistiques"
+            isOpenSideBar={isOpenSidebar}
+          />
         </div>
       </div>
       <div>
@@ -127,7 +110,7 @@ export const SideBarResponsive = ({
                 name={isOpenSidebar ? session?.user?.name : ""}
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownMenu aria-label="User Actions" variant="faded">
               <DropdownItem
                 onMouseEnter={() => playHover()}
                 onClick={() => play()}
